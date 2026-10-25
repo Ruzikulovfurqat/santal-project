@@ -1,0 +1,5515 @@
+{
+ "_collections": {
+  "orders": [
+   {
+    "orderNumber": "BUY-2026-001",
+    "date": "2026-10-15",
+    "contractNumber": "1",
+    "contractDate": "2026-10-15",
+    "customer": "ЭХСОН ПЛАСт",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "product": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "warehouseId": "adb7b68f27974f",
+      "priceListId": "af5bacf3a0574e",
+      "quantity": 50,
+      "price": 90000,
+      "subtotalAmount": 4500000,
+      "discountPct": 10,
+      "discountAmount": 450000,
+      "discountManual": false,
+      "totalAmount": 4050000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 72321.43,
+      "noVatAmount": 3616071.43,
+      "vatAmount": 433928.57
+     }
+    ],
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "6a4a88d6bc274b",
+    "product": "Биметал радиатор NEXT PLUS",
+    "quantity": 50,
+    "unit": "дона",
+    "priceListId": "af5bacf3a0574e",
+    "price": 90000,
+    "subtotalAmount": 4500000,
+    "discountAmount": 450000,
+    "totalAmount": 4050000,
+    "vatAmount": 433928.57,
+    "priority": "yuqori",
+    "outWarehouseId": "adb7b68f27974f",
+    "dueDate": "2026-10-20",
+    "paidAmount": 0,
+    "debtAmount": 4050000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "f7829b1ea6de4c",
+    "currentStageIndex": 3,
+    "completed": true,
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:23:17.325Z",
+    "id": "88b8a07b55e04b",
+    "completedAt": "2026-10-15T06:24:15.946Z"
+   },
+   {
+    "orderNumber": "BUY-2026-002",
+    "date": "2026-10-15",
+    "contractNumber": "1",
+    "contractDate": "2026-10-15",
+    "customer": "ЭХСОН ПЛАСт",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "product": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "warehouseId": "adb7b68f27974f",
+      "priceListId": "af5bacf3a0574e",
+      "quantity": 50,
+      "price": 90000,
+      "subtotalAmount": 4500000,
+      "discountPct": 10,
+      "discountAmount": 450000,
+      "discountManual": false,
+      "totalAmount": 4050000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 72321.43,
+      "noVatAmount": 3616071.43,
+      "vatAmount": 433928.57
+     }
+    ],
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "6a4a88d6bc274b",
+    "product": "Биметал радиатор NEXT PLUS",
+    "quantity": 50,
+    "unit": "дона",
+    "priceListId": "af5bacf3a0574e",
+    "price": 90000,
+    "subtotalAmount": 4500000,
+    "discountAmount": 450000,
+    "totalAmount": 4050000,
+    "vatAmount": 433928.57,
+    "priority": "orta",
+    "outWarehouseId": "adb7b68f27974f",
+    "dueDate": "2026-10-22",
+    "paidAmount": 0,
+    "debtAmount": 4050000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "f7829b1ea6de4c",
+    "currentStageIndex": 3,
+    "completed": true,
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:29:04.237Z",
+    "id": "241f930b389648",
+    "completedAt": "2026-10-15T06:29:26.735Z"
+   },
+   {
+    "orderNumber": "BUY-2026-003",
+    "date": "2026-10-19",
+    "contractNumber": "",
+    "contractDate": "2026-10-01",
+    "customer": "ЭХСОН ПЛАСт",
+    "items": [
+     {
+      "itemId": "x9v1fx82fmj",
+      "product": "15 квт катёл",
+      "unit": "дона",
+      "warehouseId": "adb7b68f27974f",
+      "priceListId": "af5bacf3a0574e",
+      "quantity": 50,
+      "price": 3500000,
+      "subtotalAmount": 175000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "discountManual": false,
+      "totalAmount": 175000000,
+      "categoryKey": "gaz",
+      "vatRate": 12,
+      "unitNoVat": 3125000,
+      "noVatAmount": 156250000,
+      "vatAmount": 18750000
+     }
+    ],
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "x9v1fx82fmj",
+    "product": "15 квт катёл",
+    "quantity": 50,
+    "unit": "дона",
+    "priceListId": "af5bacf3a0574e",
+    "price": 3500000,
+    "subtotalAmount": 175000000,
+    "discountAmount": 0,
+    "totalAmount": 175000000,
+    "vatAmount": 18750000,
+    "priority": "orta",
+    "outWarehouseId": "adb7b68f27974f",
+    "dueDate": "2026-10-21",
+    "paidAmount": 0,
+    "debtAmount": 175000000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "bpoanns2fmg",
+    "notes": "",
+    "customerId": "f7829b1ea6de4c",
+    "currentStageIndex": 3,
+    "completed": true,
+    "cancelled": false,
+    "createdAt": "2026-10-19T04:06:55.954Z",
+    "id": "3cb4861cbe8e4b",
+    "completedAt": "2026-10-19T04:11:23.262Z"
+   },
+   {
+    "orderNumber": "BUY-2026-004",
+    "date": "2026-10-19",
+    "contractNumber": "",
+    "contractDate": "2026-10-19",
+    "customer": "Гидростанкасервис",
+    "items": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "product": "Кремний",
+      "unit": "кг",
+      "warehouseId": "47a9640442b84d",
+      "priceListId": "",
+      "quantity": 20,
+      "price": 30000,
+      "subtotalAmount": 600000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "discountManual": false,
+      "totalAmount": 600000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 26785.71,
+      "noVatAmount": 535714.29,
+      "vatAmount": 64285.71
+     }
+    ],
+    "warehouseId": "47a9640442b84d",
+    "itemId": "qmh3ey3e6d4",
+    "product": "Кремний",
+    "quantity": 20,
+    "unit": "кг",
+    "priceListId": "",
+    "price": 30000,
+    "subtotalAmount": 600000,
+    "discountAmount": 0,
+    "totalAmount": 600000,
+    "vatAmount": 64285.71,
+    "priority": "orta",
+    "outWarehouseId": "47a9640442b84d",
+    "dueDate": "2026-10-21",
+    "paidAmount": 0,
+    "debtAmount": 600000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "_pending_rz70dhjy31o",
+    "currentStageIndex": 2,
+    "completed": false,
+    "cancelled": true,
+    "createdAt": "2026-10-19T05:17:28.923Z",
+    "id": "9ac995901f8e49"
+   },
+   {
+    "orderNumber": "BUY-2026-005",
+    "date": "2026-10-19",
+    "contractNumber": "1",
+    "contractDate": "2026-10-19",
+    "customer": "Гидростанкасервис",
+    "items": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "product": "Кремний",
+      "unit": "кг",
+      "warehouseId": "47a9640442b84d",
+      "priceListId": "",
+      "quantity": 50,
+      "price": 30000,
+      "subtotalAmount": 1500000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "discountManual": false,
+      "totalAmount": 1500000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 26785.71,
+      "noVatAmount": 1339285.71,
+      "vatAmount": 160714.29
+     }
+    ],
+    "warehouseId": "47a9640442b84d",
+    "itemId": "qmh3ey3e6d4",
+    "product": "Кремний",
+    "quantity": 50,
+    "unit": "кг",
+    "priceListId": "",
+    "price": 30000,
+    "subtotalAmount": 1500000,
+    "discountAmount": 0,
+    "totalAmount": 1500000,
+    "vatAmount": 160714.29,
+    "priority": "orta",
+    "outWarehouseId": "47a9640442b84d",
+    "dueDate": "2026-10-22",
+    "paidAmount": 0,
+    "debtAmount": 1500000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "aededda7f6b540",
+    "currentStageIndex": 2,
+    "completed": false,
+    "cancelled": true,
+    "createdAt": "2026-10-19T05:36:17.875Z",
+    "id": "5b191340a9a744"
+   },
+   {
+    "orderNumber": "BUY-2026-006",
+    "date": "2026-10-19",
+    "contractNumber": "",
+    "contractDate": "",
+    "customer": "Гидростанкасервис",
+    "items": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "product": "Кремний",
+      "unit": "кг",
+      "warehouseId": "47a9640442b84d",
+      "priceListId": "",
+      "quantity": 50,
+      "price": 40000,
+      "subtotalAmount": 2000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "discountManual": false,
+      "totalAmount": 2000000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 35714.29,
+      "noVatAmount": 1785714.29,
+      "vatAmount": 214285.71
+     }
+    ],
+    "warehouseId": "47a9640442b84d",
+    "itemId": "qmh3ey3e6d4",
+    "product": "Кремний",
+    "quantity": 50,
+    "unit": "кг",
+    "priceListId": "",
+    "price": 40000,
+    "subtotalAmount": 2000000,
+    "discountAmount": 0,
+    "totalAmount": 2000000,
+    "vatAmount": 214285.71,
+    "priority": "orta",
+    "outWarehouseId": "47a9640442b84d",
+    "dueDate": "",
+    "paidAmount": 0,
+    "debtAmount": 2000000,
+    "responsibleEmployeeId": "pizyix5ksjt",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "aededda7f6b540",
+    "currentStageIndex": 3,
+    "completed": true,
+    "cancelled": false,
+    "createdAt": "2026-10-19T11:34:44.064Z",
+    "id": "a05a67d58c334c",
+    "completedAt": "2026-10-19T11:45:29.679Z"
+   },
+   {
+    "orderNumber": "BUY-2026-007",
+    "date": "2026-10-22",
+    "contractNumber": "",
+    "contractDate": "",
+    "customer": "ЭХСОН ПЛАСт",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "product": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "warehouseId": "adb7b68f27974f",
+      "priceListId": "af5bacf3a0574e",
+      "quantity": 22000,
+      "price": 90000,
+      "subtotalAmount": 1980000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "discountManual": false,
+      "totalAmount": 1980000000,
+      "categoryKey": "radiator",
+      "vatRate": 0,
+      "unitNoVat": 90000,
+      "noVatAmount": 1980000000,
+      "vatAmount": 0
+     }
+    ],
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "6a4a88d6bc274b",
+    "product": "Биметал радиатор NEXT PLUS",
+    "quantity": 22000,
+    "unit": "дона",
+    "priceListId": "af5bacf3a0574e",
+    "price": 90000,
+    "subtotalAmount": 1980000000,
+    "discountAmount": 0,
+    "totalAmount": 1980000000,
+    "vatAmount": 0,
+    "priority": "orta",
+    "outWarehouseId": "adb7b68f27974f",
+    "dueDate": "",
+    "paidAmount": 0,
+    "debtAmount": 1980000000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "f7829b1ea6de4c",
+    "currentStageIndex": 3,
+    "completed": true,
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:00:11.396Z",
+    "id": "c727c7ceb4434d",
+    "completedAt": "2026-10-22T04:02:32.342Z"
+   },
+   {
+    "orderNumber": "BUY-2026-008",
+    "date": "2026-10-23",
+    "contractNumber": "1",
+    "contractDate": "2026-10-02",
+    "customer": "ЭХСОН ПЛАСт",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "product": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "warehouseId": "adb7b68f27974f",
+      "priceListId": "af5bacf3a0574e",
+      "quantity": 3000,
+      "price": 90000,
+      "subtotalAmount": 270000000,
+      "discountPct": 10,
+      "discountAmount": 27000000,
+      "discountManual": false,
+      "totalAmount": 243000000,
+      "categoryKey": "radiator",
+      "vatRate": 12,
+      "unitNoVat": 72321.43,
+      "noVatAmount": 216964285.71,
+      "vatAmount": 26035714.29
+     }
+    ],
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "6a4a88d6bc274b",
+    "product": "Биметал радиатор NEXT PLUS",
+    "quantity": 3000,
+    "unit": "дона",
+    "priceListId": "af5bacf3a0574e",
+    "price": 90000,
+    "subtotalAmount": 270000000,
+    "discountAmount": 27000000,
+    "totalAmount": 243000000,
+    "vatAmount": 26035714.29,
+    "priority": "orta",
+    "outWarehouseId": "adb7b68f27974f",
+    "dueDate": "2026-10-30",
+    "paidAmount": 0,
+    "debtAmount": 243000000,
+    "responsibleEmployeeId": "4yisehhgsvm",
+    "workshopId": "ba057683b4244f",
+    "notes": "",
+    "customerId": "f7829b1ea6de4c",
+    "currentStageIndex": 2,
+    "completed": false,
+    "cancelled": false,
+    "createdAt": "2026-10-23T04:42:32.876Z",
+    "id": "028fd52c16af44"
+   }
+  ],
+  "materials": [],
+  "products": [],
+  "employees": [
+   {
+    "id": "4yisehhgsvm",
+    "firstName": "Лазиз",
+    "lastName": "Бобокулов",
+    "middleName": "",
+    "fullName": "Бобокулов Лазиз",
+    "passportNumber": "",
+    "address": "",
+    "position": "Цех бошлиги",
+    "phone": "",
+    "familyPhone": "",
+    "hireDate": "2026-10-15",
+    "salaryType": "ishbay",
+    "salaryAmount": 0,
+    "workshopId": "ba057683b4244f",
+    "category": "Радиатор",
+    "jobDescription": "",
+    "status": "faol",
+    "terminationDate": ""
+   },
+   {
+    "id": "pizyix5ksjt",
+    "firstName": "Сардор",
+    "lastName": "Абдиалимов",
+    "middleName": "",
+    "fullName": "Абдиалимов Сардор",
+    "passportNumber": "",
+    "address": "",
+    "position": "Бухгалтер",
+    "phone": "+998995090721",
+    "familyPhone": "",
+    "hireDate": "2026-10-15",
+    "salaryType": "oylik",
+    "salaryAmount": 700000,
+    "workshopId": "89efadb90e3c4c",
+    "category": "Бошқарув бўлими",
+    "jobDescription": "",
+    "status": "faol",
+    "terminationDate": ""
+   },
+   {
+    "id": "83t2ck9ll5t",
+    "firstName": "Фарход",
+    "lastName": "Исмоилов",
+    "middleName": "",
+    "fullName": "Исмоилов Фарход",
+    "passportNumber": "",
+    "address": "",
+    "position": "Ишчи",
+    "phone": "",
+    "familyPhone": "",
+    "hireDate": "2026-10-15",
+    "salaryType": "ishbay",
+    "salaryAmount": 0,
+    "workshopId": "f874999e11784e",
+    "category": "Радиатор",
+    "jobDescription": "",
+    "status": "faol",
+    "terminationDate": ""
+   },
+   {
+    "id": "vqj4vjvbuec",
+    "firstName": "Шерали",
+    "lastName": "Файзиев",
+    "middleName": "Исмоилович",
+    "fullName": "Файзиев Шерали Исмоилович",
+    "passportNumber": "",
+    "address": "",
+    "position": "Бош Бухгалтер",
+    "phone": "",
+    "familyPhone": "",
+    "hireDate": "2026-10-17",
+    "salaryType": "oylik",
+    "salaryAmount": 1000000,
+    "workshopId": "89efadb90e3c4c",
+    "category": "Бошқарув бўлими",
+    "jobDescription": "",
+    "status": "faol",
+    "terminationDate": ""
+   }
+  ],
+  "calculations": [],
+  "warehouses": [
+   {
+    "name": "Хомашё склад",
+    "note": "1",
+    "createdAt": "2026-09-19T10:12:22.400Z",
+    "id": "47a9640442b84d"
+   },
+   {
+    "name": "Тайёр махсулот склад",
+    "note": "2",
+    "createdAt": "2026-09-19T10:12:40.560Z",
+    "id": "adb7b68f27974f"
+   },
+   {
+    "name": "Сервис запчаст склад",
+    "note": "",
+    "createdAt": "2026-09-19T10:13:11.863Z",
+    "id": "cf21f233c45445"
+   },
+   {
+    "name": "Алюмин чушка склад",
+    "note": "",
+    "createdAt": "2026-09-22T06:26:40.318Z",
+    "id": "2d1b9d2ed4d945"
+   },
+   {
+    "name": "Асосий омбор",
+    "note": "",
+    "createdAt": "2026-09-23T04:43:43.340Z",
+    "id": "b48224e74b1b4f"
+   },
+   {
+    "name": "Катёл цех",
+    "note": "",
+    "isFinishedGoods": true,
+    "createdAt": "2026-10-19T09:03:10.543Z",
+    "id": "c36b59c0f1b645"
+   }
+  ],
+  "categories": [
+   {
+    "name": "Радиатор",
+    "createdAt": "2026-09-19T10:13:22.231Z",
+    "id": "9e1aad1da42b41"
+   },
+   {
+    "name": "Газ Катёл",
+    "createdAt": "2026-09-19T10:13:37.703Z",
+    "id": "5211a08bf69b46"
+   },
+   {
+    "name": "Кумир катёл",
+    "createdAt": "2026-09-19T10:13:48.535Z",
+    "id": "34f4d55537964a"
+   },
+   {
+    "name": "Токар",
+    "createdAt": "2026-09-19T10:13:58.689Z",
+    "id": "0ebf4aa3274444"
+   }
+  ],
+  "items": [
+   {
+    "name": "Биметал радиатор NEXT PLUS",
+    "itemType": "mahsulot",
+    "unit": "дона",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 5000,
+    "price": 23116.071428571428,
+    "location": "",
+    "updatedAt": "2026-09-19T10:20:20.495Z",
+    "createdAt": "2026-09-19T10:20:20.495Z",
+    "id": "6a4a88d6bc274b",
+    "salePrice": 90000,
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "_lom_raw_alum",
+    "createdAt": "2026-09-22T06:27:00.482Z",
+    "name": "Алюмин лом",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "minQuantity": 10000,
+    "price": 23000,
+    "categoryId": "9e1aad1da42b41",
+    "location": "",
+    "updatedAt": "2026-10-15T05:21:49.024Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "_lom_finished_alum",
+    "createdAt": "2026-09-22T06:38:18.992Z",
+    "name": "Тайёр алюмин",
+    "itemType": "yarim_tayyor",
+    "unit": "кг",
+    "minQuantity": 20000,
+    "price": 23622.321428571428,
+    "categoryId": "9e1aad1da42b41",
+    "location": "",
+    "maxQuantity": 0,
+    "updatedAt": "2026-10-23T04:13:57.709Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "_lom_metal",
+    "createdAt": "2026-09-22T06:38:18.997Z",
+    "name": "Металл (ажратилган)",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "minQuantity": 20000,
+    "price": 23000,
+    "categoryId": "9e1aad1da42b41",
+    "location": "",
+    "updatedAt": "2026-09-23T04:11:19.442Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "_lom_kul",
+    "createdAt": "2026-09-22T06:38:19.001Z",
+    "name": "Чушка чиқинди кули",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "minQuantity": 0,
+    "price": 0,
+    "categoryId": "9e1aad1da42b41",
+    "location": "",
+    "updatedAt": "2026-10-17T10:03:02.882Z",
+    "maxQuantity": 2000,
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "8891o5zljiw",
+    "name": "Диск",
+    "itemType": "xomashyo",
+    "unit": "дона",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 1000,
+    "price": 25000,
+    "location": "",
+    "updatedAt": "2026-10-19T12:22:07.622Z",
+    "createdAt": "2026-09-22T10:39:52.088Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ],
+    "maxQuantity": 0
+   },
+   {
+    "id": "j524jakaq7v",
+    "name": "Балгарка",
+    "itemType": "xomashyo",
+    "unit": "дона",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 0,
+    "price": 700000,
+    "location": "",
+    "updatedAt": "2026-10-19T12:22:07.622Z",
+    "createdAt": "2026-09-23T11:15:07.194Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ],
+    "maxQuantity": 0
+   },
+   {
+    "id": "vqy5rvqf01j",
+    "name": "дымаход",
+    "itemType": "xomashyo",
+    "unit": "дона",
+    "categoryId": "5211a08bf69b46",
+    "minQuantity": 100,
+    "maxQuantity": 0,
+    "price": 100000,
+    "location": "",
+    "updatedAt": "2026-10-19T12:15:43.648Z",
+    "createdAt": "2026-10-05T11:38:29.239Z",
+    "workshopIds": [
+     "bpoanns2fmg"
+    ]
+   },
+   {
+    "id": "x9v1fx82fmj",
+    "name": "15 квт катёл",
+    "itemType": "tovar",
+    "unit": "дона",
+    "categoryId": "5211a08bf69b46",
+    "minQuantity": 50,
+    "maxQuantity": 0,
+    "price": 2500000,
+    "location": "",
+    "updatedAt": "2026-10-19T09:03:27.419Z",
+    "createdAt": "2026-10-08T08:59:45.688Z",
+    "workshopIds": [
+     "bpoanns2fmg"
+    ]
+   },
+   {
+    "id": "vbz8ia7tjs5",
+    "name": "Биметал радиатор NEXT E",
+    "itemType": "mahsulot",
+    "unit": "дона",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 5000,
+    "maxQuantity": 0,
+    "price": 70000,
+    "location": "",
+    "updatedAt": "2026-10-08T09:20:50.789Z",
+    "createdAt": "2026-10-08T09:20:50.789Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "h8zltj5gtbn",
+    "name": "Труба40",
+    "itemType": "xomashyo",
+    "unit": "дона",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 10000,
+    "maxQuantity": 0,
+    "price": 1500,
+    "location": "",
+    "updatedAt": "2026-10-22T03:55:20.865Z",
+    "createdAt": "2026-10-15T05:24:41.459Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "zwldmekje2r",
+    "name": "Краска порошковқй",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 1000,
+    "maxQuantity": 0,
+    "price": 36000,
+    "location": "",
+    "updatedAt": "2026-10-22T03:55:39.672Z",
+    "createdAt": "2026-10-15T05:26:41.667Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "7fzm55nmze5",
+    "name": "Алюмин чушка",
+    "itemType": "yarim_tayyor",
+    "unit": "кг",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 20000,
+    "maxQuantity": 0,
+    "price": 30000,
+    "location": "",
+    "updatedAt": "2026-10-22T03:58:48.556Z",
+    "createdAt": "2026-10-15T05:29:29.261Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "fuibhfzdo8i",
+    "name": "Труба 20",
+    "itemType": "xomashyo",
+    "unit": "метр",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 0,
+    "maxQuantity": 0,
+    "price": 9000,
+    "location": "",
+    "updatedAt": "2026-10-22T03:54:55.929Z",
+    "createdAt": "2026-10-19T03:36:57.330Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "qmh3ey3e6d4",
+    "name": "Кремний",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 0,
+    "maxQuantity": 0,
+    "price": 30000,
+    "location": "",
+    "updatedAt": "2026-10-19T05:38:11.876Z",
+    "createdAt": "2026-10-19T03:37:20.823Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   },
+   {
+    "id": "1d03cs4iso6",
+    "name": "Металлом",
+    "itemType": "xomashyo",
+    "unit": "дона",
+    "categoryId": "0ebf4aa3274444",
+    "minQuantity": 0,
+    "maxQuantity": 0,
+    "price": 0,
+    "location": "",
+    "updatedAt": "2026-10-19T06:56:53.670Z",
+    "createdAt": "2026-10-19T06:56:53.670Z",
+    "workshopIds": [
+     "eysasnce4cq"
+    ]
+   },
+   {
+    "id": "kbg6w1sysu1",
+    "name": "Алюмин чушка чиқиндиси",
+    "itemType": "xomashyo",
+    "unit": "кг",
+    "price": 0,
+    "categoryId": "9e1aad1da42b41",
+    "minQuantity": 0,
+    "maxQuantity": 0,
+    "location": "",
+    "note": "Ишлаб чиқариш чиқиндиси (автоматик яратилган)",
+    "createdAt": "2026-10-19T09:57:18.073Z",
+    "updatedAt": "2026-10-19T12:34:48.151Z",
+    "workshopIds": [
+     "ba057683b4244f"
+    ]
+   }
+  ],
+  "stock": [
+   {
+    "id": "6a4a88d6bc274b__adb7b68f27974f",
+    "itemId": "6a4a88d6bc274b",
+    "warehouseId": "adb7b68f27974f",
+    "quantity": 79900,
+    "updatedAt": "2026-10-22T04:02:32.339Z"
+   },
+   {
+    "id": "6a4a88d6bc274b__47a9640442b84d",
+    "itemId": "6a4a88d6bc274b",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 0,
+    "updatedAt": "2026-10-15T05:11:55.320Z"
+   },
+   {
+    "id": "_lom_raw_alum__2d1b9d2ed4d945",
+    "itemId": "_lom_raw_alum",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 0,
+    "updatedAt": "2026-10-19T12:30:37.398Z"
+   },
+   {
+    "id": "h8zltj5gtbn__47a9640442b84d",
+    "itemId": "h8zltj5gtbn",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 2300000,
+    "updatedAt": "2026-10-22T03:59:04.774Z"
+   },
+   {
+    "id": "zwldmekje2r__47a9640442b84d",
+    "itemId": "zwldmekje2r",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 950000,
+    "updatedAt": "2026-10-22T03:59:04.775Z"
+   },
+   {
+    "id": "7fzm55nmze5__2d1b9d2ed4d945",
+    "itemId": "7fzm55nmze5",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 0,
+    "updatedAt": "2026-10-15T05:56:33.831Z"
+   },
+   {
+    "id": "_lom_metal__2d1b9d2ed4d945",
+    "itemId": "_lom_metal",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 70,
+    "updatedAt": "2026-10-19T12:30:37.408Z"
+   },
+   {
+    "id": "_lom_kul__2d1b9d2ed4d945",
+    "itemId": "_lom_kul",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 110,
+    "updatedAt": "2026-10-19T12:30:37.412Z"
+   },
+   {
+    "id": "7fzm55nmze5__47a9640442b84d",
+    "itemId": "7fzm55nmze5",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 13400,
+    "updatedAt": "2026-10-22T03:59:04.777Z"
+   },
+   {
+    "id": "qmh3ey3e6d4__47a9640442b84d",
+    "itemId": "qmh3ey3e6d4",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 644,
+    "updatedAt": "2026-10-19T12:30:37.401Z"
+   },
+   {
+    "id": "fuibhfzdo8i__47a9640442b84d",
+    "itemId": "fuibhfzdo8i",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 969500,
+    "updatedAt": "2026-10-22T03:59:04.773Z"
+   },
+   {
+    "id": "x9v1fx82fmj__adb7b68f27974f",
+    "itemId": "x9v1fx82fmj",
+    "warehouseId": "adb7b68f27974f",
+    "quantity": 450,
+    "updatedAt": "2026-10-19T04:11:23.258Z"
+   },
+   {
+    "id": "kbg6w1sysu1__2d1b9d2ed4d945",
+    "itemId": "kbg6w1sysu1",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 4959.7475,
+    "updatedAt": "2026-10-22T03:59:04.780Z"
+   },
+   {
+    "id": "8891o5zljiw__47a9640442b84d",
+    "itemId": "8891o5zljiw",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 0,
+    "updatedAt": "2026-10-19T12:16:21.816Z"
+   },
+   {
+    "id": "vqy5rvqf01j__47a9640442b84d",
+    "itemId": "vqy5rvqf01j",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 0,
+    "updatedAt": "2026-10-19T12:16:10.136Z"
+   },
+   {
+    "id": "j524jakaq7v__2d1b9d2ed4d945",
+    "itemId": "j524jakaq7v",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 1,
+    "updatedAt": "2026-10-19T12:22:07.623Z"
+   },
+   {
+    "id": "8891o5zljiw__2d1b9d2ed4d945",
+    "itemId": "8891o5zljiw",
+    "warehouseId": "2d1b9d2ed4d945",
+    "quantity": 20,
+    "updatedAt": "2026-10-19T12:22:07.638Z"
+   },
+   {
+    "id": "kbg6w1sysu1__47a9640442b84d",
+    "itemId": "kbg6w1sysu1",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 0,
+    "updatedAt": "2026-10-19T12:30:37.403Z"
+   },
+   {
+    "id": "5ekw5kim8zp__47a9640442b84d",
+    "itemId": "5ekw5kim8zp",
+    "warehouseId": "47a9640442b84d",
+    "quantity": 0,
+    "updatedAt": "2026-10-22T03:54:55.924Z"
+   }
+  ],
+  "receipts": [
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "fuibhfzdo8i",
+    "itemName": "Труба 20",
+    "quantity": 1000000,
+    "priceNoVat": 9000,
+    "vatRate": 12,
+    "vatSum": 1080000000,
+    "totalNoVat": 9000000000,
+    "totalWithVat": 10080000000,
+    "supplierId": "2e9b9e7e5f534d",
+    "supplierName": "ПИПЕ Метал",
+    "paidAmount": 0,
+    "payableAmount": 10080000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-15",
+    "note": "",
+    "createdAt": "2026-10-15T05:23:40.283Z",
+    "id": "ecf5c1412d4442"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "h8zltj5gtbn",
+    "itemName": "Труба40",
+    "quantity": 2500000,
+    "priceNoVat": 1500,
+    "vatRate": 12,
+    "vatSum": 450000000,
+    "totalNoVat": 3750000000,
+    "totalWithVat": 4200000000,
+    "supplierId": "e8181b32e6d149",
+    "supplierName": "Хитой",
+    "paidAmount": 0,
+    "payableAmount": 4200000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-15",
+    "note": "",
+    "createdAt": "2026-10-15T05:25:53.521Z",
+    "id": "ae81dc342a2843"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "zwldmekje2r",
+    "itemName": "Краска порошковқй",
+    "quantity": 500,
+    "priceNoVat": 40000,
+    "vatRate": 12,
+    "vatSum": 2400000,
+    "totalNoVat": 20000000,
+    "totalWithVat": 22400000,
+    "supplierId": "bb31057873c541",
+    "supplierName": "АКФА",
+    "paidAmount": 0,
+    "payableAmount": 22400000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-15",
+    "note": "",
+    "createdAt": "2026-10-15T05:27:07.268Z",
+    "id": "5cab590e602746"
+   },
+   {
+    "warehouseId": "2d1b9d2ed4d945",
+    "itemId": "_lom_raw_alum",
+    "itemName": "Алюмин лом",
+    "quantity": 2640,
+    "priceNoVat": 23000,
+    "vatRate": 0,
+    "vatSum": 0,
+    "totalNoVat": 60720000,
+    "totalWithVat": 60720000,
+    "supplierId": "4f48137cabcc45",
+    "supplierName": "Бахтиер ака",
+    "paidAmount": 0,
+    "payableAmount": 56120000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "batchNumber": "1",
+    "isLom": true,
+    "returnedKg": 0,
+    "date": "2026-10-15",
+    "note": "",
+    "createdAt": "2026-10-15T05:28:06.849Z",
+    "id": "3c4d140b526b4f"
+   },
+   {
+    "warehouseId": "2d1b9d2ed4d945",
+    "itemId": "_lom_raw_alum",
+    "itemName": "Алюмин лом",
+    "quantity": 2000,
+    "priceNoVat": 23000,
+    "vatRate": 0,
+    "vatSum": 0,
+    "totalNoVat": 46000000,
+    "totalWithVat": 46000000,
+    "supplierId": "4f48137cabcc45",
+    "supplierName": "Бахтиер ака",
+    "paidAmount": 0,
+    "payableAmount": 46000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "batchNumber": "4",
+    "isLom": true,
+    "returnedKg": 0,
+    "date": "2026-10-17",
+    "note": "",
+    "createdAt": "2026-10-17T12:52:25.917Z",
+    "id": "428678086b5d4b"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "fuibhfzdo8i",
+    "itemName": "Труба 20",
+    "quantity": 20000,
+    "priceNoVat": 9000,
+    "vatRate": 12,
+    "vatSum": 21600000,
+    "totalNoVat": 180000000,
+    "totalWithVat": 201600000,
+    "supplierId": "2e9b9e7e5f534d",
+    "supplierName": "ПИПЕ Метал",
+    "paidAmount": 0,
+    "payableAmount": 201600000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "createdAt": "2026-10-19T03:50:04.694Z",
+    "id": "29bdda8e87674d"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "zwldmekje2r",
+    "itemName": "Краска порошковқй",
+    "quantity": 1000000,
+    "priceNoVat": 36000,
+    "vatRate": 12,
+    "vatSum": 4320000000,
+    "totalNoVat": 36000000000,
+    "totalWithVat": 40320000000,
+    "supplierId": "bb31057873c541",
+    "supplierName": "АКФА",
+    "paidAmount": 0,
+    "payableAmount": 40320000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "createdAt": "2026-10-19T03:51:16.198Z",
+    "id": "9553de466b2044"
+   },
+   {
+    "warehouseId": "adb7b68f27974f",
+    "itemId": "x9v1fx82fmj",
+    "itemName": "15 квт катёл",
+    "quantity": 500,
+    "priceNoVat": 2500000,
+    "vatRate": 12,
+    "vatSum": 150000000,
+    "totalNoVat": 1250000000,
+    "totalWithVat": 1400000000,
+    "supplierId": "e8181b32e6d149",
+    "supplierName": "Хитой",
+    "paidAmount": 0,
+    "payableAmount": 1400000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "createdAt": "2026-10-19T04:05:11.579Z",
+    "id": "4d943686300140"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "qmh3ey3e6d4",
+    "itemName": "Кремний",
+    "quantity": 500,
+    "priceNoVat": 30000,
+    "vatRate": 12,
+    "vatSum": 1800000,
+    "totalNoVat": 15000000,
+    "totalWithVat": 16800000,
+    "supplierId": "e8181b32e6d149",
+    "supplierName": "Хитой",
+    "paidAmount": 0,
+    "payableAmount": 16800000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "createdAt": "2026-10-19T05:38:11.879Z",
+    "id": "72a3542886ec47"
+   },
+   {
+    "warehouseId": "2d1b9d2ed4d945",
+    "itemId": "j524jakaq7v",
+    "itemName": "Балгарка",
+    "quantity": 1,
+    "priceNoVat": 700000,
+    "vatRate": 0,
+    "vatSum": 0,
+    "totalNoVat": 700000,
+    "totalWithVat": 700000,
+    "supplierId": "c269ee11b3d74b",
+    "supplierName": "Содик ака",
+    "paidAmount": 0,
+    "payableAmount": 700000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "wh2OrderId": "22e18081f9ba44",
+    "wh2OrderNumber": "OMB2-2026-002",
+    "createdAt": "2026-10-19T12:22:07.622Z",
+    "id": "4c55d1bc65ab46"
+   },
+   {
+    "warehouseId": "2d1b9d2ed4d945",
+    "itemId": "8891o5zljiw",
+    "itemName": "Диск",
+    "quantity": 20,
+    "priceNoVat": 25000,
+    "vatRate": 0,
+    "vatSum": 0,
+    "totalNoVat": 500000,
+    "totalWithVat": 500000,
+    "supplierId": "c269ee11b3d74b",
+    "supplierName": "Содик ака",
+    "paidAmount": 0,
+    "payableAmount": 500000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-19",
+    "note": "",
+    "wh2OrderId": "22e18081f9ba44",
+    "wh2OrderNumber": "OMB2-2026-002",
+    "createdAt": "2026-10-19T12:22:07.622Z",
+    "id": "1b2e82c4e90c4e"
+   },
+   {
+    "warehouseId": "47a9640442b84d",
+    "itemId": "7fzm55nmze5",
+    "itemName": "Алюмин чушка",
+    "quantity": 100000,
+    "priceNoVat": 30000,
+    "vatRate": 12,
+    "vatSum": 360000000,
+    "totalNoVat": 3000000000,
+    "totalWithVat": 3360000000,
+    "supplierId": "e8181b32e6d149",
+    "supplierName": "Хитой",
+    "paidAmount": 0,
+    "payableAmount": 3360000000,
+    "cashAccountId": "",
+    "dueDate": "",
+    "date": "2026-10-22",
+    "note": "",
+    "wh2OrderId": "",
+    "wh2OrderNumber": "",
+    "createdAt": "2026-10-22T03:58:48.556Z",
+    "id": "7e602f667d7b42"
+   }
+  ],
+  "transfers": [],
+  "writeoffs": [],
+  "inventories": [],
+  "recipes": [
+   {
+    "productName": "Биметал радиатор NEXT PLUS",
+    "productItemId": "6a4a88d6bc274b",
+    "productType": "mahsulot",
+    "unit": "дона",
+    "quantity": 1,
+    "category": "Радиатор",
+    "machineName": "",
+    "recipeNumber": 1,
+    "recipeDate": "2026-10-15",
+    "workshopKey": "radiator",
+    "materials": [
+     {
+      "kind": "raw",
+      "materialItemId": "fuibhfzdo8i",
+      "materialName": "Труба 20",
+      "qty": 0.5,
+      "unit": "метр",
+      "price": 9000,
+      "altMaterialItemId": "",
+      "altMaterialName": "",
+      "refRecipeId": "",
+      "wasteMode": "none",
+      "wastePct": 0,
+      "wasteWarehouseId": "",
+      "wasteItemId": "",
+      "wasteItemName": ""
+     },
+     {
+      "kind": "raw",
+      "materialItemId": "h8zltj5gtbn",
+      "materialName": "Труба40",
+      "qty": 2,
+      "unit": "дона",
+      "price": 1500,
+      "altMaterialItemId": "",
+      "altMaterialName": "",
+      "refRecipeId": "",
+      "wasteMode": "none",
+      "wastePct": 0,
+      "wasteWarehouseId": "",
+      "wasteItemId": "",
+      "wasteItemName": ""
+     },
+     {
+      "kind": "raw",
+      "materialItemId": "zwldmekje2r",
+      "materialName": "Краска порошковқй",
+      "qty": 0.5,
+      "unit": "кг",
+      "price": 40000,
+      "altMaterialItemId": "",
+      "altMaterialName": "",
+      "refRecipeId": "",
+      "wasteMode": "none",
+      "wastePct": 0,
+      "wasteWarehouseId": "",
+      "wasteItemId": "",
+      "wasteItemName": ""
+     },
+     {
+      "kind": "raw",
+      "materialItemId": "7fzm55nmze5",
+      "materialName": "Алюмин чушка",
+      "qty": 0.9,
+      "unit": "кг",
+      "price": 26444.444444444445,
+      "altMaterialItemId": "",
+      "altMaterialName": "",
+      "refRecipeId": "",
+      "wasteMode": "chiqindi",
+      "wastePct": 5.5,
+      "wasteWarehouseId": "2d1b9d2ed4d945",
+      "wasteItemId": "kbg6w1sysu1",
+      "wasteItemName": "Алюмин чушка чиқиндиси"
+     }
+    ],
+    "expenses": [
+     {
+      "name": "ТРанспорт харажати",
+      "type": "percent",
+      "value": 2
+     }
+    ],
+    "adminPct": 18,
+    "profitPct": 15,
+    "vatPct": 12,
+    "usdRate": 12000,
+    "laborMode": "calc",
+    "laborCalcIds": [
+     "4b63f34185ab4c"
+    ],
+    "laborWageManual": 0,
+    "laborElecManual": 0,
+    "laborTaxPct": 12,
+    "laborYiitPct": 12,
+    "note": "",
+    "createdAt": "2026-10-15T05:43:55.715Z",
+    "id": "565240f7b67946",
+    "gasQty": 0.5,
+    "gasPrice": 1500,
+    "amortPct": 5
+   }
+  ],
+  "productions": [
+   {
+    "recipeId": "565240f7b67946",
+    "productItemId": "6a4a88d6bc274b",
+    "productName": "Биметал радиатор NEXT PLUS",
+    "quantity": 1000,
+    "unit": "дона",
+    "warehouseId": "adb7b68f27974f",
+    "rawWarehouseId": "47a9640442b84d",
+    "producerEmployeeId": "4yisehhgsvm",
+    "categoryId": "",
+    "machineName": "",
+    "items": [
+     {
+      "itemId": "5ekw5kim8zp",
+      "name": "Труба 20",
+      "qty": 500,
+      "price": 9000,
+      "cost": 4500000,
+      "isAlt": false
+     },
+     {
+      "itemId": "h8zltj5gtbn",
+      "name": "Труба40",
+      "qty": 2000,
+      "price": 1500,
+      "cost": 3000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "zwldmekje2r",
+      "name": "Краска порошковқй",
+      "qty": 500,
+      "price": 40000,
+      "cost": 20000000,
+      "isAlt": false
+     }
+    ],
+    "materialsCost": 27500000,
+    "laborCost": 1192992,
+    "overheadCost": 6698738.559999995,
+    "totalCost": 35391730.559999995,
+    "costPerUnit": 35391.730559999996,
+    "note": "",
+    "createdAt": "2026-10-15T06:20:44.188Z",
+    "id": "22342bd2947545"
+   },
+   {
+    "recipeId": "565240f7b67946",
+    "productItemId": "6a4a88d6bc274b",
+    "productName": "Биметал радиатор NEXT PLUS",
+    "quantity": 1000,
+    "unit": "дона",
+    "warehouseId": "adb7b68f27974f",
+    "rawWarehouseId": "47a9640442b84d",
+    "producerEmployeeId": "4yisehhgsvm",
+    "categoryId": "9e1aad1da42b41",
+    "machineName": "",
+    "items": [
+     {
+      "itemId": "fuibhfzdo8i",
+      "name": "Труба 20",
+      "qty": 500,
+      "price": 9000,
+      "cost": 4500000,
+      "isAlt": false
+     },
+     {
+      "itemId": "h8zltj5gtbn",
+      "name": "Труба40",
+      "qty": 2000,
+      "price": 1500,
+      "cost": 3000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "zwldmekje2r",
+      "name": "Краска порошковқй",
+      "qty": 500,
+      "price": 40000,
+      "cost": 20000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "7fzm55nmze5",
+      "name": "Алюмин чушка",
+      "qty": 900,
+      "price": 26444.444444444445,
+      "cost": 23800000,
+      "isAlt": false
+     }
+    ],
+    "wastes": [
+     {
+      "itemId": "kbg6w1sysu1",
+      "name": "Алюмин чушка чиқиндиси",
+      "qty": 49.5,
+      "warehouseId": "2d1b9d2ed4d945",
+      "price": 0,
+      "pct": 5.5,
+      "fromItemId": "7fzm55nmze5",
+      "fromName": "Алюмин чушка"
+     }
+    ],
+    "materialsCost": 51300000,
+    "laborCost": 1192992,
+    "overheadCost": 4489449.6000000015,
+    "totalCost": 56982441.6,
+    "costPerUnit": 56982.4416,
+    "note": "",
+    "createdAt": "2026-10-19T10:04:15.242Z",
+    "id": "856ebe2d9bc645"
+   },
+   {
+    "recipeId": "565240f7b67946",
+    "productItemId": "6a4a88d6bc274b",
+    "productName": "Биметал радиатор NEXT PLUS",
+    "quantity": 1,
+    "unit": "дона",
+    "warehouseId": "adb7b68f27974f",
+    "rawWarehouseId": "47a9640442b84d",
+    "producerEmployeeId": "4yisehhgsvm",
+    "categoryId": "9e1aad1da42b41",
+    "machineName": "",
+    "items": [
+     {
+      "itemId": "fuibhfzdo8i",
+      "name": "Труба 20",
+      "qty": 0.5,
+      "price": 9000,
+      "cost": 4500,
+      "isAlt": false
+     },
+     {
+      "itemId": "h8zltj5gtbn",
+      "name": "Труба40",
+      "qty": 2,
+      "price": 1500,
+      "cost": 3000,
+      "isAlt": false
+     },
+     {
+      "itemId": "zwldmekje2r",
+      "name": "Краска порошковқй",
+      "qty": 0.5,
+      "price": 40000,
+      "cost": 20000,
+      "isAlt": false
+     },
+     {
+      "itemId": "7fzm55nmze5",
+      "name": "Алюмин чушка",
+      "qty": 0.9,
+      "price": 26444.444444444445,
+      "cost": 23800,
+      "isAlt": false
+     }
+    ],
+    "wastes": [
+     {
+      "itemId": "kbg6w1sysu1",
+      "name": "Алюмин чушка чиқиндиси",
+      "qty": 0.0495,
+      "warehouseId": "2d1b9d2ed4d945",
+      "price": 0,
+      "pct": 5.5,
+      "fromItemId": "7fzm55nmze5",
+      "fromName": "Алюмин чушка"
+     }
+    ],
+    "materialsCost": 51300,
+    "laborCost": 1192.992,
+    "overheadCost": 4489.449599999998,
+    "totalCost": 56982.4416,
+    "costPerUnit": 56982.4416,
+    "note": "",
+    "createdAt": "2026-10-22T03:52:48.468Z",
+    "id": "7d7993ffa25a45",
+    "cancelled": true,
+    "cancelledAt": "2026-10-22T03:52:57.388Z"
+   },
+   {
+    "recipeId": "565240f7b67946",
+    "productItemId": "6a4a88d6bc274b",
+    "productName": "Биметал радиатор NEXT PLUS",
+    "quantity": 100000,
+    "unit": "дона",
+    "warehouseId": "adb7b68f27974f",
+    "rawWarehouseId": "47a9640442b84d",
+    "producerEmployeeId": "4yisehhgsvm",
+    "categoryId": "9e1aad1da42b41",
+    "machineName": "",
+    "items": [
+     {
+      "itemId": "fuibhfzdo8i",
+      "name": "Труба 20",
+      "qty": 50000,
+      "price": 9000,
+      "cost": 450000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "h8zltj5gtbn",
+      "name": "Труба40",
+      "qty": 200000,
+      "price": 1500,
+      "cost": 300000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "zwldmekje2r",
+      "name": "Краска порошковқй",
+      "qty": 50000,
+      "price": 40000,
+      "cost": 2000000000,
+      "isAlt": false
+     },
+     {
+      "itemId": "7fzm55nmze5",
+      "name": "Алюмин чушка",
+      "qty": 90000,
+      "price": 26444.444444444445,
+      "cost": 2380000000,
+      "isAlt": false
+     }
+    ],
+    "wastes": [
+     {
+      "itemId": "kbg6w1sysu1",
+      "name": "Алюмин чушка чиқиндиси",
+      "qty": 4950,
+      "warehouseId": "2d1b9d2ed4d945",
+      "price": 0,
+      "pct": 5.5,
+      "fromItemId": "7fzm55nmze5",
+      "fromName": "Алюмин чушка"
+     }
+    ],
+    "materialsCost": 5130000000,
+    "laborCost": 119299200,
+    "overheadCost": 448944960,
+    "totalCost": 5698244160,
+    "costPerUnit": 56982.4416,
+    "note": "",
+    "createdAt": "2026-10-22T03:59:04.781Z",
+    "id": "4bf31e77df7740"
+   }
+  ],
+  "laborCalcs": [
+   {
+    "name": "Пресс — радиатор прес",
+    "partName": "радиатор прес",
+    "machineCount": 1,
+    "totalHours": 0.033,
+    "hourlyWage": 40000,
+    "kw": 20,
+    "elecPrice": 982.14,
+    "secondsPerPart": 120,
+    "createdAt": "2026-09-19T12:07:06.712Z",
+    "id": "09a6c6bd20da41",
+    "equipmentId": "d06f0b5643a94d",
+    "productName": "радиатор прес",
+    "productQty": 1
+   },
+   {
+    "equipmentId": "d06f0b5643a94d",
+    "name": "Пресс — Биметал радиатор",
+    "productName": "Биметал радиатор",
+    "productQty": 1,
+    "machineCount": 1,
+    "totalHours": 0.017,
+    "hourlyWage": 40000,
+    "kw": 20,
+    "elecPrice": 1000,
+    "secondsPerPart": 60,
+    "createdAt": "2026-09-28T11:23:34.140Z",
+    "id": "4b63f34185ab4c"
+   },
+   {
+    "equipmentId": "d06f0b5643a94d",
+    "name": "Пресс — радиатор прес",
+    "productName": "радиатор прес",
+    "productQty": 1,
+    "machineCount": 1,
+    "totalHours": 0.083,
+    "hourlyWage": 40000,
+    "kw": 20,
+    "elecPrice": 1000,
+    "secondsPerPart": 300,
+    "createdAt": "2026-09-29T09:10:42.708Z",
+    "id": "988c7cd6819449"
+   },
+   {
+    "equipmentId": "c1f4970f737a46",
+    "name": "Балгарка 150 — ывсыычсф (нусха)",
+    "productName": "ывсыычсф",
+    "productQty": 1,
+    "machineCount": 1,
+    "totalHours": 0.017,
+    "hourlyWage": 40000,
+    "kw": 1,
+    "elecPrice": 1000,
+    "secondsPerPart": 60,
+    "createdAt": "2026-10-05T06:51:08.884Z",
+    "id": "2993e53104ea4a"
+   }
+  ],
+  "settings": [
+   {
+    "lomMetalWarehouseId": "2d1b9d2ed4d945",
+    "lomKulWarehouseId": "2d1b9d2ed4d945",
+    "id": "f953be4dbc5249"
+   }
+  ],
+  "customers": [
+   {
+    "name": "ЭХСОН ПЛАСт",
+    "inn": "",
+    "bankAccount": "",
+    "bankName": "",
+    "mfo": "",
+    "address": "",
+    "phone": "",
+    "contactPerson": "",
+    "note": "",
+    "contracts": [],
+    "createdAt": "2026-10-15T06:21:28.477Z",
+    "id": "f7829b1ea6de4c"
+   },
+   {
+    "name": "Гидростанкасервис",
+    "inn": "",
+    "bankAccount": "",
+    "bankName": "",
+    "mfo": "",
+    "address": "",
+    "phone": "",
+    "contactPerson": "",
+    "note": "",
+    "contracts": [],
+    "createdAt": "2026-10-19T05:16:48.492Z",
+    "id": "aededda7f6b540"
+   },
+   {
+    "name": "Сохиб ака",
+    "inn": "",
+    "bankAccount": "",
+    "bankName": "",
+    "mfo": "",
+    "address": "",
+    "phone": "",
+    "contactPerson": "",
+    "note": "",
+    "createdAt": "2026-10-19T07:05:16.045Z",
+    "id": "2cf9379ba74d46"
+   }
+  ],
+  "sales": [
+   {
+    "saleNumber": 1,
+    "date": "2026-10-15",
+    "customerId": "f7829b1ea6de4c",
+    "customerName": "ЭХСОН ПЛАСт",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "adb7b68f27974f",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "name": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "qty": 50,
+      "price": 90000,
+      "listPrice": 90000,
+      "lineSubtotal": 4500000,
+      "discountPct": 10,
+      "discountAmount": 450000,
+      "lineTotal": 4050000,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 4500000,
+    "vatSum": 0,
+    "discountAmount": 450000,
+    "totalWithVat": 4050000,
+    "paidAmount": 0,
+    "debtAmount": 4050000,
+    "advanceApplied": 0,
+    "orderId": "88b8a07b55e04b",
+    "dueDate": "2026-10-30",
+    "note": "",
+    "createdAt": "2026-10-15T06:24:15.945Z",
+    "cancelled": false,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "7e396124483d47"
+   },
+   {
+    "saleNumber": 2,
+    "date": "2026-10-15",
+    "customerId": "f7829b1ea6de4c",
+    "customerName": "ЭХСОН ПЛАСт",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "adb7b68f27974f",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "name": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "qty": 50,
+      "price": 90000,
+      "listPrice": 90000,
+      "lineSubtotal": 4500000,
+      "discountPct": 10,
+      "discountAmount": 450000,
+      "lineTotal": 4050000,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 4500000,
+    "vatSum": 0,
+    "discountAmount": 450000,
+    "totalWithVat": 4050000,
+    "paidAmount": 0,
+    "debtAmount": 4050000,
+    "advanceApplied": 0,
+    "orderId": "241f930b389648",
+    "dueDate": "2026-10-21",
+    "note": "",
+    "createdAt": "2026-10-15T06:29:26.735Z",
+    "cancelled": false,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "702a574314a244"
+   },
+   {
+    "saleNumber": 3,
+    "date": "2026-10-17",
+    "customerId": "f7829b1ea6de4c",
+    "customerName": "ЭХСОН ПЛАСт",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "adb7b68f27974f",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "x9v1fx82fmj",
+      "name": "15 квт катёл",
+      "unit": "дона",
+      "qty": 50,
+      "price": 3500000,
+      "listPrice": 3500000,
+      "lineSubtotal": 175000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "lineTotal": 175000000,
+      "noVatAmount": 156250000,
+      "noVatRate": 12,
+      "noVatTax": 18750000,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "gaz"
+     }
+    ],
+    "subtotalNoVat": 175000000,
+    "vatSum": 0,
+    "discountAmount": 0,
+    "totalWithVat": 175000000,
+    "paidAmount": 0,
+    "debtAmount": 175000000,
+    "advanceApplied": 0,
+    "orderId": "3cb4861cbe8e4b",
+    "dueDate": "",
+    "note": "",
+    "createdAt": "2026-10-19T04:07:12.633Z",
+    "cancelled": false,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "a00ef0ffcddd4e"
+   },
+   {
+    "saleNumber": 4,
+    "date": "2026-10-19",
+    "customerId": "aededda7f6b540",
+    "customerName": "Гидростанкасервис",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "47a9640442b84d",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "unit": "кг",
+      "qty": 50,
+      "price": 40000,
+      "listPrice": 40000,
+      "lineSubtotal": 2000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "lineTotal": 2000000,
+      "noVatAmount": 1785714.29,
+      "noVatRate": 12,
+      "noVatTax": 214285.71,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 2000000,
+    "vatSum": 0,
+    "discountAmount": 0,
+    "totalWithVat": 2000000,
+    "paidAmount": 0,
+    "debtAmount": 2000000,
+    "advanceApplied": 0,
+    "orderId": "a05a67d58c334c",
+    "dueDate": "",
+    "note": "",
+    "createdAt": "2026-10-19T11:35:34.610Z",
+    "cancelled": true,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "96fa42a640f84c"
+   },
+   {
+    "saleNumber": 5,
+    "date": "2026-10-19",
+    "customerId": "aededda7f6b540",
+    "customerName": "Гидростанкасервис",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "47a9640442b84d",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "unit": "кг",
+      "qty": 50,
+      "price": 40000,
+      "listPrice": 40000,
+      "lineSubtotal": 2000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "lineTotal": 2000000,
+      "noVatAmount": 1785714.29,
+      "noVatRate": 12,
+      "noVatTax": 214285.71,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 2000000,
+    "vatSum": 0,
+    "discountAmount": 0,
+    "totalWithVat": 2000000,
+    "paidAmount": 0,
+    "debtAmount": 2000000,
+    "advanceApplied": 0,
+    "orderId": "a05a67d58c334c",
+    "dueDate": "",
+    "note": "",
+    "createdAt": "2026-10-19T11:45:29.679Z",
+    "cancelled": false,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "aaabd70d13da4f"
+   },
+   {
+    "saleNumber": 6,
+    "date": "2026-10-22",
+    "customerId": "f7829b1ea6de4c",
+    "customerName": "ЭХСОН ПЛАСт",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "adb7b68f27974f",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "name": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "qty": 100000,
+      "price": 90000,
+      "listPrice": 90000,
+      "lineSubtotal": 9000000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "lineTotal": 9000000000,
+      "noVatAmount": 9000000000,
+      "noVatRate": 0,
+      "noVatTax": 0,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 9000000000,
+    "vatSum": 0,
+    "discountAmount": 0,
+    "totalWithVat": 9000000000,
+    "paidAmount": 0,
+    "debtAmount": 9000000000,
+    "advanceApplied": 0,
+    "orderId": "c727c7ceb4434d",
+    "dueDate": "",
+    "note": "",
+    "createdAt": "2026-10-22T04:00:38.055Z",
+    "cancelled": true,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "fa9ff520bc7d47"
+   },
+   {
+    "saleNumber": 7,
+    "date": "2026-10-22",
+    "customerId": "f7829b1ea6de4c",
+    "customerName": "ЭХСОН ПЛАСт",
+    "contractNumber": "",
+    "contractDate": "",
+    "warehouseId": "adb7b68f27974f",
+    "workshopId": "",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "name": "Биметал радиатор NEXT PLUS",
+      "unit": "дона",
+      "qty": 22000,
+      "price": 90000,
+      "listPrice": 90000,
+      "lineSubtotal": 1980000000,
+      "discountPct": 0,
+      "discountAmount": 0,
+      "lineTotal": 1980000000,
+      "noVatAmount": 1980000000,
+      "noVatRate": 0,
+      "noVatTax": 0,
+      "vatRate": 0,
+      "vatSum": 0,
+      "categoryKey": "radiator"
+     }
+    ],
+    "subtotalNoVat": 1980000000,
+    "vatSum": 0,
+    "discountAmount": 0,
+    "totalWithVat": 1980000000,
+    "paidAmount": 0,
+    "debtAmount": 1980000000,
+    "advanceApplied": 0,
+    "orderId": "c727c7ceb4434d",
+    "dueDate": "",
+    "note": "",
+    "createdAt": "2026-10-22T04:02:32.342Z",
+    "cancelled": false,
+    "orderPrev": {
+     "stage": 2,
+     "completed": false,
+     "completedAt": ""
+    },
+    "id": "18c372f2807245"
+   }
+  ],
+  "cashAccounts": [
+   {
+    "name": "Радиатор цех касса",
+    "initialBalance": 0,
+    "initialBalanceKarta": 0,
+    "initialBalanceOtkazma": 0,
+    "initialBalanceDollar": 0,
+    "createdAt": "2026-09-19T04:54:37.230Z",
+    "id": "adab6cf396dc4b",
+    "workshopId": "ba057683b4244f",
+    "categoryIds": [
+     "9e1aad1da42b41"
+    ]
+   },
+   {
+    "name": "Токар цех касса",
+    "initialBalance": 0,
+    "initialBalanceKarta": 0,
+    "initialBalanceOtkazma": 0,
+    "initialBalanceDollar": 0,
+    "createdAt": "2026-09-19T04:55:01.845Z",
+    "id": "ffdd9f856ef943",
+    "workshopId": "eysasnce4cq",
+    "categoryIds": [
+     "0ebf4aa3274444"
+    ]
+   }
+  ],
+  "cashTransactions": [
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "kirim",
+    "docNumber": 1,
+    "date": "2026-10-15",
+    "amount": 4050000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 1000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     },
+     {
+      "method": "naqd",
+      "amount": 1500000,
+      "usdAmount": 0,
+      "usdRate": 0
+     },
+     {
+      "method": "dollar",
+      "amount": 1200000,
+      "usdAmount": 100,
+      "usdRate": 12000
+     },
+     {
+      "method": "karta",
+      "amount": 350000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qarz_tolovi",
+    "category": "qarz_tolovi",
+    "categoryId": "",
+    "bucket": "",
+    "counterpartyType": "customer",
+    "counterpartyId": "f7829b1ea6de4c",
+    "counterpartyName": "ЭХСОН ПЛАСт",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:26:37.386Z",
+    "id": "ae1e4cb69dbe46"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "kirim",
+    "docNumber": 2,
+    "date": "2026-10-15",
+    "amount": 5000000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 5000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "bonak",
+    "category": "bonak",
+    "categoryId": "",
+    "bucket": "",
+    "counterpartyType": "customer",
+    "counterpartyId": "f7829b1ea6de4c",
+    "counterpartyName": "ЭХСОН ПЛАСт",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:27:29.597Z",
+    "id": "190e5bbab7ae45"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 1,
+    "date": "2026-10-15",
+    "amount": 2750000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 1000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     },
+     {
+      "method": "naqd",
+      "amount": 550000,
+      "usdAmount": 0,
+      "usdRate": 0
+     },
+     {
+      "method": "dollar",
+      "amount": 1200000,
+      "usdAmount": 100,
+      "usdRate": 12000
+     }
+    ],
+    "payType": "qarz_tolovi",
+    "category": "qarz_tolovi",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "raw",
+    "counterpartyType": "supplier",
+    "counterpartyId": "bb31057873c541",
+    "counterpartyName": "АКФА",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:53:12.470Z",
+    "id": "10467b6fc38744"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 2500080,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-15",
+    "createdAt": "2026-10-15T12:05:13.195Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 2500080,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "b14211144c3647",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "2bg996trwbu",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 2,
+    "cashier": "Шерали",
+    "id": "45e5ef5b8ecb49"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 2500080,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-15",
+    "createdAt": "2026-10-15T12:08:53.330Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 2500080,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "b14211144c3647",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "t0g29v0wm6p",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 3,
+    "cashier": "Шерали",
+    "id": "c9d2b496641f4c"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 4,
+    "date": "2026-10-16",
+    "amount": 100000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 100000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "sotuv",
+    "category": "sotuv",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "vat",
+    "counterpartyType": "supplier",
+    "counterpartyId": "",
+    "counterpartyName": "",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": true,
+    "createdAt": "2026-10-16T11:51:03.655Z",
+    "id": "c8e2015bddbc44"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 5,
+    "date": "2026-10-17",
+    "amount": 500000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 500000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "boshqa",
+    "category": "boshqa",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "other",
+    "counterpartyType": "supplier",
+    "counterpartyId": "",
+    "counterpartyName": "",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": true,
+    "createdAt": "2026-10-17T08:36:49.682Z",
+    "id": "16ede12c20a244"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 6,
+    "date": "2026-10-17",
+    "amount": 50000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 50000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "boshqa",
+    "category": "boshqa",
+    "categoryId": "__admin__",
+    "bucket": "admin_main",
+    "counterpartyType": "supplier",
+    "counterpartyId": "",
+    "counterpartyName": "",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": true,
+    "createdAt": "2026-10-17T08:38:24.265Z",
+    "id": "66259226652a47"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "kirim",
+    "docNumber": 3,
+    "date": "2026-10-19",
+    "amount": 174050000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 174050000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "sotuv",
+    "category": "sotuv",
+    "categoryId": "",
+    "bucket": "",
+    "counterpartyType": "customer",
+    "counterpartyId": "f7829b1ea6de4c",
+    "counterpartyName": "ЭХСОН ПЛАСт",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-19T04:12:55.597Z",
+    "id": "1aaaf99df3cc4c"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "kirim",
+    "docNumber": 4,
+    "date": "2026-10-22",
+    "amount": 2000000000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 1000000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     },
+     {
+      "method": "naqd",
+      "amount": 1000000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "sotuv",
+    "category": "sotuv",
+    "categoryId": "",
+    "bucket": "",
+    "counterpartyType": "customer",
+    "counterpartyId": "f7829b1ea6de4c",
+    "counterpartyName": "ЭХСОН ПЛАСт",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T03:48:19.677Z",
+    "id": "4d2dcab7d3ce4c"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 450008,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:27:20.571Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 450008,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "qdb74pli0zf",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 7,
+    "cashier": "Шерали",
+    "id": "ce7c4004a1a647"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 300000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:27:20.573Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 300000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "qdb74pli0zf",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 8,
+    "cashier": "Шерали",
+    "id": "2388926e39ec41"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 250000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:28:43.506Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 250000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "tdvgsc1jsz6",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 9,
+    "cashier": "Шерали",
+    "id": "56a1b6d497cb4d"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 900000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:28:43.508Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 900000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "tdvgsc1jsz6",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 10,
+    "cashier": "Шерали",
+    "id": "30eebe5aff424d"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 100072,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-10-10",
+    "createdAt": "2026-10-22T04:29:27.434Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 100072,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Абдиалимов Сардор",
+    "counterpartyType": "employee",
+    "counterpartyId": "pizyix5ksjt",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "54i17oqkqve",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 11,
+    "cashier": "Шерали",
+    "id": "685f1b4219ab4d",
+    "archived": true,
+    "supersededBy": "hf7dhbsp2bm"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 300000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:30:10.514Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 300000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "zjei0gdlo42",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 12,
+    "cashier": "Шерали",
+    "id": "f4431354967740"
+   },
+   {
+    "id": "hf7dhbsp2bm",
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 11,
+    "date": "2026-11-10",
+    "amount": 100072,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 100072,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "__admin__",
+    "bucket": "other",
+    "admWage": false,
+    "counterpartyType": "supplier",
+    "counterpartyId": "",
+    "counterpartyName": "",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "cashier": "Шерали",
+    "cancelled": true,
+    "version": 2,
+    "prevVersionId": "685f1b4219ab4d",
+    "origId": "685f1b4219ab4d",
+    "createdAt": "2026-10-22T04:29:27.434Z",
+    "archived": false,
+    "batchGroupId": "54i17oqkqve"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 100072,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:33:26.082Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 100072,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Абдиалимов Сардор",
+    "counterpartyType": "employee",
+    "counterpartyId": "pizyix5ksjt",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": true,
+    "payrollRunId": "2c84d8d94c3b4f",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "psbt9fcpv0i",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 13,
+    "cashier": "Шерали",
+    "id": "97c5cf01d2fa47"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 450008,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:47:39.178Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 450008,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "xxe92oj859m",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 14,
+    "cashier": "Шерали",
+    "id": "92b24898db1943"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 300000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:47:39.181Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 300000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "xxe92oj859m",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 15,
+    "cashier": "Шерали",
+    "id": "f1562cdf30e649"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 250000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:50:09.361Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 250000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "wt6vtdnbd5d",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 16,
+    "cashier": "Шерали",
+    "id": "cee4b8f2274742"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 1000000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:50:09.364Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 1000000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "wt6vtdnbd5d",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 17,
+    "cashier": "Шерали",
+    "id": "868cad63e8d04a"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 200040,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:50:56.866Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 200040,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Абдиалимов Сардор",
+    "counterpartyType": "employee",
+    "counterpartyId": "pizyix5ksjt",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "abw33mncdsy",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 18,
+    "cashier": "Шерали",
+    "id": "0f6dfbc66bd54f"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 163024,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:50:56.871Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 163024,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "abw33mncdsy",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 19,
+    "cashier": "Шерали",
+    "id": "aa493986f09347"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 400000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Октябр 2026 йил",
+    "date": "2026-11-10",
+    "createdAt": "2026-10-22T04:51:20.969Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 400000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "15d28a0343764b",
+    "payrollYear": 2026,
+    "payrollMonth": 10,
+    "batchGroupId": "u61qxbecweh",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Октябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 20,
+    "cashier": "Шерали",
+    "id": "45aadea1bbb143"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 21,
+    "date": "2026-11-15",
+    "amount": 50000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 50000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "wage",
+    "admWage": false,
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "counterpartyName": "Бобокулов Лазиз",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:56:18.880Z",
+    "id": "d47db78125fd48"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 22,
+    "date": "2026-11-16",
+    "amount": 100000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 100000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "wage",
+    "admWage": false,
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "counterpartyName": "Исмоилов Фарход",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:56:45.504Z",
+    "id": "8e0ab3d34e3b46"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 23,
+    "date": "2026-11-16",
+    "amount": 200000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 200000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "__admin__",
+    "bucket": "admin_main",
+    "admWage": true,
+    "counterpartyType": "employee",
+    "counterpartyId": "pizyix5ksjt",
+    "counterpartyName": "Абдиалимов Сардор",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:57:10.856Z",
+    "id": "595c875105104a"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 24,
+    "date": "2026-11-17",
+    "amount": 300000,
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 300000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "__admin__",
+    "bucket": "admin_main",
+    "admWage": true,
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:57:35.176Z",
+    "id": "5826ea1737ef4b"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 25,
+    "date": "2026-10-22",
+    "amount": 200000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 200000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "wage",
+    "admWage": false,
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "counterpartyName": "Бобокулов Лазиз",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": true,
+    "createdAt": "2026-10-22T04:58:41.312Z",
+    "id": "684c5e1c96694b",
+    "archived": true,
+    "supersededBy": "fvm96ysmiqw"
+   },
+   {
+    "id": "fvm96ysmiqw",
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 25,
+    "date": "2026-11-22",
+    "amount": 200000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 200000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "wage",
+    "admWage": false,
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "counterpartyName": "Бобокулов Лазиз",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "version": 2,
+    "prevVersionId": "684c5e1c96694b",
+    "origId": "684c5e1c96694b",
+    "createdAt": "2026-10-22T04:58:41.312Z",
+    "archived": false
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "docNumber": 26,
+    "date": "2026-11-15",
+    "amount": 300000,
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 300000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "payType": "qolga_chiqim",
+    "category": "qolga_chiqim",
+    "categoryId": "__admin__",
+    "bucket": "admin_main",
+    "admWage": true,
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "description": "",
+    "cashier": "Шерали",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:59:15.536Z",
+    "id": "d63164df614447"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 500016,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:26:12.694Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 500016,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "suc79s56qty",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 27,
+    "cashier": "Шерали",
+    "id": "e399663260da4e"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 200024,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:26:12.696Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 200024,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "suc79s56qty",
+    "batchEmployeeCount": 2,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 28,
+    "cashier": "Шерали",
+    "id": "6504d906bd0c45"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 400000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:26:41.669Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 400000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Исмоилов Фарход",
+    "counterpartyType": "employee",
+    "counterpartyId": "83t2ck9ll5t",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "mshcytm7d6t",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 29,
+    "cashier": "Шерали",
+    "id": "edc51b29997143"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 750000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:27:09.461Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 750000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Бобокулов Лазиз",
+    "counterpartyType": "employee",
+    "counterpartyId": "4yisehhgsvm",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "jokcskp7ymt",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "wage",
+    "categoryId": "9e1aad1da42b41",
+    "docNumber": 30,
+    "cashier": "Шерали",
+    "id": "a6af8ba004ed4c"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 500016,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:27:40.909Z",
+    "methods": [
+     {
+      "method": "otkazma",
+      "amount": 500016,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Абдиалимов Сардор",
+    "counterpartyType": "employee",
+    "counterpartyId": "pizyix5ksjt",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "h5e859d8mwd",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 31,
+    "cashier": "Шерали",
+    "id": "9c4f813e91b341"
+   },
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "direction": "chiqim",
+    "amount": 400000,
+    "category": "ish_haqi",
+    "description": "Иш ҳақи тўлови — Ноябр 2026 йил",
+    "date": "2026-12-10",
+    "createdAt": "2026-10-23T06:28:09.605Z",
+    "methods": [
+     {
+      "method": "naqd",
+      "amount": 400000,
+      "usdAmount": 0,
+      "usdRate": 0
+     }
+    ],
+    "counterpartyName": "Файзиев Шерали Исмоилович",
+    "counterpartyType": "employee",
+    "counterpartyId": "vqj4vjvbuec",
+    "manual": true,
+    "vatRate": 0,
+    "vatSum": 0,
+    "cancelled": false,
+    "payrollRunId": "503aeba88cbe48",
+    "payrollYear": 2026,
+    "payrollMonth": 11,
+    "batchGroupId": "jz8uzqg991h",
+    "batchEmployeeCount": 1,
+    "batchPeriodLabel": "Ноябр 2026 йил",
+    "payType": "ish_haqi",
+    "bucket": "admin_main",
+    "categoryId": "__admin__",
+    "docNumber": 32,
+    "cashier": "Шерали",
+    "id": "35005ef0454c41"
+   }
+  ],
+  "debtPayments": [],
+  "suppliers": [
+   {
+    "name": "Бахтиер ака",
+    "inn": "",
+    "bankAccount": "",
+    "bankName": "",
+    "mfo": "",
+    "address": "",
+    "phone": "",
+    "contactPerson": "",
+    "note": "",
+    "createdAt": "2026-10-15T05:21:49.005Z",
+    "id": "4f48137cabcc45"
+   },
+   {
+    "name": "ПИПЕ Метал",
+    "inn": "",
+    "mfo": "",
+    "bankAccount": "",
+    "bankName": "",
+    "phone": "",
+    "contactPerson": "",
+    "address": "",
+    "note": "",
+    "createdAt": "2026-10-15T05:22:18.131Z",
+    "id": "2e9b9e7e5f534d"
+   },
+   {
+    "name": "Хитой",
+    "inn": "",
+    "mfo": "",
+    "bankAccount": "",
+    "bankName": "",
+    "phone": "",
+    "contactPerson": "",
+    "address": "",
+    "note": "",
+    "createdAt": "2026-10-15T05:25:26.938Z",
+    "id": "e8181b32e6d149"
+   },
+   {
+    "name": "АКФА",
+    "inn": "",
+    "mfo": "",
+    "bankAccount": "",
+    "bankName": "",
+    "phone": "",
+    "contactPerson": "",
+    "address": "",
+    "note": "",
+    "createdAt": "2026-10-15T05:26:08.720Z",
+    "id": "bb31057873c541"
+   },
+   {
+    "name": "Содик ака",
+    "inn": "",
+    "bankAccount": "",
+    "bankName": "",
+    "mfo": "",
+    "address": "",
+    "phone": "",
+    "contactPerson": "",
+    "note": "",
+    "createdAt": "2026-10-19T07:05:16.046Z",
+    "id": "c269ee11b3d74b"
+   }
+  ],
+  "supplierPayments": [],
+  "workshops": [
+   {
+    "name": "Бошқарув бўлими",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "createdAt": "2026-09-19T08:46:22.528Z",
+    "id": "89efadb90e3c4c",
+    "categoryIds": [
+     "5211a08bf69b46",
+     "34f4d55537964a",
+     "9e1aad1da42b41",
+     "0ebf4aa3274444"
+    ]
+   },
+   {
+    "name": "Краска цех",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "createdAt": "2026-09-19T10:13:54.150Z",
+    "id": "f874999e11784e",
+    "categoryIds": [
+     "9e1aad1da42b41"
+    ]
+   },
+   {
+    "name": "Чушка",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "createdAt": "2026-09-19T11:12:11.380Z",
+    "id": "63f7f6c02d5e4d",
+    "categoryIds": [
+     "9e1aad1da42b41"
+    ]
+   },
+   {
+    "name": "Радиатор цех",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "createdAt": "2026-10-03T08:29:05.209Z",
+    "id": "ba057683b4244f",
+    "categoryIds": [
+     "9e1aad1da42b41"
+    ]
+   },
+   {
+    "id": "eysasnce4cq",
+    "name": "Токар цех",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "dashKey": "tokar",
+    "createdAt": "2026-10-05T12:33:47.402Z",
+    "categoryIds": [
+     "0ebf4aa3274444"
+    ]
+   },
+   {
+    "id": "bpoanns2fmg",
+    "name": "Газ катёл цех",
+    "headEmployeeId": "",
+    "headName": "",
+    "note": "",
+    "dashKey": "gaz",
+    "createdAt": "2026-10-08T08:59:45.688Z",
+    "categoryIds": [
+     "5211a08bf69b46"
+    ]
+   }
+  ],
+  "cashConversions": [
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "date": "2026-10-17",
+    "fromMethod": "naqd",
+    "fromAmount": 400000,
+    "fromUsdAmount": 0,
+    "fromUsdRate": 0,
+    "toMethod": "karta",
+    "toAmount": 400000,
+    "toUsdAmount": 0,
+    "toUsdRate": 0,
+    "bizCount": false,
+    "note": "",
+    "cancelled": false,
+    "createdAt": "2026-10-17T11:54:22.589Z",
+    "id": "3b95037006eb42"
+   }
+  ],
+  "cashTransfers": [],
+  "meta": [
+   {
+    "id": "migration_v2",
+    "done": true,
+    "at": "2026-09-19T04:54:05.722Z"
+   }
+  ],
+  "employeeOps": [
+   {
+    "id": "vupnh8ugsvo",
+    "type": "hire",
+    "date": "2026-10-15",
+    "employeeId": "4yisehhgsvm",
+    "cancelled": false,
+    "createdAt": "2026-10-15T06:20:40.116Z"
+   },
+   {
+    "id": "xuax7thksjx",
+    "type": "hire",
+    "date": "2026-10-15",
+    "employeeId": "pizyix5ksjt",
+    "cancelled": false,
+    "createdAt": "2026-10-15T10:07:43.245Z"
+   },
+   {
+    "id": "894dxjzll5x",
+    "type": "hire",
+    "date": "2026-10-15",
+    "employeeId": "83t2ck9ll5t",
+    "cancelled": false,
+    "createdAt": "2026-10-15T10:08:20.325Z"
+   },
+   {
+    "id": "u5bogwrbuee",
+    "type": "hire",
+    "date": "2026-10-17",
+    "employeeId": "vqj4vjvbuec",
+    "cancelled": false,
+    "createdAt": "2026-10-17T09:08:06.950Z"
+   },
+   {
+    "id": "us5d9l2v53i",
+    "type": "salary_change",
+    "date": "2026-10-01",
+    "employeeId": "vqj4vjvbuec",
+    "effectiveDate": "2026-10-01",
+    "previousAmount": 10000000,
+    "newAmount": 1000000,
+    "note": "Ходим маълумотини таҳрирлашда ўзгартирилди",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:09:32.814Z"
+   },
+   {
+    "id": "jdqpqgpvdl2",
+    "type": "salary_change",
+    "date": "2026-10-01",
+    "employeeId": "pizyix5ksjt",
+    "effectiveDate": "2026-10-01",
+    "previousAmount": 5000000,
+    "newAmount": 700000,
+    "note": "Ходим маълумотини таҳрирлашда ўзгартирилди",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:09:43.814Z"
+   }
+  ],
+  "timesheets": [
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "entries": [
+     {
+      "employeeId": "4yisehhgsvm",
+      "days": 25,
+      "hours": 0,
+      "workshopId": "ba057683b4244f"
+     },
+     {
+      "employeeId": "pizyix5ksjt",
+      "days": 25,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "days": 25,
+      "hours": 0,
+      "workshopId": "f874999e11784e"
+     }
+    ],
+    "workDaysSelected": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     29
+    ],
+    "totalWorkDays": 25,
+    "cancelled": true,
+    "createdAt": "2026-10-15T09:23:12.700Z",
+    "id": "42760ad5589843"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "entries": [
+     {
+      "employeeId": "pizyix5ksjt",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     },
+     {
+      "employeeId": "4yisehhgsvm",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "ba057683b4244f"
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "f874999e11784e"
+     },
+     {
+      "employeeId": "vqj4vjvbuec",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     }
+    ],
+    "workDaysSelected": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     29,
+     30,
+     31
+    ],
+    "totalWorkDays": 27,
+    "cancelled": true,
+    "createdAt": "2026-10-16T06:44:17.539Z",
+    "id": "18a78abdaaec44"
+   },
+   {
+    "date": "2026-10-22",
+    "year": 2026,
+    "month": 10,
+    "entries": [
+     {
+      "employeeId": "pizyix5ksjt",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     },
+     {
+      "employeeId": "4yisehhgsvm",
+      "days": 25,
+      "hours": 0,
+      "workshopId": "ba057683b4244f"
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "f874999e11784e"
+     },
+     {
+      "employeeId": "vqj4vjvbuec",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     }
+    ],
+    "workDaysSelected": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     29,
+     30,
+     31
+    ],
+    "totalWorkDays": 27,
+    "cancelled": true,
+    "createdAt": "2026-10-22T04:09:09.907Z",
+    "id": "aa09708e326f43"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "entries": [
+     {
+      "employeeId": "pizyix5ksjt",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     },
+     {
+      "employeeId": "4yisehhgsvm",
+      "days": 25,
+      "hours": 0,
+      "workshopId": "ba057683b4244f"
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "days": 27,
+      "hours": 0,
+      "workshopId": "f874999e11784e"
+     },
+     {
+      "employeeId": "vqj4vjvbuec",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     }
+    ],
+    "workDaysSelected": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     29,
+     30,
+     31
+    ],
+    "totalWorkDays": 27,
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:14:35.795Z",
+    "id": "4fae06d220ed4a"
+   },
+   {
+    "date": "2026-11-30",
+    "year": 2026,
+    "month": 11,
+    "entries": [
+     {
+      "employeeId": "pizyix5ksjt",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     },
+     {
+      "employeeId": "4yisehhgsvm",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "ba057683b4244f"
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "f874999e11784e"
+     },
+     {
+      "employeeId": "vqj4vjvbuec",
+      "days": 26,
+      "hours": 0,
+      "workshopId": "89efadb90e3c4c"
+     }
+    ],
+    "workDaysSelected": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     29,
+     30
+    ],
+    "totalWorkDays": 26,
+    "cancelled": false,
+    "createdAt": "2026-10-23T06:15:12.372Z",
+    "id": "d8ab15cbf4d74d"
+   }
+  ],
+  "salaryRuns": [
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "timesheetId": "42760ad5589843",
+    "workshops": {
+     "ba057683b4244f": {
+      "qty": 10000,
+      "price": 1000
+     },
+     "f874999e11784e": {
+      "qty": 10000,
+      "price": 500
+     }
+    },
+    "employees": {
+     "4yisehhgsvm|ba057683b4244f": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "pizyix5ksjt|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t|f874999e11784e": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-15T09:47:37.372Z",
+    "id": "4e138b577eed4d"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "timesheetId": "18a78abdaaec44",
+    "workshops": {
+     "f874999e11784e": {
+      "qty": 10000,
+      "price": 500
+     },
+     "ba057683b4244f": {
+      "qty": 10000,
+      "price": 1000
+     }
+    },
+    "employees": {
+     "pizyix5ksjt|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t|f874999e11784e": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "4yisehhgsvm|ba057683b4244f": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "vqj4vjvbuec|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-16T06:45:11.027Z",
+    "id": "fbc655fc194a42"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "timesheetId": "4fae06d220ed4a",
+    "workshops": {
+     "f874999e11784e": {
+      "qty": 5000,
+      "price": 100
+     },
+     "ba057683b4244f": {
+      "qty": 5000,
+      "price": 200
+     }
+    },
+    "employees": {
+     "pizyix5ksjt|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "vqj4vjvbuec|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t|f874999e11784e": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "4yisehhgsvm|ba057683b4244f": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:15:11.051Z",
+    "id": "fdf08da55a774c"
+   },
+   {
+    "date": "2026-11-30",
+    "year": 2026,
+    "month": 11,
+    "timesheetId": "d8ab15cbf4d74d",
+    "workshops": {
+     "f874999e11784e": {
+      "qty": 5000,
+      "price": 200
+     },
+     "ba057683b4244f": {
+      "qty": 5000,
+      "price": 200
+     }
+    },
+    "employees": {
+     "pizyix5ksjt|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "vqj4vjvbuec|89efadb90e3c4c": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t|f874999e11784e": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     },
+     "4yisehhgsvm|ba057683b4244f": {
+      "fine": 0,
+      "otherAdd": 0,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-23T06:16:08.988Z",
+    "id": "4d4854952eaf40"
+   }
+  ],
+  "units": [],
+  "equipment": [
+   {
+    "name": "Станок для лазерной резки металла 2000W-3015",
+    "model": "2000W-3015",
+    "kw": 23,
+    "createdAt": "2026-09-21T04:32:32.886Z",
+    "id": "4568d4f5a9e64f",
+    "qty": 0,
+    "type": "main"
+   },
+   {
+    "name": "Балгарка 150",
+    "model": "2000W-3015",
+    "qty": 1,
+    "kw": 1,
+    "createdAt": "2026-09-28T03:46:09.363Z",
+    "id": "c1f4970f737a46",
+    "type": "main",
+    "price": 500000
+   },
+   {
+    "name": "Пресс",
+    "model": "ZLC800",
+    "qty": 2,
+    "kw": 20,
+    "type": "main",
+    "createdAt": "2026-09-28T11:19:17.174Z",
+    "id": "d06f0b5643a94d",
+    "price": 1000000
+   }
+  ],
+  "priceLists": [
+   {
+    "name": "Радиатор",
+    "date": "2026-10-15",
+    "items": [
+     {
+      "itemId": "6a4a88d6bc274b",
+      "itemName": "Биметал радиатор NEXT PLUS",
+      "calcPrice": 45584.548961279994,
+      "price": 90000
+     },
+     {
+      "itemId": "x9v1fx82fmj",
+      "itemName": "15 квт катёл",
+      "calcPrice": 0,
+      "price": 3500000
+     }
+    ],
+    "createdAt": "2026-10-15T06:22:17.994Z",
+    "id": "af5bacf3a0574e"
+   }
+  ],
+  "advanceRuns": [
+   {
+    "date": "2026-10-15",
+    "year": 2026,
+    "month": 10,
+    "salaryRunId": "4e138b577eed4d",
+    "employees": {
+     "4yisehhgsvm": {
+      "advance": 100000,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-15T09:47:56.075Z",
+    "id": "789afd0aa75143"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "salaryRunId": "4e138b577eed4d",
+    "employees": {
+     "pizyix5ksjt": {
+      "advance": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "advance": 0,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "advance": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-15T11:20:28.972Z",
+    "id": "92d8ff1c9cfe46"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "salaryRunId": "4e138b577eed4d",
+    "employees": {
+     "pizyix5ksjt": {
+      "advance": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "advance": 0,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "advance": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-15T11:21:11.732Z",
+    "id": "a493251623534c"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "salaryRunId": "fbc655fc194a42",
+    "employees": {
+     "pizyix5ksjt": {
+      "advance": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "advance": 0,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "advance": 0,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "advance": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-16T06:45:25.099Z",
+    "id": "da6b3e914e5946"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "salaryRunId": "fdf08da55a774c",
+    "employees": {
+     "pizyix5ksjt": {
+      "advance": 0,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "advance": 0,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "advance": 0,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "advance": 0,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:16:09.226Z",
+    "id": "dd8f2b92c29c46"
+   },
+   {
+    "date": "2026-11-30",
+    "year": 2026,
+    "month": 11,
+    "salaryRunId": "4d4854952eaf40",
+    "employees": {
+     "pizyix5ksjt": {
+      "advance": 200000,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "advance": 300000,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "advance": 100000,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "advance": 50000,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-23T06:17:57.132Z",
+    "id": "219b651fbbc049"
+   }
+  ],
+  "payrollRuns": [
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "advanceRunId": "a493251623534c",
+    "employees": {
+     "pizyix5ksjt": {
+      "cash": 0,
+      "card": 5000000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 5000072,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "cash": 2500000,
+      "card": 2500000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 2500080,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "cash": 10000000,
+      "card": 0,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-15T09:49:37.435Z",
+    "id": "b14211144c3647"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "advanceRunId": "da6b3e914e5946",
+    "employees": {
+     "pizyix5ksjt": {
+      "cash": 0,
+      "card": 5000000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 5000072,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "cash": 5000000,
+      "card": 5000000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 5000072,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "cash": 2500000,
+      "card": 2500000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 2500080,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "cash": 10000000,
+      "card": 0,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 0,
+      "closing": 0,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-16T06:45:50.259Z",
+    "id": "9b29879223694f"
+   },
+   {
+    "date": "2026-10-31",
+    "year": 2026,
+    "month": 10,
+    "advanceRunId": "dd8f2b92c29c46",
+    "employees": {
+     "pizyix5ksjt": {
+      "cash": 0,
+      "card": 600000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": -500000,
+      "closing": 100072,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "cash": 300000,
+      "card": 362963,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": -400000,
+      "closing": -37000,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "cash": 250000,
+      "card": 250000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 200000,
+      "closing": 450008,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "cash": 900000,
+      "card": 0,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 300000,
+      "closing": 300000,
+      "note": ""
+     }
+    },
+    "cancelled": true,
+    "createdAt": "2026-10-22T04:22:14.467Z",
+    "id": "2c84d8d94c3b4f"
+   },
+   {
+    "date": "2026-10-22",
+    "year": 2026,
+    "month": 10,
+    "advanceRunId": "dd8f2b92c29c46",
+    "employees": {
+     "pizyix5ksjt": {
+      "cash": 0,
+      "card": 700000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": -500000,
+      "closing": 200040,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "cash": 400000,
+      "card": 562963,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": -400000,
+      "closing": 163024,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "cash": 250000,
+      "card": 250000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 200000,
+      "closing": 450008,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "cash": 1000000,
+      "card": 0,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 0,
+      "kartagaTolanganOylikManual": false,
+      "opening": 300000,
+      "closing": 300000,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:43:21.345Z",
+    "id": "15d28a0343764b"
+   },
+   {
+    "date": "2026-11-30",
+    "year": 2026,
+    "month": 11,
+    "advanceRunId": "219b651fbbc049",
+    "employees": {
+     "pizyix5ksjt": {
+      "cash": 0,
+      "card": 500000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 200040,
+      "kartagaTolanganOylikManual": false,
+      "opening": 200040,
+      "closing": 500016,
+      "note": ""
+     },
+     "vqj4vjvbuec": {
+      "cash": 400000,
+      "card": 300000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 300000,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 163024,
+      "kartagaTolanganOylikManual": false,
+      "opening": 163024,
+      "closing": 80,
+      "note": ""
+     },
+     "83t2ck9ll5t": {
+      "cash": 400000,
+      "card": 500000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": false,
+      "kartagaTolanganOylik": 450008,
+      "kartagaTolanganOylikManual": false,
+      "opening": 450008,
+      "closing": 500016,
+      "note": ""
+     },
+     "4yisehhgsvm": {
+      "cash": 750000,
+      "card": 200000,
+      "okladOverride": null,
+      "taxPct": 12,
+      "socPct": 11.9,
+      "pensionPct": 0.1,
+      "cardAdvance": 0,
+      "cardAdvanceManual": true,
+      "kartagaTolanganOylik": 300000,
+      "kartagaTolanganOylikManual": false,
+      "opening": 300000,
+      "closing": 200024,
+      "note": ""
+     }
+    },
+    "cancelled": false,
+    "createdAt": "2026-10-23T06:23:32.300Z",
+    "id": "503aeba88cbe48"
+   }
+  ],
+  "lomCalcs": [
+   {
+    "date": "2026-10-15",
+    "batches": [
+     {
+      "batchReceiptId": "3c4d140b526b4f",
+      "batchNumber": "1",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 2640,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "3c4d140b526b4f",
+    "batchNumber": "1",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 2640,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [],
+    "potsCount": 2,
+    "workHours": 24,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 1500,
+    "lomCost": 60720000,
+    "additivesCost": 0,
+    "wagesCost": 1920000,
+    "elecCost": 120000,
+    "gasCost": 180000,
+    "totalCost": 62940000,
+    "cancelled": true,
+    "produced": true,
+    "createdAt": "2026-10-15T05:40:08.731Z",
+    "id": "3137393ee5524d",
+    "prodDate": "2026-10-15",
+    "prodWarehouseId": "2d1b9d2ed4d945",
+    "tayyorKg": 2400,
+    "metalKg": 200,
+    "kulKg": 40,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 4600000,
+    "tayyorCost": 58340000,
+    "tayyorCostPerKg": 24308.333333333332
+   },
+   {
+    "date": "2026-10-15",
+    "batches": [
+     {
+      "batchReceiptId": "3c4d140b526b4f",
+      "batchNumber": "1",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 2640,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "3c4d140b526b4f",
+    "batchNumber": "1",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 2640,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [],
+    "potsCount": 2,
+    "workHours": 24,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 1500,
+    "lomCost": 60720000,
+    "additivesCost": 0,
+    "wagesCost": 1920000,
+    "elecCost": 120000,
+    "gasCost": 180000,
+    "totalCost": 62940000,
+    "cancelled": false,
+    "produced": true,
+    "createdAt": "2026-10-15T05:57:53.458Z",
+    "id": "5de83fbaa8df4e",
+    "prodDate": "2026-10-15",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 2400,
+    "metalKg": 200,
+    "kulKg": 40,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 4600000,
+    "tayyorCost": 58340000,
+    "tayyorCostPerKg": 24308.333333333332,
+    "metalReturnedKg": 200
+   },
+   {
+    "date": "2026-10-17",
+    "batches": [
+     {
+      "batchReceiptId": "428678086b5d4b",
+      "batchNumber": "4",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 2000,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "428678086b5d4b",
+    "batchNumber": "4",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 2000,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [],
+    "potsCount": 2,
+    "workHours": 24,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 15000,
+    "lomCost": 46000000,
+    "additivesCost": 0,
+    "wagesCost": 1920000,
+    "elecCost": 120000,
+    "gasCost": 1800000,
+    "totalCost": 49840000,
+    "cancelled": true,
+    "produced": true,
+    "createdAt": "2026-10-17T12:54:06.975Z",
+    "id": "6a58fcf3c53e40",
+    "prodDate": "2026-10-17",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 1800,
+    "metalKg": 150,
+    "kulKg": 50,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 3450000,
+    "tayyorCost": 46390000,
+    "tayyorCostPerKg": 25772.222222222223
+   },
+   {
+    "date": "2026-10-17",
+    "batches": [
+     {
+      "batchReceiptId": "428678086b5d4b",
+      "batchNumber": "4",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 1000,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "428678086b5d4b",
+    "batchNumber": "4",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 1000,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "qty": 1,
+      "price": 30000
+     }
+    ],
+    "potsCount": 1,
+    "workHours": 12,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 15000,
+    "lomCost": 23000000,
+    "additivesCost": 30000,
+    "wagesCost": 960000,
+    "elecCost": 60000,
+    "gasCost": 900000,
+    "totalCost": 24950000,
+    "cancelled": true,
+    "produced": true,
+    "createdAt": "2026-10-17T13:03:09.182Z",
+    "id": "21ae46de0b9d46",
+    "prodDate": "2026-10-19",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 900,
+    "metalKg": 50,
+    "kulKg": 50,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 1150000,
+    "tayyorCost": 23800000,
+    "tayyorCostPerKg": 26444.444444444445
+   },
+   {
+    "date": "2026-10-19",
+    "batches": [
+     {
+      "batchReceiptId": "428678086b5d4b",
+      "batchNumber": "4",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 1000,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "428678086b5d4b",
+    "batchNumber": "4",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 1000,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "qty": 1,
+      "price": 30000
+     },
+     {
+      "itemId": "7fzm55nmze5",
+      "name": "Алюмин чушка",
+      "qty": 50,
+      "price": 0
+     }
+    ],
+    "potsCount": 1,
+    "workHours": 12,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 1500,
+    "lomCost": 23000000,
+    "additivesCost": 30000,
+    "wagesCost": 960000,
+    "elecCost": 60000,
+    "gasCost": 90000,
+    "totalCost": 24140000,
+    "cancelled": false,
+    "produced": true,
+    "createdAt": "2026-10-19T03:54:29.283Z",
+    "id": "cd246701b4a547",
+    "prodDate": "2026-10-19",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 950,
+    "metalKg": 50,
+    "kulKg": 50,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 1150000,
+    "tayyorCost": 22990000,
+    "tayyorCostPerKg": 24200
+   },
+   {
+    "date": "2026-10-19",
+    "batches": [
+     {
+      "batchReceiptId": "428678086b5d4b",
+      "batchNumber": "4",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 1000,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "428678086b5d4b",
+    "batchNumber": "4",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 1000,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "qty": 5,
+      "price": 30000
+     },
+     {
+      "itemId": "kbg6w1sysu1",
+      "name": "Алюмин чушка чиқиндиси",
+      "qty": 40,
+      "price": 0
+     }
+    ],
+    "potsCount": 1,
+    "workHours": 12,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 15000,
+    "lomCost": 23000000,
+    "additivesCost": 150000,
+    "wagesCost": 960000,
+    "elecCost": 60000,
+    "gasCost": 900000,
+    "totalCost": 25070000,
+    "cancelled": true,
+    "produced": true,
+    "createdAt": "2026-10-19T10:02:02.546Z",
+    "id": "4fe88afb1b4445",
+    "prodDate": "2026-10-19",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 1000,
+    "metalKg": 25,
+    "kulKg": 15,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 575000,
+    "tayyorCost": 24495000,
+    "tayyorCostPerKg": 24495
+   },
+   {
+    "date": "2026-10-19",
+    "batches": [
+     {
+      "batchReceiptId": "428678086b5d4b",
+      "batchNumber": "4",
+      "supplierName": "Бахтиер ака",
+      "kgUsed": 1000,
+      "batchPrice": 23000
+     }
+    ],
+    "batchReceiptId": "428678086b5d4b",
+    "batchNumber": "4",
+    "supplierName": "Бахтиер ака",
+    "kgUsed": 1000,
+    "batchPrice": 23000,
+    "productItemId": "7fzm55nmze5",
+    "productName": "Алюмин чушка",
+    "additives": [
+     {
+      "itemId": "qmh3ey3e6d4",
+      "name": "Кремний",
+      "qty": 5,
+      "price": 30000
+     },
+     {
+      "itemId": "kbg6w1sysu1",
+      "name": "Алюмин чушка чиқиндиси",
+      "qty": 40,
+      "price": 0
+     }
+    ],
+    "potsCount": 1,
+    "workHours": 12,
+    "hourlyWage": 40000,
+    "workersCount": 2,
+    "hourlyElec": 5,
+    "elecPrice": 1000,
+    "hourlyGas": 5,
+    "gasPrice": 1500,
+    "lomCost": 23000000,
+    "additivesCost": 150000,
+    "wagesCost": 960000,
+    "elecCost": 60000,
+    "gasCost": 90000,
+    "totalCost": 24260000,
+    "cancelled": false,
+    "produced": true,
+    "createdAt": "2026-10-19T12:29:29.951Z",
+    "id": "1184c1a2e85344",
+    "prodDate": "2026-10-19",
+    "prodWarehouseId": "47a9640442b84d",
+    "tayyorKg": 1000,
+    "metalKg": 20,
+    "kulKg": 20,
+    "metalWarehouseId": "2d1b9d2ed4d945",
+    "kulWarehouseId": "2d1b9d2ed4d945",
+    "metalValue": 460000,
+    "tayyorCost": 23800000,
+    "tayyorCostPerKg": 23800
+   }
+  ],
+  "lomReturns": [
+   {
+    "productType": "metal",
+    "lomCalcId": "5de83fbaa8df4e",
+    "batchReceiptId": "",
+    "batchNumber": "№1",
+    "supplierId": "4f48137cabcc45",
+    "supplierName": "Бахтиер ака",
+    "kg": 200,
+    "price": 23000,
+    "sum": 4600000,
+    "appliedAmt": 4600000,
+    "appliedBreakdown": [
+     {
+      "receiptId": "3c4d140b526b4f",
+      "amt": 4600000
+     }
+    ],
+    "date": "2026-10-17",
+    "note": "",
+    "cancelled": false,
+    "createdAt": "2026-10-17T13:10:36.804Z",
+    "id": "9a7f39061c134c"
+   }
+  ],
+  "wh2Orders": [
+   {
+    "orderNumber": "OMB2-2026-001",
+    "date": "2026-10-19",
+    "customerId": "",
+    "customerName": "Исмоилов Фарход, Файзиев Шерали Исмоилович",
+    "supplierId": "c269ee11b3d74b",
+    "supplierName": "Содик ака",
+    "lines": [
+     {
+      "itemId": "8891o5zljiw",
+      "itemName": "Диск",
+      "unit": "дона",
+      "qty": 100,
+      "completed": false,
+      "approved": true,
+      "requesterEmployeeId": "83t2ck9ll5t",
+      "requesterName": "Исмоилов Фарход",
+      "deliveredQty": 100,
+      "deliveryStatus": "done"
+     },
+     {
+      "itemId": "j524jakaq7v",
+      "itemName": "Балгарка",
+      "unit": "дона",
+      "qty": 1,
+      "completed": false,
+      "approved": false,
+      "requesterEmployeeId": "83t2ck9ll5t",
+      "requesterName": "Исмоилов Фарход"
+     },
+     {
+      "itemId": "vqy5rvqf01j",
+      "itemName": "дымаход",
+      "unit": "дона",
+      "qty": 100,
+      "completed": false,
+      "approved": true,
+      "requesterEmployeeId": "vqj4vjvbuec",
+      "requesterName": "Файзиев Шерали Исмоилович",
+      "deliveredQty": 100,
+      "deliveryStatus": "done"
+     }
+    ],
+    "note": "",
+    "cancelled": false,
+    "createdAt": "2026-10-19T07:05:16.047Z",
+    "id": "d82197361cf241",
+    "requestStatus": "done",
+    "accApprovedAt": "2026-10-19T11:52:18.737Z",
+    "accApprovedBy": "Шерали",
+    "dirApprovedAt": "2026-10-19T11:52:03.417Z",
+    "dirApprovedBy": "Шерали",
+    "rejectedAt": "",
+    "rejectedBy": "",
+    "rejectReason": "",
+    "accNote": "",
+    "dirNote": "",
+    "deliveredAt": "2026-10-19T12:15:43.648Z",
+    "deliveredBy": "Шерали"
+   },
+   {
+    "orderNumber": "OMB2-2026-002",
+    "date": "2026-10-19",
+    "customerId": "",
+    "customerName": "Бобокулов Лазиз",
+    "supplierId": "c269ee11b3d74b",
+    "supplierName": "Содик ака",
+    "lines": [
+     {
+      "itemId": "j524jakaq7v",
+      "itemName": "Балгарка",
+      "unit": "дона",
+      "qty": 1,
+      "completed": false,
+      "approved": true,
+      "requesterEmployeeId": "4yisehhgsvm",
+      "requesterName": "Бобокулов Лазиз",
+      "deliveredQty": 1,
+      "deliveryStatus": "done"
+     },
+     {
+      "itemId": "8891o5zljiw",
+      "itemName": "Диск",
+      "unit": "дона",
+      "qty": 20,
+      "completed": false,
+      "approved": true,
+      "requesterEmployeeId": "4yisehhgsvm",
+      "requesterName": "Бобокулов Лазиз",
+      "deliveredQty": 20,
+      "deliveryStatus": "done"
+     }
+    ],
+    "note": "",
+    "cancelled": false,
+    "requestStatus": "done",
+    "createdAt": "2026-10-19T12:12:01.370Z",
+    "id": "22e18081f9ba44",
+    "dirApprovedAt": "2026-10-19T12:12:40.403Z",
+    "dirApprovedBy": "Шерали",
+    "dirNote": "",
+    "rejectedAt": "",
+    "rejectedBy": "",
+    "rejectReason": "",
+    "accApprovedAt": "2026-10-19T12:14:30.370Z",
+    "accApprovedBy": "Шерали",
+    "accNote": "",
+    "deliveredAt": "2026-10-19T12:22:07.622Z",
+    "deliveredBy": "Шерали"
+   }
+  ],
+  "wh2Receipts": [],
+  "wh2Chikims": [],
+  "wh2Categories": [
+   {
+    "id": "ig36b8owqvn",
+    "name": "Кодир диллер",
+    "createdAt": "2026-09-23T11:04:14.867Z"
+   }
+  ],
+  "balanceEntries": [
+   {
+    "date": "2026-10-22",
+    "year": 2026,
+    "month": 10,
+    "entries": [
+     {
+      "employeeId": "pizyix5ksjt",
+      "fullName": "Абдиалимов Сардор",
+      "amount": -500000
+     },
+     {
+      "employeeId": "4yisehhgsvm",
+      "fullName": "Бобокулов Лазиз",
+      "amount": 300000
+     },
+     {
+      "employeeId": "vqj4vjvbuec",
+      "fullName": "Файзиев Шерали Исмоилович",
+      "amount": -400000
+     },
+     {
+      "employeeId": "83t2ck9ll5t",
+      "fullName": "Исмоилов Фарход",
+      "amount": 200000
+     }
+    ],
+    "note": "",
+    "cancelled": false,
+    "createdAt": "2026-10-22T04:08:33.291Z",
+    "id": "ea2b013b803c41"
+   }
+  ],
+  "equipmentReceipts": [
+   {
+    "kind": "aux",
+    "name": "Дрел",
+    "equipmentId": "8d0effb19dff44",
+    "quantity": 1,
+    "priceNoVat": 250000,
+    "vatRate": 12,
+    "vatSum": 30000,
+    "totalNoVat": 250000,
+    "totalWithVat": 280000,
+    "warehouseId": "b48224e74b1b4f",
+    "location": "",
+    "categoryIds": [],
+    "supplierId": "24c012ab877244",
+    "supplierName": "Содик ака",
+    "paidAmount": 280000,
+    "payableAmount": 0,
+    "cashAccountId": "adab6cf396dc4b",
+    "dueDate": "",
+    "date": "2026-09-28",
+    "note": "",
+    "createdAt": "2026-09-28T04:13:17.062Z",
+    "id": "1228b238d6034a"
+   }
+  ],
+  "equipmentAssignments": [
+   {
+    "equipmentReceiptId": "1228b238d6034a",
+    "employeeId": "fa32b4296d874a",
+    "workshopId": "f874999e11784e",
+    "date": "2026-09-28",
+    "qty": 1,
+    "note": "",
+    "direction": "topshirish",
+    "cancelled": false,
+    "createdAt": "2026-09-28T04:14:13.145Z",
+    "id": "5956097029ba47"
+   },
+   {
+    "equipmentReceiptId": "1228b238d6034a",
+    "employeeId": "fa32b4296d874a",
+    "workshopId": "",
+    "date": "2026-09-28",
+    "qty": 1,
+    "note": "",
+    "direction": "qaytarish",
+    "cancelled": false,
+    "createdAt": "2026-09-28T04:15:40.532Z",
+    "id": "6fcb0a2836c04a"
+   },
+   {
+    "equipmentReceiptId": "1228b238d6034a",
+    "employeeId": "fa32b4296d874a",
+    "workshopId": "f874999e11784e",
+    "date": "2026-09-30",
+    "qty": 1,
+    "note": "",
+    "direction": "topshirish",
+    "cancelled": false,
+    "createdAt": "2026-09-30T04:05:57.353Z",
+    "id": "4429ebf1ece145"
+   }
+  ],
+  "users": [
+   {
+    "name": "Сардор",
+    "login": "Sardor",
+    "password": "0721",
+    "role": "Бухгалтер",
+    "allowedMenus": [
+     "sales",
+     "kassa",
+     "moliya",
+     "hisobot",
+     "reconciliation",
+     "employees"
+    ],
+    "cancelled": false,
+    "createdAt": "2026-10-01T04:58:10.366Z",
+    "id": "426d8ac232b542"
+   },
+   {
+    "name": "Шерали",
+    "login": "Sherali",
+    "password": "0787",
+    "role": "Админ",
+    "allowedMenus": [
+     "dashboard",
+     "orders",
+     "warehouse",
+     "production",
+     "sales",
+     "kassa",
+     "moliya",
+     "hisobot",
+     "reconciliation",
+     "employees",
+     "adminpanel"
+    ],
+    "cancelled": false,
+    "createdAt": "2026-10-01T05:10:25.342Z",
+    "id": "19741494894144"
+   },
+   {
+    "name": "Охун",
+    "login": "Oxun",
+    "password": "1111",
+    "role": "Омбор мудири",
+    "allowedMenus": [
+     "warehouse",
+     "wh2",
+     "sales"
+    ],
+    "cancelled": false,
+    "createdAt": "2026-10-01T05:34:22.621Z",
+    "id": "7b719682bd9d4d"
+   },
+   {
+    "name": "Вохиджон",
+    "login": "Voxidjon",
+    "password": "5202",
+    "role": "Рахбар",
+    "allowedMenus": [
+     "dashboard"
+    ],
+    "cancelled": false,
+    "createdAt": "2026-10-01T05:34:59.861Z",
+    "id": "06a7c223c38247"
+   }
+  ],
+  "empCategories": [
+   {
+    "id": "tzgpaisoobi",
+    "name": "Бошкарув булими",
+    "createdAt": "2026-10-06T07:21:44.478Z"
+   }
+  ],
+  "fxRates": [
+   {
+    "id": "kpywsyo6u6z",
+    "date": "2026-10-14",
+    "rate": 12000,
+    "createdAt": "2026-10-14T10:09:11.771Z"
+   }
+  ],
+  "financeSplits": [
+   {
+    "id": "mqr46hu36rd",
+    "bucket": "profit",
+    "name": "Дивидент",
+    "pct": 15,
+    "order": 0,
+    "builtin": true,
+    "cancelled": false,
+    "createdAt": "2026-10-14T06:50:24.121Z"
+   },
+   {
+    "id": "paqgf3d36rg",
+    "bucket": "profit",
+    "name": "Захира",
+    "pct": 60,
+    "order": 1,
+    "builtin": true,
+    "cancelled": false,
+    "createdAt": "2026-10-14T06:50:24.124Z"
+   },
+   {
+    "id": "o5eychb36rj",
+    "bucket": "profit",
+    "name": "Эҳсон",
+    "pct": 10,
+    "order": 2,
+    "builtin": true,
+    "cancelled": false,
+    "createdAt": "2026-10-14T06:50:24.127Z"
+   },
+   {
+    "id": "fxr59f2a5bh",
+    "bucket": "profit",
+    "name": "Фойда солиги",
+    "pct": 15,
+    "order": 3,
+    "cancelled": false,
+    "createdAt": "2026-10-14T11:07:45.389Z"
+   },
+   {
+    "id": "azuuukd8o0l",
+    "bucket": "other",
+    "name": "Бошкарув булими",
+    "pct": 10,
+    "order": 0,
+    "cancelled": true,
+    "createdAt": "2026-10-15T12:46:15.189Z"
+   },
+   {
+    "id": "lk1dy3na1hy",
+    "bucket": "other",
+    "name": "Бошка харажатлар",
+    "pct": 90,
+    "order": 1,
+    "cancelled": true,
+    "createdAt": "2026-10-15T12:47:19.318Z"
+   },
+   {
+    "id": "u4chvu58sn4",
+    "bucket": "admin_main",
+    "name": "Маркетинг ва рекламага",
+    "pct": 10,
+    "order": 0,
+    "builtin": true,
+    "adminMkt": true,
+    "cancelled": false,
+    "createdAt": "2026-10-16T09:18:04.288Z"
+   },
+   {
+    "id": "hrxbhcz9bi0",
+    "bucket": "other",
+    "name": "Бошқарув бўлимига",
+    "pct": 10,
+    "order": -1,
+    "builtin": true,
+    "adminShare": true,
+    "cancelled": false,
+    "createdAt": "2026-10-16T09:18:28.728Z"
+   },
+   {
+    "id": "mb470ybpsmy",
+    "bucket": "tovar_extra",
+    "toBucket": "profit",
+    "name": "Фойда",
+    "pct": 20,
+    "order": 0,
+    "cancelled": false,
+    "createdAt": "2026-10-19T04:42:22.138Z"
+   }
+  ],
+  "financeTransfers": [
+   {
+    "cashAccountId": "adab6cf396dc4b",
+    "date": "2026-10-17",
+    "direction": "to_reserve",
+    "categoryId": "9e1aad1da42b41",
+    "bucket": "vat",
+    "amount": 5000,
+    "note": "",
+    "cancelled": false,
+    "createdAt": "2026-10-17T07:02:00.171Z",
+    "id": "4b3fe8968b0e4d"
+   }
+  ],
+  "monthlyReports": [
+   {
+    "categoryId": "9e1aad1da42b41",
+    "categoryName": "Радиатор",
+    "year": 2026,
+    "month": 10,
+    "income": 9000000,
+    "expense": 3149264.16,
+    "productsCost": 3149264.16,
+    "otherCost": 0,
+    "profit": 5850735.84,
+    "items": [
+     {
+      "name": "Биметал радиатор NEXT PLUS",
+      "qty": 100,
+      "sum": 9000000
+     }
+    ],
+    "closedAt": "2026-10-16T12:14:11.435Z",
+    "cancelled": true,
+    "createdAt": "2026-10-16T12:14:11.435Z",
+    "id": "cbb62ec553e845"
+   },
+   {
+    "categoryId": "af257b1cf9bc46",
+    "categoryName": "Бошкарув булими",
+    "year": 2026,
+    "month": 10,
+    "income": 0,
+    "expense": 6363656,
+    "productsCost": 0,
+    "laborCost": 6363656,
+    "otherCost": 0,
+    "adminCost": 0,
+    "profit": -6363656,
+    "items": [],
+    "closedAt": "2026-10-17T08:33:07.260Z",
+    "cancelled": true,
+    "createdAt": "2026-10-17T08:33:07.260Z",
+    "id": "c617b4057dc444"
+   },
+   {
+    "categoryId": "9e1aad1da42b41",
+    "categoryName": "Радиатор",
+    "year": 2026,
+    "month": 10,
+    "income": 7232142.86,
+    "expense": 37023116.96,
+    "productsCost": 3063964.96,
+    "laborCost": 15681840,
+    "otherCost": 500000,
+    "adminCost": 17777312,
+    "profit": -29790974.1,
+    "items": [
+     {
+      "name": "Биметал радиатор NEXT PLUS",
+      "qty": 100,
+      "sum": 7232142.86
+     }
+    ],
+    "closedAt": "2026-10-17T10:49:29.889Z",
+    "cancelled": false,
+    "createdAt": "2026-10-17T10:49:29.889Z",
+    "id": "dd7c38d62d2e4c"
+   },
+   {
+    "categoryId": "5211a08bf69b46",
+    "categoryName": "Газ Катёл",
+    "year": 2026,
+    "month": 10,
+    "income": 156250000,
+    "expense": 125000000,
+    "productsCost": 0,
+    "laborCost": 0,
+    "otherCost": 0,
+    "adminCost": 0,
+    "profit": 31250000,
+    "items": [
+     {
+      "name": "15 квт катёл",
+      "qty": 50,
+      "sum": 156250000
+     }
+    ],
+    "closedAt": "2026-10-23T05:31:19.532Z",
+    "cancelled": false,
+    "createdAt": "2026-10-23T05:31:19.532Z",
+    "id": "9c756551e3234e"
+   }
+  ]
+ },
+ "_locks": {
+  "meta/migration_v2": {
+   "holder": "migrator-pac0lo1xbij",
+   "expires": 1789793670708.8633
+  }
+ }
+}
