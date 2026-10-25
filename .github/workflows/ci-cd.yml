@@ -71,7 +71,9 @@ jobs:
       - name: Соғлиқ текшируви
         run: |
           curl -fsS http://127.0.0.1:8642/healthz
-          curl -fsS http://127.0.0.1:8642/ | grep -q "window.claude.use"
+          # Аввал файлга: "curl | grep -q" pipefail билан curl'ни (23) йиқитади
+          curl -fsS -o page.html http://127.0.0.1:8642/
+          grep -q "window.claude.use" page.html
           docker compose exec -T app python -c "import pgstore; assert pgstore.col_list('items')"
       - name: Лог (хато бўлса)
         if: failure()
