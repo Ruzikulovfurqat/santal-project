@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 Диллерлар боти (битта бот: админ + диллер).
-Ишга тушириш:  pip install aiogram   →   python bot.py
+Дастур (app.py) ичида polling орқали ишлайди — алоҳида ишга тушириш шарт эмас.
 Админ кириши:  /admin  → бот токенини юборади.
 """
 import asyncio
 import calendar
 import logging
+from contextlib import contextmanager
+import os
 import re
 import sqlite3
 from datetime import date, datetime, timedelta
@@ -20,46 +22,74 @@ from aiogram.types import (CallbackQuery, InlineKeyboardButton as IB,
                            Message, ReplyKeyboardMarkup as RM,
                            ReplyKeyboardRemove)
 
+from psycopg.rows import dict_row
+
 import baza
-from config import BOT_DB, TOKEN
+import pgstore
+from config import OLD_SQLITE_DB, TOKEN
 
 # ---------------------------------------------------------------- база (ботники)
-db = sqlite3.connect(BOT_DB)
-db.row_factory = sqlite3.Row
-db.executescript("""
-CREATE TABLE IF NOT EXISTS admins(chat_id INTEGER PRIMARY KEY);
-CREATE TABLE IF NOT EXISTS users(chat_id INTEGER PRIMARY KEY, lang TEXT);
-CREATE TABLE IF NOT EXISTS dealers(id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT, phone TEXT, chat_id INTEGER);
-CREATE TABLE IF NOT EXISTS prices(id INTEGER PRIMARY KEY AUTOINCREMENT,
-    number TEXT, date TEXT);
-CREATE TABLE IF NOT EXISTS price_items(id INTEGER PRIMARY KEY AUTOINCREMENT,
-    price_id INTEGER, name TEXT, price TEXT);
-CREATE TABLE IF NOT EXISTS orders(id INTEGER PRIMARY KEY AUTOINCREMENT,
-    dealer_id INTEGER, date TEXT, status TEXT DEFAULT 'new');
-CREATE TABLE IF NOT EXISTS order_items(order_id INTEGER, product_id TEXT,
-    name TEXT, qty INTEGER);
-""")
-for _c in ("app_id TEXT", "app_no TEXT", "due TEXT", "reason TEXT"):
-    try:
-        db.execute("ALTER TABLE orders ADD COLUMN " + _c)  # эски bot.db учун
-    except sqlite3.OperationalError:
-        pass
-db.commit()
+# Ботнинг ўз жадваллари дастур билан БИР ХИЛ PostgreSQL базасида, "bot" схемасида
+# (жадваллар migrations/ орқали яратилади).
+TABLES = ("admins", "users", "dealers", "prices", "price_items", "orders", "order_items")
+SERIAL_TABLES = ("dealers", "prices", "price_items", "orders")
+
+db = pgstore.make_pool(max_size=4, autocommit=True, row_factory=dict_row,
+                       options="-c search_path=bot")
+
+
+@contextmanager
+def tx():
+    """Бир нечта ёзув битта транзакцияда: ё ҳаммаси сақланади, ё ҳеч бири."""
+    with db.connection() as conn, conn.transaction():
+        yield conn
+
+
+def import_sqlite():
+    """Эски bot.db (SQLite) маълумотларини PostgreSQL'га кўчиради — фақат
+    бот жадваллари ҳали бўш бўлса. SQLite файлининг ўзига тегилмайди."""
+    path = next((p for p in OLD_SQLITE_DB if os.path.isfile(p)), None)
+    if not path:
+        return
+    with tx() as conn:
+        conn.execute("SELECT pg_advisory_xact_lock(%s)", (pgstore.SCHEMA_LOCK_ID,))
+        if any(conn.execute(f"SELECT EXISTS (SELECT 1 FROM {t})").fetchone()["exists"] for t in TABLES):
+            return
+        old = sqlite3.connect(path)
+        old.row_factory = sqlite3.Row
+        have = {r[0] for r in old.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        jami = 0
+        for t in TABLES:
+            if t not in have:
+                continue
+            data = [dict(r) for r in old.execute(f"SELECT * FROM {t}")]
+            if not data:
+                continue
+            cols = list(data[0].keys())
+            sql = (f"INSERT INTO {t}({','.join(cols)}) VALUES({','.join(['%s'] * len(cols))})"
+                   " ON CONFLICT DO NOTHING")
+            conn.cursor().executemany(sql, [tuple(r[c] for c in cols) for r in data])
+            jami += len(data)
+        old.close()
+        for t in SERIAL_TABLES:
+            conn.execute(f"SELECT setval(pg_get_serial_sequence('{t}', 'id'), "
+                         f"COALESCE((SELECT MAX(id) FROM {t}), 0) + 1, false)")
+    logging.info("Эски %s PostgreSQL'га кўчирилди: %d та қатор", path, jami)
 
 
 def q(sql, *a):
-    cur = db.execute(sql, a)
-    db.commit()
-    return cur
+    with db.connection() as conn:
+        return conn.execute(sql, a).rowcount
 
 
 def one(sql, *a):
-    return db.execute(sql, a).fetchone()
+    with db.connection() as conn:
+        return conn.execute(sql, a).fetchone()
 
 
 def rows(sql, *a):
-    return db.execute(sql, a).fetchall()
+    with db.connection() as conn:
+        return conn.execute(sql, a).fetchall()
 
 
 def tel(s):
@@ -69,15 +99,15 @@ def tel(s):
 
 
 def is_admin(cid):
-    return one("SELECT 1 FROM admins WHERE chat_id=?", cid) is not None
+    return one("SELECT 1 FROM admins WHERE chat_id=%s", cid) is not None
 
 
 def dealer_of(cid):
-    return one("SELECT * FROM dealers WHERE chat_id=?", cid)
+    return one("SELECT * FROM dealers WHERE chat_id=%s", cid)
 
 
 def lang_of(cid):
-    r = one("SELECT lang FROM users WHERE chat_id=?", cid)
+    r = one("SELECT lang FROM users WHERE chat_id=%s", cid)
     return r["lang"] if r and r["lang"] else "uz"
 
 
@@ -246,22 +276,23 @@ async def admin_token(m: Message, state: FSMContext):
         pass
     if (m.text or "").strip() != TOKEN:
         return await m.answer("Токен нотўғри.")
-    q("INSERT OR IGNORE INTO admins(chat_id) VALUES(?)", m.from_user.id)
-    q("UPDATE dealers SET chat_id=NULL WHERE chat_id=?", m.from_user.id)
+    with tx() as conn:
+        conn.execute("INSERT INTO admins(chat_id) VALUES(%s) ON CONFLICT DO NOTHING", (m.from_user.id,))
+        conn.execute("UPDATE dealers SET chat_id=NULL WHERE chat_id=%s", (m.from_user.id,))
     await m.answer("✅ Сиз админсиз.", reply_markup=admin_menu())
 
 
 @common.message(Command("chiqish"), IsAdmin())
 async def admin_logout(m: Message, state: FSMContext):
     await state.clear()
-    q("DELETE FROM admins WHERE chat_id=?", m.from_user.id)
+    q("DELETE FROM admins WHERE chat_id=%s", m.from_user.id)
     await m.answer("Админликдан чиқдингиз. /start", reply_markup=ReplyKeyboardRemove())
 
 
 @common.callback_query(F.data.startswith("lang:"))
 async def set_lang(c: CallbackQuery):
     lang = c.data.split(":")[1]
-    q("INSERT INTO users(chat_id,lang) VALUES(?,?) "
+    q("INSERT INTO users(chat_id,lang) VALUES(%s,%s) "
       "ON CONFLICT(chat_id) DO UPDATE SET lang=excluded.lang", c.from_user.id, lang)
     await c.message.delete()
     d = dealer_of(c.from_user.id)
@@ -291,8 +322,9 @@ async def got_contact(m: Message):
             break
     if not d:
         return await m.answer(t("not_dealer", lang), reply_markup=ReplyKeyboardRemove())
-    q("UPDATE dealers SET chat_id=NULL WHERE chat_id=?", m.from_user.id)
-    q("UPDATE dealers SET chat_id=? WHERE id=?", m.from_user.id, d["id"])
+    with tx() as conn:
+        conn.execute("UPDATE dealers SET chat_id=NULL WHERE chat_id=%s", (m.from_user.id,))
+        conn.execute("UPDATE dealers SET chat_id=%s WHERE id=%s", (m.from_user.id, d["id"]))
     await m.answer(t("welcome", lang, n=d["name"]), reply_markup=dealer_menu(lang))
 
 
@@ -313,7 +345,7 @@ async def a_dealers(m: Message, state: FSMContext):
 
 
 async def show_dealer(target: Message, did, edit=True):
-    d = one("SELECT * FROM dealers WHERE id=?", did)
+    d = one("SELECT * FROM dealers WHERE id=%s", did)
     if not d:
         txt, mk = "Диллер топилмади.", kb([("⬅️ Орқага", "d:list")])
     else:
@@ -378,7 +410,7 @@ async def cb_d_del(c: CallbackQuery):
 
 @admin.callback_query(F.data.startswith("ddelok:"))
 async def cb_d_delok(c: CallbackQuery):
-    q("DELETE FROM dealers WHERE id=?", int(c.data.split(":")[1]))
+    q("DELETE FROM dealers WHERE id=%s", int(c.data.split(":")[1]))
     await c.message.edit_text("Диллер ўчирилди.", reply_markup=dealers_kb("d", True))
     await c.answer()
 
@@ -392,7 +424,7 @@ async def a_msg(m: Message, state: FSMContext):
 
 @admin.callback_query(F.data.regexp(r"^[mr]:\d+$"))
 async def cb_msg_dealer(c: CallbackQuery, state: FSMContext):
-    d = one("SELECT * FROM dealers WHERE id=?", int(c.data.split(":")[1]))
+    d = one("SELECT * FROM dealers WHERE id=%s", int(c.data.split(":")[1]))
     if not d or not d["chat_id"]:
         return await c.answer("Бу диллер ҳали ботга кирмаган.", show_alert=True)
     await state.set_state(St.msg_to_dealer)
@@ -410,10 +442,10 @@ def prices_kb():
 
 
 def price_view(pid):
-    p = one("SELECT * FROM prices WHERE id=?", pid)
+    p = one("SELECT * FROM prices WHERE id=%s", pid)
     if not p:
         return "Прайс топилмади.", kb([("⬅️ Орқага", "p:list")])
-    items = rows("SELECT * FROM price_items WHERE price_id=? ORDER BY id", pid)
+    items = rows("SELECT * FROM price_items WHERE price_id=%s ORDER BY id", pid)
     txt = f"Прайс №{p['number']} — {p['date']}\nТаҳрирлаш ёки ўчириш учун маҳсулотни танланг:"
     lines = [[(f"{i['name']} — {i['price']}", f"pi:{i['id']}")] for i in items]
     lines += [[("➕ Маҳсулот қўшиш", f"pinew:{pid}")],
@@ -462,8 +494,9 @@ async def cb_p_del(c: CallbackQuery):
 @admin.callback_query(F.data.startswith("pdelok:"))
 async def cb_p_delok(c: CallbackQuery):
     pid = int(c.data.split(":")[1])
-    q("DELETE FROM price_items WHERE price_id=?", pid)
-    q("DELETE FROM prices WHERE id=?", pid)
+    with tx() as conn:
+        conn.execute("DELETE FROM price_items WHERE price_id=%s", (pid,))
+        conn.execute("DELETE FROM prices WHERE id=%s", (pid,))
     await c.message.edit_text("Прайс ўчирилди.", reply_markup=prices_kb())
     await c.answer()
 
@@ -478,7 +511,7 @@ async def cb_pi_new(c: CallbackQuery, state: FSMContext):
 
 @admin.callback_query(F.data.regexp(r"^pi:\d+$"))
 async def cb_pi_open(c: CallbackQuery):
-    i = one("SELECT * FROM price_items WHERE id=?", int(c.data.split(":")[1]))
+    i = one("SELECT * FROM price_items WHERE id=%s", int(c.data.split(":")[1]))
     if not i:
         return await c.answer("Топилмади.", show_alert=True)
     await c.message.edit_text(
@@ -508,9 +541,9 @@ async def cb_pi_price(c: CallbackQuery, state: FSMContext):
 
 @admin.callback_query(F.data.startswith("pidel:"))
 async def cb_pi_del(c: CallbackQuery):
-    i = one("SELECT * FROM price_items WHERE id=?", int(c.data.split(":")[1]))
+    i = one("SELECT * FROM price_items WHERE id=%s", int(c.data.split(":")[1]))
     if i:
-        q("DELETE FROM price_items WHERE id=?", i["id"])
+        q("DELETE FROM price_items WHERE id=%s", i["id"])
         txt, mk = price_view(i["price_id"])
         await c.message.edit_text(txt, reply_markup=mk)
     await c.answer("Ўчирилди.")
@@ -519,10 +552,10 @@ async def cb_pi_del(c: CallbackQuery):
 # --- буюртмани қабул қилиш / бекор қилиш
 def order_text(oid):
     o = one("SELECT o.*, d.name, d.phone FROM orders o "
-            "LEFT JOIN dealers d ON d.id=o.dealer_id WHERE o.id=?", oid)
+            "LEFT JOIN dealers d ON d.id=o.dealer_id WHERE o.id=%s", oid)
     lines = [f"🛒 Буюртма №{o['id']}", f"Сана: {o['date']}",
              f"Диллер: {o['name'] or '—'} ({o['phone'] or '—'})", ""]
-    for n, it in enumerate(rows("SELECT * FROM order_items WHERE order_id=?", oid), 1):
+    for n, it in enumerate(rows("SELECT * FROM order_items WHERE order_id=%s", oid), 1):
         lines.append(f"{n}. {it['name']} — {it['qty']} та")
     return "\n".join(lines)
 
@@ -531,7 +564,7 @@ def order_text(oid):
 async def cb_order_decide(c: CallbackQuery, bot: Bot, state: FSMContext):
     accept = c.data.startswith("oa:")
     oid = int(c.data.split(":")[1])
-    o = one("SELECT * FROM orders WHERE id=?", oid)
+    o = one("SELECT * FROM orders WHERE id=%s", oid)
     if not o or o["status"] != "new":
         await c.message.edit_reply_markup(reply_markup=None)
         return await c.answer("Бу буюртма бўйича қарор аллақачон қабул қилинган.", show_alert=True)
@@ -540,23 +573,35 @@ async def cb_order_decide(c: CallbackQuery, bot: Bot, state: FSMContext):
         await state.update_data(oid=oid, mid=c.message.message_id)
         await c.message.answer(f"Буюртма №{oid} нима сабабдан бекор қилинмоқда? Сабабини ёзинг:")
         return await c.answer()
-    d = one("SELECT * FROM dealers WHERE id=?", o["dealer_id"])
-    items = rows("SELECT * FROM order_items WHERE order_id=?", oid)
-    if accept:
-        try:
-            buy_no, app_id = await baza.buyurtma_yarat(
-                d["name"] if d else "", d["phone"] if d else "", oid, o["date"],
-                [{"id": i["product_id"], "nom": i["name"], "soni": i["qty"]} for i in items])
-        except baza.HaridorTopilmadi:
-            return await c.answer(
-                "Бу диллер дастурдаги «Харидорлар» рўйхатидан топилмади. Дастурда шу ном ёки "
-                "шу телефон рақами билан харидор қўшинг, кейин қайта «Қабул қилиш»ни босинг.",
-                show_alert=True)
-        except Exception as e:
-            logging.exception("buyurtma_yarat")
-            return await c.answer(
-                f"Дастурга ёзиб бўлмади (дастур ишлаб турибдими?): {e}"[:190], show_alert=True)
-    q("UPDATE orders SET status='accepted', app_no=?, app_id=? WHERE id=?", buy_no, app_id, oid)
+    d = one("SELECT * FROM dealers WHERE id=%s", o["dealer_id"])
+    items = rows("SELECT * FROM order_items WHERE order_id=%s", oid)
+    try:
+        data = await baza.buyurtma_tayyorla(
+            d["name"] if d else "", d["phone"] if d else "", oid, o["date"],
+            [{"id": i["product_id"], "nom": i["name"], "soni": i["qty"]} for i in items])
+    except baza.HaridorTopilmadi:
+        return await c.answer(
+            "Бу диллер дастурдаги «Харидорлар» рўйхатидан топилмади. Дастурда шу ном ёки "
+            "шу телефон рақами билан харидор қўшинг, кейин қайта «Қабул қилиш»ни босинг.",
+            show_alert=True)
+    except Exception as e:
+        logging.exception("buyurtma_tayyorla")
+        return await c.answer(f"Дастур маълумотларини ўқиб бўлмади: {e}"[:190], show_alert=True)
+    # Ботдаги ҳолат ва дастурдаги буюртма БИТТА транзакцияда: ё иккаласи ёзилади,
+    # ё ҳеч бири. "status='new'" шарти икки админ бир вақтда босса, иккинчисини тўхтатади.
+    buy_no = None
+    try:
+        with tx() as conn:
+            if conn.execute("UPDATE orders SET status='accepted' WHERE id=%s AND status='new' "
+                            "RETURNING id", (oid,)).fetchone():
+                buy_no, app_id = baza.buyurtma_yoz(conn, data)
+                conn.execute("UPDATE orders SET app_no=%s, app_id=%s WHERE id=%s", (buy_no, app_id, oid))
+    except Exception as e:
+        logging.exception("buyurtma_yoz")
+        return await c.answer(f"Дастурга ёзиб бўлмади: {e}"[:190], show_alert=True)
+    if buy_no is None:
+        await c.message.edit_reply_markup(reply_markup=None)
+        return await c.answer("Бу буюртма бўйича қарор аллақачон қабул қилинган.", show_alert=True)
     await c.message.edit_text(order_text(oid) + f"\n\n✅ ҚАБУЛ ҚИЛИНДИ — дастурда {buy_no}")
     if d and d["chat_id"]:
         try:
@@ -571,16 +616,17 @@ async def s_cancel_reason(m: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     await state.clear()
     oid, reason = data["oid"], m.text.strip()
-    o = one("SELECT * FROM orders WHERE id=?", oid)
-    if not o or o["status"] != "new":
+    # Текшириш ва ёзиш битта сўровда — бир вақтда қабул қилинаётган бўлса, тўқнашмайди
+    o = one("UPDATE orders SET status='cancelled', reason=%s WHERE id=%s AND status='new' "
+            "RETURNING *", reason, oid)
+    if not o:
         return await m.answer("Бу буюртма бўйича қарор аллақачон қабул қилинган.")
-    q("UPDATE orders SET status='cancelled', reason=? WHERE id=?", reason, oid)
     txt = order_text(oid) + f"\n\n❌ БЕКОР ҚИЛИНДИ\nСабаб: {reason}"
     try:
         await bot.edit_message_text(txt, chat_id=m.chat.id, message_id=data["mid"])
     except Exception:
         pass
-    d = one("SELECT * FROM dealers WHERE id=?", o["dealer_id"])
+    d = one("SELECT * FROM dealers WHERE id=%s", o["dealer_id"])
     sent = False
     if d and d["chat_id"]:
         try:
@@ -619,9 +665,9 @@ async def s_d_phone(m: Message, state: FSMContext):
         return
     data = await state.get_data()
     await state.clear()
-    cur = q("INSERT INTO dealers(name,phone) VALUES(?,?)", data["name"], p)
+    did = one("INSERT INTO dealers(name,phone) VALUES(%s,%s) RETURNING id", data["name"], p)["id"]
     await m.answer("✅ Диллер қўшилди. У шу рақам билан ботга кирса, менюлар очилади.")
-    await show_dealer(m, cur.lastrowid, edit=False)
+    await show_dealer(m, did, edit=False)
 
 
 @admin.message(St.d_edit_phone, F.text)
@@ -631,7 +677,7 @@ async def s_d_edit_phone(m: Message, state: FSMContext, bot: Bot):
     if not p:
         return
     await state.clear()
-    old = one("SELECT * FROM dealers WHERE id=?", did)
+    old = one("SELECT * FROM dealers WHERE id=%s", did)
     if old and tel(old["phone"]) != tel(p):
         # рақам ўзгарса, эски рақам билан кирган одамнинг рухсати бекор бўлади
         if old["chat_id"]:
@@ -640,7 +686,7 @@ async def s_d_edit_phone(m: Message, state: FSMContext, bot: Bot):
                                        reply_markup=ReplyKeyboardRemove())
             except Exception:
                 pass
-        q("UPDATE dealers SET phone=?, chat_id=NULL WHERE id=?", p, did)
+        q("UPDATE dealers SET phone=%s, chat_id=NULL WHERE id=%s", p, did)
     await m.answer("✅ Рақам сақланди.")
     await show_dealer(m, did, edit=False)
 
@@ -649,7 +695,7 @@ async def s_d_edit_phone(m: Message, state: FSMContext, bot: Bot):
 async def s_d_edit_name(m: Message, state: FSMContext):
     did = (await state.get_data())["did"]
     await state.clear()
-    q("UPDATE dealers SET name=? WHERE id=?", m.text.strip(), did)
+    q("UPDATE dealers SET name=%s WHERE id=%s", m.text.strip(), did)
     await show_dealer(m, did, edit=False)
 
 
@@ -657,7 +703,7 @@ async def s_d_edit_name(m: Message, state: FSMContext):
 async def s_msg_to_dealer(m: Message, state: FSMContext, bot: Bot):
     did = (await state.get_data())["did"]
     await state.clear()
-    d = one("SELECT * FROM dealers WHERE id=?", did)
+    d = one("SELECT * FROM dealers WHERE id=%s", did)
     if not d or not d["chat_id"]:
         return await m.answer("Бу диллер ботга кирмаган.")
     try:
@@ -683,8 +729,8 @@ async def s_p_date(m: Message, state: FSMContext):
         return await m.answer("Сана нотўғри. Намуна: 01.10.2026")
     data = await state.get_data()
     await state.clear()
-    cur = q("INSERT INTO prices(number,date) VALUES(?,?)", data["number"], d)
-    txt, mk = price_view(cur.lastrowid)
+    pid = one("INSERT INTO prices(number,date) VALUES(%s,%s) RETURNING id", data["number"], d)["id"]
+    txt, mk = price_view(pid)
     await m.answer(txt, reply_markup=mk)
 
 
@@ -699,7 +745,7 @@ async def s_pi_name(m: Message, state: FSMContext):
 async def s_pi_price(m: Message, state: FSMContext):
     data = await state.get_data()
     await state.clear()
-    q("INSERT INTO price_items(price_id,name,price) VALUES(?,?,?)",
+    q("INSERT INTO price_items(price_id,name,price) VALUES(%s,%s,%s)",
       data["pid"], data["name"], m.text.strip())
     txt, mk = price_view(data["pid"])
     await m.answer(txt, reply_markup=mk)
@@ -711,8 +757,8 @@ async def s_pi_edit(m: Message, state: FSMContext):
     col = "name" if await state.get_state() == St.pi_edit_name.state else "price"
     iid = (await state.get_data())["iid"]
     await state.clear()
-    q(f"UPDATE price_items SET {col}=? WHERE id=?", m.text.strip(), iid)
-    i = one("SELECT * FROM price_items WHERE id=?", iid)
+    q(f"UPDATE price_items SET {col}=%s WHERE id=%s", m.text.strip(), iid)
+    i = one("SELECT * FROM price_items WHERE id=%s", iid)
     if i:
         txt, mk = price_view(i["price_id"])
         await m.answer(txt, reply_markup=mk)
@@ -810,11 +856,12 @@ async def cb_order_send(c: CallbackQuery, state: FSMContext, bot: Bot):
             return await c.answer()
     d = dealer_of(c.from_user.id)
     today = datetime.now().strftime("%d.%m.%Y")
-    oid = q("INSERT INTO orders(dealer_id,date) VALUES(?,?)", d["id"], today).lastrowid
-    for k, v in cart.items():
-        p = old[int(k)]
-        q("INSERT INTO order_items(order_id,product_id,name,qty) VALUES(?,?,?,?)",
-          oid, str(p["id"]), p["nom"], v)
+    with tx() as conn:
+        oid = conn.execute("INSERT INTO orders(dealer_id,date) VALUES(%s,%s) RETURNING id",
+                           (d["id"], today)).fetchone()["id"]
+        conn.cursor().executemany(
+            "INSERT INTO order_items(order_id,product_id,name,qty) VALUES(%s,%s,%s,%s)",
+            [(oid, str(old[int(k)]["id"]), old[int(k)]["nom"], v) for k, v in cart.items()])
     await state.clear()
     await c.message.edit_text(t("order_sent", lang, i=oid, d=today))
     mk = kb([("✅ Қабул қилиш", f"oa:{oid}"), ("❌ Бекор қилиш", f"oc:{oid}")])
@@ -840,11 +887,11 @@ async def d_price(m: Message, state: FSMContext):
 @dealer.callback_query(F.data.startswith("vp:"))
 async def cb_view_price(c: CallbackQuery):
     lang = lang_of(c.from_user.id)
-    p = one("SELECT * FROM prices WHERE id=?", int(c.data.split(":")[1]))
+    p = one("SELECT * FROM prices WHERE id=%s", int(c.data.split(":")[1]))
     if not p:
         return await c.answer(t("no_price", lang), show_alert=True)
     lines = [f"💰 №{p['number']} — {p['date']}", ""]
-    for n, i in enumerate(rows("SELECT * FROM price_items WHERE price_id=? ORDER BY id", p["id"]), 1):
+    for n, i in enumerate(rows("SELECT * FROM price_items WHERE price_id=%s ORDER BY id", p["id"]), 1):
         lines.append(f"{n}. {i['name']} — {i['price']}")
     await c.message.answer("\n".join(lines))
     await c.answer()
@@ -1031,7 +1078,7 @@ async def muddat_kuzatuvchi(bot: Bot):
                     if due == (o["due"] or ""):
                         continue
                     if due:
-                        d = one("SELECT * FROM dealers WHERE id=?", o["dealer_id"])
+                        d = one("SELECT * FROM dealers WHERE id=%s", o["dealer_id"])
                         if not d or not d["chat_id"]:
                             continue
                         try:
@@ -1040,17 +1087,27 @@ async def muddat_kuzatuvchi(bot: Bot):
                             kun = due
                         await bot.send_message(d["chat_id"],
                                                t("order_due", lang_of(d["chat_id"]), i=o["id"], d=kun))
-                    q("UPDATE orders SET due=? WHERE id=?", due, o["id"])
+                    q("UPDATE orders SET due=%s WHERE id=%s", due, o["id"])
         except Exception:
             logging.exception("muddat_kuzatuvchi")
         await asyncio.sleep(30)
 
 
-async def main():
-    logging.basicConfig(level=logging.INFO)
+def setup():
+    """Bot ва Dispatcher (дастур — app.py — ичида polling орқали ишлатилади)."""
+    import_sqlite()
     bot = Bot(TOKEN)
     dp = Dispatcher()
     dp.include_routers(common, admin, dealer)
+    return bot, dp
+
+
+async def main():
+    """Алоҳида, polling билан ишга тушириш (фақат синаш учун)."""
+    logging.basicConfig(level=logging.INFO)
+    pgstore.migrate()
+    bot, dp = setup()
+    await bot.delete_webhook()
     kuzatuvchi = asyncio.create_task(muddat_kuzatuvchi(bot))
     try:
         await dp.start_polling(bot)

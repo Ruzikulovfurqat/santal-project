@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+baza
+backups
+run.log
+run.pid
+**/__pycache__
+**/*.pyc
+bot/bot.db
+certs

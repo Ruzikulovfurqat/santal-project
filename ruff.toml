@@ -1,0 +1,5 @@
+# pyflakes (F) ва синтаксис хатолари (E9) — CI'да шу текширилади
+extend-exclude = [".venv", "dist"]
+
+[lint]
+select = ["F", "E9"]

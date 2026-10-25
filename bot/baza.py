@@ -1,25 +1,27 @@
 # -*- coding: utf-8 -*-
 """
-Ишлаб чиқариш дастури (http://127.0.0.1:8642) билан боғланиш қатлами.
+Ишлаб чиқариш дастури маълумотлари билан боғланиш қатлами.
 
-Бот дастурнинг ўз манзили (/api/col/<жадвал>) орқали ишлайди, data.json
-файлига тўғридан-тўғри тегмайди.
+Бот дастур билан БИР ХИЛ PostgreSQL базасидан pgstore орқали ўқийди
+(дастур ҳам худди шу модулни ишлатади).
 
   ЎҚИЙДИ:  items, stock, workshops, categories, customers, orders,
            sales, cashTransactions
-  ЁЗАДИ:   фақат orders жадвалига ЯНГИ ёзув қўшади (POST).
+  ЁЗАДИ:   фақат orders жадвалига ЯНГИ ёзув қўшади.
            Ҳеч бир мавжуд ёзув ўзгартирилмайди ва ўчирилмайди.
 """
 import asyncio
-import json
 import math
 import re
-import urllib.request
 from datetime import datetime, timezone
 
-from config import BAZA_URL, KATEGORIYALAR
+from psycopg.rows import tuple_row
+
+import config  # noqa: F401  (.env ва sys.path шу ерда созланади)
+import pgstore
 
 STAGE_READY_IDX = 2  # дастурдаги "Тайёр омборда" босқичи
+ORDER_NO_LOCK_ID = 864202  # буюртма рақами бериш учун (pg_advisory_xact_lock)
 
 
 class BazaUlanmagan(Exception):
@@ -30,19 +32,9 @@ class HaridorTopilmadi(Exception):
     """Диллер дастурдаги "Харидорлар" рўйхатидан топилмади."""
 
 
-# ------------------------------------------------------------ HTTP
-def _req(method, path, body=None):
-    data = json.dumps(body, ensure_ascii=False).encode("utf-8") if body is not None else None
-    r = urllib.request.Request(BAZA_URL.rstrip("/") + path, data=data, method=method,
-                               headers={"Content-Type": "application/json"})
-    # 127.0.0.1 учун прокси ишлатилмайди
-    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    with opener.open(r, timeout=15) as resp:
-        return json.loads(resp.read().decode("utf-8") or "null")
-
-
+# ------------------------------------------------------------ база
 async def _col(name):
-    return await asyncio.to_thread(_req, "GET", "/api/col/" + name) or []
+    return await asyncio.to_thread(pgstore.col_list, name)
 
 
 def _num(x):
@@ -87,12 +79,19 @@ def _workshop_key(w):
     return _key_from_text(w.get("name"))
 
 
-# config.KATEGORIYALAR даги номлар -> калитлар (масалан "Газ катёл" -> "gaz")
-_RUXSAT = {}
-for _nom in KATEGORIYALAR:
-    _k = _key_from_text(_nom)
-    if _k:
-        _RUXSAT[_k] = _nom
+def _cat_key(cat):
+    """Категория калити: маълум цех бўлса унинг калити (масалан "Газ катёл" -> "gaz"),
+    бўлмаса категориянинг ўз id'си."""
+    return _key_from_text(cat.get("name")) or "cat:" + str(cat.get("id"))
+
+
+def _ruxsat(cats):
+    """Дастурдаги "categories" жадвали: калит -> категория номи (базадаги тартибда)."""
+    out = {}
+    for c in cats:
+        if (c.get("name") or "").strip():
+            out.setdefault(_cat_key(c), c["name"].strip())
+    return out
 
 
 def _item_key(item, ws_by_id, cat_by_id):
@@ -102,7 +101,12 @@ def _item_key(item, ws_by_id, cat_by_id):
     if len(keys) == 1:
         return keys.pop()
     cat = cat_by_id.get(item.get("categoryId") or "")
-    return (_key_from_text(cat.get("name")) if cat else "") or _key_from_text(item.get("name"))
+    return (_cat_key(cat) if cat else "") or _key_from_text(item.get("name"))
+
+
+def _app_key(key):
+    """Дастур фақат маълум цех калитларини (radiator, gaz...) танийди."""
+    return "" if key.startswith("cat:") else key
 
 
 def _is_bot_order(o):
@@ -153,7 +157,8 @@ def _find_customer(customers, nom, tel):
 # ------------------------------------------------------------ 1) омбор
 async def mahsulotlar():
     """
-    Омбордаги тайёр маҳсулотлар (фақат config.KATEGORIYALAR ичидагилар).
+    Омбордаги тайёр маҳсулотлар (дастурдаги "categories" жадвалидаги
+    категориялар бўйича).
     Қолдиқ = омбордаги сон − админ қабул қилган, ҳали сотилмаган бот
     буюртмалари. Тугаган маҳсулотлар ҳам 0 билан қайтади.
     [{"id": ..., "nom": "…", "kategoriya": "…", "qoldiq": 12}, ...]
@@ -162,6 +167,7 @@ async def mahsulotlar():
         _col("items"), _col("stock"), _col("workshops"), _col("categories"), _col("orders"))
     ws_by_id = {w.get("id"): w for w in workshops}
     cat_by_id = {c.get("id"): c for c in cats}
+    ruxsat = _ruxsat(cats)
     qty = _stock_map(stock)
     band = _reserved_map(orders)
     out = []
@@ -169,27 +175,27 @@ async def mahsulotlar():
         if it.get("itemType") != "mahsulot":
             continue
         key = _item_key(it, ws_by_id, cat_by_id)
-        if key not in _RUXSAT:
+        if key not in ruxsat:
             continue
-        out.append({"id": it.get("id"), "nom": it.get("name") or "—",
-                    "kategoriya": _RUXSAT[key],
-                    "qoldiq": max(0, int(math.floor(
-                        qty.get(it.get("id"), 0.0) - band.get(it.get("id"), 0.0) + 1e-9)))})
-    order = list(_RUXSAT)
-    out.sort(key=lambda p: (order.index(_key_from_text(p["kategoriya"])), p["nom"]))
-    return out
+        out.append((key, {"id": it.get("id"), "nom": it.get("name") or "—",
+                          "kategoriya": ruxsat[key],
+                          "qoldiq": max(0, int(math.floor(
+                              qty.get(it.get("id"), 0.0) - band.get(it.get("id"), 0.0) + 1e-9)))}))
+    order = list(ruxsat)
+    out.sort(key=lambda kp: (order.index(kp[0]), kp[1]["nom"]))
+    return [p for _, p in out]
 
 
 # ------------------------------------------------------------ 2) буюртма
-async def buyurtma_yarat(diller_nom, diller_tel, raqam, sana, qatorlar):
+async def buyurtma_tayyorla(diller_nom, diller_tel, raqam, sana, qatorlar):
     """
-    Админ қабул қилган буюртмани дастурнинг "Харидор буюртмаси" бўлимига
-    ЯНГИ ёзув қилиб қўшади. (дастурдаги рақам, ёзув id) қайтаради.
+    Админ қабул қилган буюртмадан дастурнинг "Харидор буюртмаси" ёзувини
+    тайёрлайди (фақат ўқийди). Ёзиш — buyurtma_yoz() орқали, транзакцияда.
     qatorlar: [{"id": ..., "nom": "…", "soni": 3}, ...]
     """
-    items, stock, workshops, cats, customers, orders = await asyncio.gather(
+    items, stock, workshops, cats, customers = await asyncio.gather(
         _col("items"), _col("stock"), _col("workshops"), _col("categories"),
-        _col("customers"), _col("orders"))
+        _col("customers"))
     cust = _find_customer(customers, diller_nom, diller_tel)
     if not cust:
         raise HaridorTopilmadi
@@ -211,7 +217,7 @@ async def buyurtma_yarat(diller_nom, diller_tel, raqam, sana, qatorlar):
             "unit": (it.get("unit") if it else "") or "дона", "warehouseId": "", "priceListId": "",
             "quantity": soni, "price": 0, "subtotalAmount": 0, "discountPct": 0, "discountAmount": 0,
             "discountManual": False, "totalAmount": 0,
-            "categoryKey": _item_key(it, ws_by_id, cat_by_id) if it else _key_from_text(q["nom"]),
+            "categoryKey": _app_key(_item_key(it, ws_by_id, cat_by_id) if it else _key_from_text(q["nom"])),
             "vatRate": 12, "unitNoVat": 0, "noVatAmount": 0, "vatAmount": 0,
         })
     if not rows:
@@ -222,18 +228,9 @@ async def buyurtma_yarat(diller_nom, diller_tel, raqam, sana, qatorlar):
     except ValueError:
         iso = datetime.now().strftime("%Y-%m-%d")
 
-    # Дастурдаги каби рақам: BUY-<йил>-<тартиб>; банд бўлса кейингиси олинади
-    used = {str(o.get("orderNumber")) for o in orders}
-    n = len(orders) + 1
-    while True:
-        number = "BUY-%s-%03d" % (iso[:4], n)
-        if number not in used:
-            break
-        n += 1
-
     first = rows[0]
-    data = {
-        "orderNumber": number, "date": iso, "contractNumber": "", "contractDate": "",
+    return {
+        "orderNumber": "", "date": iso, "contractNumber": "", "contractDate": "",
         "customer": cust.get("name") or diller_nom, "customerId": cust.get("id") or "",
         "items": rows,
         "warehouseId": "", "itemId": first["itemId"], "product": first["product"],
@@ -247,8 +244,28 @@ async def buyurtma_yarat(diller_nom, diller_tel, raqam, sana, qatorlar):
         "createdAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
         "source": "telegram-bot",
     }
-    res = await asyncio.to_thread(_req, "POST", "/api/col/orders", data)
-    return number, (res or {}).get("id") or ""
+
+
+def buyurtma_yoz(conn, data):
+    """
+    buyurtma_tayyorla() берган ёзувни conn'нинг очиқ транзакцияси ичида
+    дастурга қўшади. (дастурдаги рақам, ёзув id) қайтаради.
+    Рақам ҳам шу транзакцияда берилади, шунинг учун бир вақтда қабул
+    қилинган икки буюртма бир хил рақам олмайди.
+    """
+    cur = conn.cursor(row_factory=tuple_row)
+    cur.execute("SELECT pg_advisory_xact_lock(%s)", (ORDER_NO_LOCK_ID,))
+    cur.execute("SELECT data->>'orderNumber' FROM app.docs WHERE collection='orders'")
+    numbers = [r[0] for r in cur.fetchall()]
+    # Дастурдаги каби рақам: BUY-<йил>-<тартиб>; банд бўлса кейингиси олинади
+    used = {str(x) for x in numbers}
+    n = len(numbers) + 1
+    while True:
+        number = "BUY-%s-%03d" % (data["date"][:4], n)
+        if number not in used:
+            break
+        n += 1
+    return number, pgstore.col_add("orders", dict(data, orderNumber=number), conn=conn)
 
 
 async def bot_buyurtmalar():

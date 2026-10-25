@@ -1,3 +1,7 @@
-﻿__pycache__/
+__pycache__/
 bot/bot.db
-bot/config.py
+.env
+.venv/
+backups/
+dist/
+certs/
