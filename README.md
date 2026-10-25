@@ -56,7 +56,9 @@ make up                # PostgreSQL 18 + дастур + бот
 | `DEPLOY_PORT` | ихтиёрий, стандарт `22` |
 | `DEPLOY_KNOWN_HOSTS` | ихтиёрий, `ssh-keyscan -H <host>` натижаси (берилмаса, ҳар сафар keyscan қилинади) |
 
-Secret'лар берилмагунча deploy қадами огоҳлантириш билан ўтказиб юборилади (CI яшил қолади). Ишлаб чиқаришга тасдиқ билан чиқариш керак бўлса — GitHub'да `production` environment'ига «Required reviewers» қўшинг.
+Secret'лар берилмагунча deploy қадами огоҳлантириш билан ўтказиб юборилади (CI яшил қолади).
+
+Actions'да run'лар **Startup failure** ёки узоқ вақт **Queued** бўлиб турса ва юқорида *"Your account's billing is currently locked"* ёзилган бўлса — бу коддаги хато эмас: репо эгасининг GitHub ҳисобида тўлов муаммоси бор (Settings → Billing and licensing → Payment information). Тузатилгач, run'ни **Re-run** қилинг ёки янги push қилинг. Ишлаб чиқаришга тасдиқ билан чиқариш керак бўлса — GitHub'да `production` environment'ига «Required reviewers» қўшинг.
 
 ## Миграциялар
 
