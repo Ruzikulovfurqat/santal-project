@@ -127,7 +127,9 @@ jobs:
             echo "::warning::DEPLOY_KNOWN_HOSTS йўқ — сервер калити ssh-keyscan орқали олинди"
             ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" > ~/.ssh/known_hosts
           fi
-          printf 'Host deploy\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_deploy\n  IdentitiesOnly yes\n' \
+          # ControlMaster: барча ssh/rsync буйруқлари БИТТА уланишдан ўтади —
+          # серверда ufw limit / fail2ban бўлса, кетма-кет уланишлар блокланмайди
+          printf 'Host deploy\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_deploy\n  IdentitiesOnly yes\n  ControlMaster auto\n  ControlPath ~/.ssh/cm-%%C\n  ControlPersist 10m\n  ServerAliveInterval 30\n' \
             "$DEPLOY_HOST" "$DEPLOY_USER" "$DEPLOY_PORT" > ~/.ssh/config
 
       - name: Кодни серверга юклаш
