@@ -84,5 +84,9 @@ deploy:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - test -n "${SANTAL_DIR:-}" || { echo "ХАТО: runner'да SANTAL_DIR йўқ — серверда sudo santal.sh'ни қайта ишга туширинг"; exit 1; }
+    - |
+      if [ -z "${SANTAL_DIR:-}" ]; then
+        echo "ХАТО: runner'да SANTAL_DIR йўқ — серверда sudo santal.sh'ни қайта ишга туширинг"
+        exit 1
+      fi
     - '"$SANTAL_DIR/santal.sh" "$CI_COMMIT_SHA"'
