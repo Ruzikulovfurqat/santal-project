@@ -9,3 +9,6 @@ run.pid
 **/*.pyc
 bot/bot.db
 certs
+.env.deploy
+.env.mcp
+.deploy.lock

@@ -4,7 +4,7 @@ PY      := $(VENV)/bin/python
 COMPOSE := docker compose
 
 .DEFAULT_GOAL := help
-.PHONY: help up down restart build ps logs psql migrate migration backup deploy html db install dev test lint run clean
+.PHONY: help up down restart build ps logs psql migrate migration backup deploy html lock db install dev test lint run clean
 
 help: ## Буйруқлар рўйхати
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-9s %s\n", $$1, $$2}'
@@ -53,6 +53,11 @@ backup: ## База дампи + акт файллари -> backups/
 
 deploy: ## Серверда: заҳира + янги версия + соғлиқ текшируви (CI/CD ҳам шуни чақиради)
 	bash scripts/deploy.sh
+
+lock: ## requirements.txt'дан аниқ версиялар (requirements.lock) — Python 3.14'да
+	docker run --rm -v "$(CURDIR):/w" -w /w python:3.14-slim sh -c \
+		'pip install -q --root-user-action=ignore -r requirements.txt && \
+		 { head -2 requirements.lock; pip freeze; } > /tmp/lock && mv /tmp/lock requirements.lock'
 
 html: ## frontend/ дан ягона dist/app.html йиғиш
 	$(PYTHON) frontend_build.py dist/app.html

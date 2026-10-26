@@ -1,0 +1,92 @@
+# GitLab CI/CD — ФАҚАТ ўз серверимиздаги runner'ларда ишлайди, шунинг учун GitLab
+# compute minutes сарфланмайди. Runner'ларни santal.sh ўзи ўрнатади (README → «Сервер»):
+#   santal        — lint/test: алоҳида контейнерларда, Docker ва production'га кириш ҳуқуқисиз;
+#   santal-deploy — deploy: шу серверда, фақат protected branch'лар (main) учун.
+# CI/CD variable'лар керак эмас: deploy серверда $SANTAL_DIR/santal.sh'ни чақиради.
+
+stages: [lint, test, deploy]
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+default:
+  image: python:3.14-slim
+  tags: [santal]
+  interruptible: true
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PIP_ROOT_USER_ACTION: ignore
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+.pip-cache:
+  cache:
+    key:
+      files: [requirements.lock, requirements-dev.txt]
+    paths: [.cache/pip]
+
+shellcheck:
+  stage: lint
+  image: koalaman/shellcheck-alpine:v0.10.0
+  script:
+    - shellcheck santal.sh scripts/*.sh
+
+lint:
+  stage: lint
+  extends: .pip-cache
+  script:
+    - pip install -r requirements-dev.txt
+    - ruff check .
+    - python frontend_build.py dist/app.html
+
+test:
+  stage: test
+  extends: .pip-cache
+  services:
+    - name: postgres:18.6-alpine
+      alias: postgres
+  variables:
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: "5432"
+    POSTGRES_USER: santal
+    POSTGRES_PASSWORD: ci-password
+    POSTGRES_DB: santal
+  script:
+    - pip install -r requirements.lock -r requirements-dev.txt
+    - |
+      python - <<'EOF'
+      import time, psycopg
+      for _ in range(60):
+          try:
+              psycopg.connect(host="postgres", user="santal", password="ci-password",
+                              dbname="santal", connect_timeout=2).close()
+              break
+          except Exception:
+              time.sleep(1)
+      else:
+          raise SystemExit("PostgreSQL сервиси тайёр бўлмади")
+      EOF
+    - python -m pytest -v tests
+
+deploy:
+  stage: deploy
+  tags: [santal-deploy]
+  interruptible: false
+  resource_group: production
+  environment:
+    name: production
+  variables:
+    GIT_STRATEGY: none  # код /opt/santal'да santal.sh орқали янгиланади
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - |
+      if [ -z "${SANTAL_DIR:-}" ]; then
+        echo "ХАТО: runner'да SANTAL_DIR йўқ — серверда sudo santal.sh'ни қайта ишга туширинг"
+        exit 1
+      fi
+    - '"$SANTAL_DIR/santal.sh" "$CI_COMMIT_SHA"'

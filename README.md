@@ -30,35 +30,56 @@ make up                # PostgreSQL 18 + дастур + бот
 | `make html` | `frontend/` дан ягона `dist/app.html` йиғиш |
 | `make db` + `make run` | Docker'сиз ишлаб чиқиш: фақат Postgres контейнерда, дастур + бот venv'да |
 
-## CI/CD (GitHub Actions)
+## CI/CD (GitLab)
 
-`.github/workflows/ci-cd.yml` — ҳар push ва PR'да:
+Репо: https://gitlab.com/Ruzikulovfurqat/sandal. `.gitlab-ci.yml` — ҳар push ва MR'да, **фақат ўз серверимиздаги runner'ларда** (GitLab compute minutes сарфланмайди):
 
-1. **lint** — `ruff check`, frontend йиғилиши;
+1. **lint** — `ruff check`, frontend йиғилиши, `shellcheck`;
 2. **test** — PostgreSQL 18 сервисида `pytest`: `data.json` тўлиқ кўчиши, API, қулф, юклаш, экспорт, бот транзакциялари (бир вақтда қабул қилиш, рақамлар такрорланмаслиги);
-3. **docker** — `docker compose up --wait` ва соғлиқ текшируви;
-4. **deploy** — фақат `main`'га push'да, учаласи ўтгандан кейин: SSH орқали кодни серверга юклайди (rsync) ва `scripts/deploy.sh`'ни ишга туширади — база заҳираси (`backups/predeploy-*.dump`), янги image, миграциялар, `healthy` бўлишини кутиш. Серверда `.env`, `baza/` (юкланган файллар), `certs/`, `backups/` га **тегилмайди**.
+3. **deploy** — фақат `main`'га push'да: серверда `santal.sh <commit>` — кодни GitLab'дан олади, кейин `scripts/deploy.sh`: база заҳираси (`backups/predeploy-*.dump`), янги image, миграциялар, `healthy` бўлишини кутиш, бўлмаса олдинги версияга қайтиш.
 
-Локал: `make lint`, `make test` (вақтинчалик база яратиб, охирида ўчиради — асосий маълумотга тегмайди; аввал `make db` ёки `make up`).
+CI/CD variable'лар, SSH калитлари керак эмас. Локал: `make lint`, `make test` (вақтинчалик база яратиб, охирида ўчиради — асосий маълумотга тегмайди; аввал `make db` ёки `make up`).
 
-### Deploy'ни ёқиш
+## Сервер
 
-**Серверда (бир марта):** Docker + compose plugin ва `rsync` ўрнатилган бўлсин; deploy фойдаланувчиси `docker` гуруҳида бўлсин; `DEPLOY_PATH` папкасига `.env` қўйинг (`.env.example` асосида).
+Ҳаммаси шу репонинг ўзида: серверда у `/opt/santal`'га git checkout қилинади, алоҳида deployment репо йўқ.
 
-**GitHub → Settings → Secrets and variables → Actions:**
+**1. GitLab токени** (битта, серверда сақланади): gitlab.com → Edit profile → Access tokens → Personal access token, scope'лар: `read_repository`, `read_api`, `create_runner` (лойиҳада Maintainer бўлиш керак).
 
-| Secret | Мисол |
+**2. Серверда битта буйруқ** (Ubuntu/Debian, root; токенни сўрайди):
+
+```sh
+sudo bash -c 'set -eo pipefail; read -rsp "GitLab token: " t </dev/tty; echo; install -d /opt/santal; (umask 077; printf "GITLAB_TOKEN=%s\n" "$t" > /opt/santal/.env.deploy); printf "PRIVATE-TOKEN: %s\n" "$t" | curl -fsSL -H @- "https://gitlab.com/api/v4/projects/Ruzikulovfurqat%2Fsandal/repository/files/santal.sh/raw?ref=main" | bash'
+```
+
+`santal.sh` нима қилади (қайта ишга туширса бўлади — бор нарсани қайта қилмайди):
+
+- git, curl, docker, gitlab-runner йўқ бўлса ўрнатади;
+- кодни `main`'дан `/opt/santal`'га олади. Токен фақат `.env.deploy`'да (600) туради, `.git/config`'га ёзилмайди;
+- `.env` бўлмаса `.env.example`'дан яратади (тасодифий `POSTGRES_PASSWORD` ва `APP_PASSWORD`, логин экранга чиқади);
+- шу токен билан иккита runner яратиб, рўйхатдан ўтказади: `santal` (lint/test, Docker'да, production'га кириш ҳуқуқисиз) ва `santal-deploy` (shell, фақат protected branch'лар);
+- `scripts/deploy.sh`.
+
+`.env`, `baza/` (юкланган файллар, `data.json`), `certs/`, `backups/` га **тегилмайди**. `baza/` git'да бор бўлса ҳам серверда checkout қилинмайди, фақат йўқ файллар бир марта қўшилади.
+
+| Вазифа | Буйруқ |
 |---|---|
-| `DEPLOY_HOST` | `188.137.228.200` |
-| `DEPLOY_USER` | `deploy` |
-| `DEPLOY_PATH` | `/opt/santal` |
-| `DEPLOY_SSH_KEY` | шу фойдаланувчининг `authorized_keys`'ига қўшилган калитнинг **private** қисми |
-| `DEPLOY_PORT` | ихтиёрий, стандарт `22` |
-| `DEPLOY_KNOWN_HOSTS` | ихтиёрий, `ssh-keyscan -H <host>` натижаси (берилмаса, ҳар сафар keyscan қилинади) |
+| deploy | `main`'га push — автоматик |
+| қўлда янгилаш / `.env` ўзгаргандан кейин | `sudo /opt/santal/santal.sh` |
+| бошқа branch'дан | `/opt/santal/.env.deploy`'га `DEPLOY_BRANCH=...`, кейин `sudo /opt/santal/santal.sh` |
+| токенни алмаштириш | `/opt/santal/.env.deploy`'даги `GITLAB_TOKEN` |
 
-Secret'лар берилмагунча deploy қадами огоҳлантириш билан ўтказиб юборилади (CI яшил қолади). Ишлаб чиқаришга тасдиқ билан чиқариш керак бўлса — GitHub'да `production` environment'ига «Required reviewers» қўшинг.
+Эски (rsync билан deploy қилинган) сервер ҳам шу буйруқ билан ўтади: `.env` ва `baza/` жойида қолади. Агар у `/opt/santal`'да бўлмаса, аввал `sudo mv <эски-папка> /opt/santal`.
 
-Actions'да run'лар **Startup failure** ёки узоқ вақт **Queued** бўлиб турса ва юқорида *"Your account's billing is currently locked"* ёзилган бўлса — бу коддаги хато эмас: репо эгасининг GitHub ҳисобида тўлов муаммоси бор (Settings → Billing and licensing → Payment information). Тузатилгач, run'ни **Re-run** қилинг ёки янги push қилинг.
+## MCP (Claude Code)
+
+`.mcp.json` иккита сервер беради (`scripts/mcp.sh` орқали): **gitlab** (issue, MR, pipeline, job логлари) ва **postgres** (база; стандарт ҳолатда фақат ўқиш).
+
+```sh
+cp .env.mcp.example .env.mcp   # GITLAB_TOKEN (scope: api) ва POSTGRES_MCP_URL
+```
+
+`MCP_SSH` бўш бўлса — локал база (`make db` / `make up`); `MCP_SSH=user@server` берилса — сервердаги база SSH туннел орқали (туннел MCP билан бирга очилиб-ёпилади). `npx` (Node) ва `uvx` (uv) керак.
 
 ## Миграциялар
 
