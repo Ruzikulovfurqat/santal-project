@@ -26,7 +26,7 @@
      АВВАЛГИ барча менюлар очилган бўлса (яъни тўлиқ рухсат), янги
      менюлар ҳам автоматик очилади. Қисман рухсатли фойдаланувчиларга
      эса — Админ панелдан белгилаб берилади (2026-10-16 тузатиши). */
-  var NAV_NEW_IDS = ["hisobot"];
+  var NAV_NEW_IDS = ["hisobot", "newmenu"];
   function visibleNav(){
     var u = currentUser();
     if(!u || u.id===ADMIN_SESSION_ID) return NAV;

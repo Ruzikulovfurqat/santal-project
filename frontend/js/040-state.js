@@ -112,6 +112,7 @@
     {id:"hisobot", label:"Ҳисобот", icon:ICONS.chart},
     {id:"reconciliation", label:"Солиштирма далолатнома", icon:ICONS.clipboard},
     {id:"employees", label:"Ходимлар", icon:ICONS.users},
+    {id:"newmenu", label:"Янги меню", icon:ICONS.grid},
     /* "Админ панел" — фойдаланувчи сўровига кўра (2026-10-01) менюлар
        қаторидан пастроқда, рўйхатнинг энг охирида жойлашади. */
     {id:"adminpanel", label:"Админ панел", icon:ICONS.gear},
