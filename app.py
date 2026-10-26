@@ -324,8 +324,9 @@ def local_ip():
 # ====================== Телеграм бот ======================
 # Бот шу жараённинг ўзида ишлайди.
 #   WEBHOOK_URL берилса — webhook: Telegram янгиланишларни <WEBHOOK_URL>/bot/webhook'га
-#   юборади. Бу манзил АЛОҲИДА портда (WEBHOOK_PORT) хизмат қилади ва у ерда
-#   ФАҚАТ webhook бор — дастурнинг ўзи (саҳифа, API) интернетга чиқмайди.
+#   юборади. Бу манзил АЛОҲИДА портда (WEBHOOK_PORT) хизмат қилади; APP_PASSWORD
+#   берилган бўлса, шу портда дастурнинг ўзи ҳам (саҳифа, API) логин/пароль билан
+#   очилади, паролсиз эса у ерда ФАҚАТ webhook.
 #   WEBHOOK_URL бўш (ёки нотўғри) бўлса — polling.
 # Эслатма: бир токен билан бир вақтда фақат БИТТА нусха ишлай олади.
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "").strip()
@@ -393,6 +394,8 @@ async def _webhook_start(bot, dp):
         return False
     print("Бот webhook режимида: %s%s (порт %d%s)"
           % (WEBHOOK_URL, WEBHOOK_PATH, WEBHOOK_PORT, ", TLS" if ssl else ""), flush=True)
+    print("Дастур %s" % ("шу портда ҳам очиқ (логин/пароль билан): " + WEBHOOK_URL + "/" if APP_PASSWORD
+                         else "шу портда ЙЎҚ — фақат webhook (APP_PASSWORD берилмаган)"), flush=True)
     return True
 
 
@@ -604,7 +607,9 @@ def get_upload(fname: str):
 
 
 # ====================== Webhook сервери (алоҳида порт) ======================
-# Бу илова интернетга очилади, шунинг учун унда ФАҚАТ webhook бор.
+# Бу илова интернетга очилади (домен, масалан Cloudflare орқали). Унда webhook бор;
+# APP_PASSWORD берилган бўлса — дастурнинг ўзи ҳам (саҳифа ва API, логин/пароль билан).
+# Паролсиз дастур интернетга ҳеч қачон чиқмайди — фақат webhook.
 webhook_app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 
@@ -620,6 +625,11 @@ async def bot_webhook(request: Request):
     # Telegram'га дарҳол жавоб қайтарамиз, янгиланиш фонда қайта ишланади
     _spawn(dp.feed_update(bot, update))
     return _json({"ok": True})
+
+
+if APP_PASSWORD:
+    # webhook йўлидан бошқа ҳамма сўровлар — асосий дастурга (унинг basic_auth'и билан)
+    webhook_app.mount("/", app)
 
 
 def main():
