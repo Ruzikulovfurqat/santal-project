@@ -167,6 +167,8 @@ main() {
 
     if is_root; then
         chmod 600 "$DEPLOY_ENV"
+        # Ubuntu'даги needrestart apt'дан кейин /dev/tty'да сўраб, яширин осилиб қолади
+        export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 NEEDRESTART_MODE=a
         ensure_prereqs
     else
         { [ -w "$ROOT" ] && docker info >/dev/null 2>&1; } || die "шундай ишлатинг: sudo $ROOT/santal.sh"
