@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gitlab": {
+      "type": "stdio",
+      "command": "bash",
+      "args": ["scripts/mcp.sh", "gitlab"]
+    },
+    "postgres": {
+      "type": "stdio",
+      "command": "bash",
+      "args": ["scripts/mcp.sh", "postgres"]
+    }
+  }
+}

@@ -5,3 +5,6 @@ bot/bot.db
 backups/
 dist/
 certs/
+.env.deploy
+.env.mcp
+.deploy.lock
