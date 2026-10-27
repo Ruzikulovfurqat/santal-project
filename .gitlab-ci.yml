@@ -3,6 +3,7 @@
 #   santal        — lint/test: алоҳида контейнерларда, Docker ва production'га кириш ҳуқуқисиз;
 #   santal-deploy — deploy: шу серверда, фақат protected branch'лар (main) учун.
 # CI/CD variable'лар керак эмас: deploy серверда $SANTAL_DIR/santal.sh'ни чақиради.
+# main'да фақат deploy (тезроқ чиқиши учун); lint/test — MR ва бошқа branch'ларда.
 
 stages: [lint, test, deploy]
 
@@ -23,6 +24,12 @@ variables:
   PIP_ROOT_USER_ACTION: ignore
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
 
+.checks:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: never
+    - when: on_success
+
 .pip-cache:
   cache:
     key:
@@ -31,13 +38,14 @@ variables:
 
 shellcheck:
   stage: lint
+  extends: .checks
   image: koalaman/shellcheck-alpine:v0.10.0
   script:
     - shellcheck santal.sh scripts/*.sh
 
 lint:
   stage: lint
-  extends: .pip-cache
+  extends: [.checks, .pip-cache]
   script:
     - pip install -r requirements-dev.txt
     - ruff check .
@@ -45,7 +53,7 @@ lint:
 
 test:
   stage: test
-  extends: .pip-cache
+  extends: [.checks, .pip-cache]
   services:
     - name: postgres:18.6-alpine
       alias: postgres
