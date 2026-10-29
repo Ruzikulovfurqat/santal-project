@@ -11,7 +11,7 @@
 Серверда Docker (Docker Compose билан) ва make ўрнатилган бўлиши керак.
 Текшириш:
     docker compose version
-
+aa
 
 2) ИШГА ТУШИРИШ
 ----------------
