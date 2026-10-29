@@ -17,7 +17,7 @@
     updateLoginToggleLabel();
     var allowed = (u.id===ADMIN_SESSION_ID) ? null : (u.allowedMenus||[]);
     if(allowed && allowed.indexOf(STATE.view)===-1) STATE.view = allowed[0]||"";
-    var viewFns = { dashboard:viewDashboard, orders:viewOrders, warehouse:viewWarehouse, production:viewProduction, sales:viewSales, kassa:viewKassa, moliya:viewMoliya, hisobot:viewHisobot, reconciliation:viewReconciliation, employees:viewEmployees, newmenu:viewNewMenu, adminpanel:viewAdminPanel };
+    var viewFns = { dashboard:viewDashboard, orders:viewOrders, warehouse:viewWarehouse, production:viewProduction, sales:viewSales, kassa:viewKassa, moliya:viewMoliya, hisobot:viewHisobot, reconciliation:viewReconciliation, employees:viewEmployees, adminpanel:viewAdminPanel };
     var fn = viewFns[STATE.view];
     if(allowed && (!fn || allowed.indexOf(STATE.view)===-1)){
       setTopbar("Рухсат йўқ", "", "");
