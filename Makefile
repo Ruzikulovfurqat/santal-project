@@ -2,9 +2,11 @@ PYTHON  ?= python3
 VENV    := .venv
 PY      := $(VENV)/bin/python
 COMPOSE := docker compose
+SSH     ?= santal
+TUNNEL_PORT ?= 15432
 
 .DEFAULT_GOAL := help
-.PHONY: help up down restart build ps logs psql migrate migration backup deploy html lock db install dev test lint run clean
+.PHONY: help up down restart build ps logs psql migrate migration backup tunnel deploy html lock db install dev test lint run clean
 
 help: ## Буйруқлар рўйхати
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-9s %s\n", $$1, $$2}'
@@ -50,6 +52,11 @@ backup: ## База дампи + акт файллари -> backups/
 	$(COMPOSE) exec -T db sh -c 'pg_dump -U "$$POSTGRES_USER" -Fc "$$POSTGRES_DB"' > backups/db-$$(date +%Y%m%d-%H%M%S).dump
 	tar czf backups/uploads-$$(date +%Y%m%d-%H%M%S).tar.gz baza/uploads
 	@ls -1t backups | head -2
+
+tunnel: ## Сервердаги базага SSH туннел: 127.0.0.1:15432 (MCP postgres учун; Ctrl+C — ёпиш)
+	@echo "Туннел: 127.0.0.1:$(TUNNEL_PORT) -> $(SSH):5432 (ёпиш: Ctrl+C)"
+	ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
+		-L 127.0.0.1:$(TUNNEL_PORT):127.0.0.1:5432 $(SSH)
 
 deploy: ## Серверда: заҳира + янги версия + соғлиқ текшируви (CI/CD ҳам шуни чақиради)
 	bash scripts/deploy.sh
