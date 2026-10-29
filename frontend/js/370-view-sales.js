@@ -1,6 +1,6 @@
   /* ================= view: sales ================= */
   function salesSubnav(active){
-    var tabs=[["list","Сотувлар"],["new","+ Янги сотув"],["pricelist","Прайс"],["customers","Мижозлар"],["dtkt","ДТ-КТ"]];
+    var tabs=[["list","Сотувлар"],["new","+ Янги сотув"],["pricelist","Прайс"],["customers","Мижозлар"]];
     return '<div class="filter-row" style="margin-bottom:18px;">'+tabs.map(function(t){return '<button class="pill-filter'+(active===t[0]?" active":"")+'" data-salesview="'+t[0]+'">'+t[1]+'</button>';}).join("")+'</div>';
   }
   function wireSalesSubnav(root){
@@ -10,7 +10,6 @@
     if(STATE.salesView==="new") return renderSalesNew();
     if(STATE.salesView==="pricelist") return renderPriceList();
     if(STATE.salesView==="customers") return renderCustomers();
-    if(STATE.salesView==="dtkt") return renderCustomersDtKt();
     return renderSalesList();
   }
   function isSellableItem(it){ return it && (it.itemType==="mahsulot" || it.itemType==="yarim_tayyor"); }
@@ -1323,41 +1322,6 @@
       var c = customerById(b.getAttribute("data-del-cust"));
       openConfirm("Мижозни ўчириш","«"+c.name+"» ўчирилсинми? Унинг сотув тарихи сақланиб қолади.","Ҳа, ўчириш", function(){ dbDelete("customers", c.id, STATE.customers); toast("Ўчирилди"); }, true);
     }); });
-  }
-
-  /* ДТ-КТ: мижозлар билан ўзаро ҳисоб-китоб. Дт — мижозга ёзилган
-     сотувлар (ҚҚС билан), Кт — мижоздан кассага тушган пул. Сальдо =
-     Дт − Кт: мусбат бўлса мижоз қарздор, манфий бўлса биз ҳақдормиз. */
-  function renderCustomersDtKt(){
-    setTopbar("ДТ-КТ", STATE.customers.length+" та мижоз");
-    var root = document.getElementById("content");
-    var html = salesSubnav("dtkt");
-    var rowsData = STATE.customers.map(function(c){
-      var dt = 0;
-      STATE.sales.forEach(function(s){ if(!s.cancelled && s.customerId===c.id) dt += Number(s.totalWithVat)||0; });
-      var kt = customerCashPaidTotal(c.id, c.name);
-      return {name:c.name, dt:dt, kt:kt, saldo:dt-kt};
-    }).filter(function(r){ return r.dt>0 || r.kt>0; }).sort(function(a,b){ return (a.name||"").localeCompare(b.name||""); });
-    if(!rowsData.length){
-      html += emptyState("Ҳисоб-китоб йўқ","Мижозларга сотув ёки улардан тўлов киритилганда шу ерда Дт/Кт кўринади.");
-    } else {
-      var tDt=0, tKt=0;
-      var rows = rowsData.map(function(r){
-        tDt += r.dt; tKt += r.kt;
-        var chip = r.saldo>0.009 ? '<span class="chip chip-warning">Қарздор</span>' : (r.saldo<-0.009 ? '<span class="chip chip-good">Ҳақдор</span>' : '<span class="chip chip-good">Тенг</span>');
-        return '<tr>'+
-          '<td class="cell-strong">'+esc(r.name)+'</td>'+
-          '<td class="num">'+fmtSum(r.dt)+'</td>'+
-          '<td class="num">'+fmtSum(r.kt)+'</td>'+
-          '<td class="num cell-strong">'+fmtSum(Math.abs(r.saldo))+'</td>'+
-          '<td>'+chip+'</td>'+
-          '</tr>';
-      }).join("");
-      rows += '<tr><td class="cell-strong">Жами</td><td class="num cell-strong">'+fmtSum(tDt)+'</td><td class="num cell-strong">'+fmtSum(tKt)+'</td><td class="num cell-strong">'+fmtSum(Math.abs(tDt-tKt))+'</td><td></td></tr>';
-      html += '<div class="table-wrap"><table><thead><tr><th>Мижоз</th><th>Дт (сотув)</th><th>Кт (тўлов)</th><th>Сальдо</th><th>Ҳолат</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
-    }
-    root.innerHTML = html;
-    wireSalesSubnav(root);
   }
 
   function openCustomerForm(existing, onSaved, onCancel){
