@@ -1241,10 +1241,10 @@
       });
     });
   }
-  /* Ўтказмада қатнашадиган харажат турлари: «Фойда» (захира) бу ерда йўқ —
-     у алоҳида ҳисобланади. «Иш ҳақи» бўйича ҳам пул ўтади. */
+  /* Ўтказмада қатнашадиган харажат турлари: «Фойда» ҳам киради (2026-10-30) —
+     фойдадаги ортиқча пулни пули етмаган турга ўтказиш ва аксинча. */
   function finMoveBucketList(catKey){
-    return finBucketsFor(catKey).filter(function(b){ return b.key!=="profit"; });
+    return finBucketsFor(catKey);
   }
   function finMoveHave(ac, catKey, bucket){
     var cat = ac.cats[catKey];
