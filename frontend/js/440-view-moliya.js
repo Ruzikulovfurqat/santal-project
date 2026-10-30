@@ -491,6 +491,14 @@
         if(t.direction==="alloc"){
           finUnallocOut(ac3, amt, {date:ev.date, who:"Ўтказма", note:t.note||"", target:finCatName(ck)+" / "+finBucketName(bk)});
           finAddCat(ac3, ck, bk, amt, {date:ev.date, who:"Тақсимланмаган пулдан ўтказма", note:t.note||""});
+        } else if(t.direction==="move"){
+          /* Категория/харажат туридан бошқа категория/харажат турига
+             (2026-10-30). «Иш ҳақи»га тушганда «Иш ҳақи» (wage_base)
+             қисмига ёзилади. */
+          var fck = t.fromCategoryId || FIN_NO_CAT, fbk = t.fromBucket || "raw";
+          var tbk = bk==="wage" ? "wage_base" : bk;
+          finTakeFrom(ac3, fck, fbk, amt, {date:ev.date, who:"Ўтказма → "+finCatName(ck)+" / "+finBucketName(bk), note:t.note||""});
+          finAddCat(ac3, ck, tbk, amt, {date:ev.date, who:"Ўтказма: "+finCatName(fck)+" / "+finBucketName(fbk), note:t.note||""});
         } else if(t.direction==="to_reserve"){
           finTakeFrom(ac3, ck, bk, amt, {date:ev.date, who:"Ўтказма → Фойда / "+FIN_RESERVE_NAME, note:t.note||""});
           finAddCat(ac3, ck, "profit", amt, {date:ev.date, who:"Ўтказма: "+finBucketName(bk), note:t.note||""});

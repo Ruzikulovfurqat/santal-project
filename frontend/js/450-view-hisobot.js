@@ -1218,48 +1218,116 @@
     });
   }
 
-  /* ---------- Ўтказма: харажат туридан Фойда/Захирага ва аксинча ---------- */
-  function openFinTransferModal(acc, ac){
-    var dir = "to_reserve";
-    /* «Бошқарув бўлими»да «Фойда» тури йўқ — шунга кўра бу ўтказмада
-       қатнашмайди (2026-10-16). */
-    var catKeys = Object.keys(ac.cats).filter(function(k){ return k!==FIN_ADMIN_CAT; });
-    if(!catKeys.length) catKeys = [FIN_NO_CAT];
-    var catOptions = catKeys.map(function(k){ return '<option value="'+esc(k)+'">'+esc(finCatName(k))+'</option>'; }).join("");
-    var bucketOptions = FIN_BUCKETS.filter(function(b){ return b.key!=="profit"; })
-      .map(function(b){ return '<option value="'+b.key+'">'+esc(b.name)+'</option>'; }).join("");
-    var body = '<div class="field-row"><div class="field"><label>Сана</label><input id="ft-date" type="date" value="'+todayISO()+'"></div>'+
-      '<div class="field"><label>Йўналиш</label><select id="ft-dir">'+
-        '<option value="to_reserve">Харажат туридан → Фойда / Захирага</option>'+
-        '<option value="from_reserve">Фойда / Захирадан → харажат турига</option>'+
-      '</select></div></div>'+
-      '<div class="field-row"><div class="field"><label>Категория</label><select id="ft-cat">'+catOptions+'</select></div>'+
-      '<div class="field"><label>Харажат тури</label><select id="ft-bucket">'+bucketOptions+'</select></div></div>'+
-      '<div class="field-hint" id="ft-hint">Харажат тури танланганда пул фақат «Фойда» бўлимидаги «Захира»га ўтказилади.</div>'+
-      '<div class="field"><label>Сумма (сўм)</label><input id="ft-amount" type="number" min="0" step="any" value="0"></div>'+
-      '<div class="field"><label>Изоҳ <span class="opt">(ихтиёрий)</span></label><input id="ft-note"></div>';
+  /* ---------- Ўтказма: бир категориянинг харажат туридан бошқасига ---------- */
+  /* Сўров (2026-10-30): бир категория харажат турида турган ортиқча пулни
+     бошқа категориянинг харажат турига олиб ўтиш. Йўналиш / Категория /
+     Харажат тури катаклари ўрнига тўртта тугма: «Категориядан» ва «Харажат
+     туридан» (манба), «Категорияга» ва «Харажат турига» (мақсад). Тугма
+     босилса, рўйхат ойнаси очилади; танлангандан кейин шакл қайта очилади. */
+  function finPickFromList(title, options, onPicked, onClose){
+    var body = options.length
+      ? '<div class="table-wrap"><table><tbody>'+options.map(function(o, i){
+          return '<tr class="fpk-row" data-i="'+i+'" style="cursor:pointer;"><td class="cell-strong">'+esc(o.label)+'</td>'+
+            '<td class="num cell-muted">'+(o.hint?esc(o.hint):"")+'</td><td style="text-align:right;width:24px;">'+ICONS.arrowRight+'</td></tr>';
+        }).join("")+'</tbody></table></div>'
+      : emptyState("Рўйхат бўш","Танлаш учун вариант йўқ — манба харажат турида пул бўлиши керак.");
+    var m = openModal(title, body, '<button class="btn btn-secondary" data-close>Ёпиш</button>', true, onClose);
+    m.querySelector("[data-close]").addEventListener("click", closeModalOrBack);
+    m.querySelectorAll(".fpk-row").forEach(function(tr){
+      tr.addEventListener("click", function(){
+        var o = options[Number(tr.getAttribute("data-i"))];
+        closeModal();
+        onPicked(o.key);
+      });
+    });
+  }
+  /* Ўтказмада қатнашадиган харажат турлари: «Фойда» (захира) бу ерда йўқ —
+     у алоҳида ҳисобланади. «Иш ҳақи» бўйича ҳам пул ўтади. */
+  function finMoveBucketList(catKey){
+    return finBucketsFor(catKey).filter(function(b){ return b.key!=="profit"; });
+  }
+  function finMoveHave(ac, catKey, bucket){
+    var cat = ac.cats[catKey];
+    return cat ? (Number(cat.buckets[bucket])||0) : 0;
+  }
+  function openFinTransferModal(acc, ac, draft){
+    var d = draft || {date:todayISO(), amount:0, note:"", fromCat:"", fromBucket:"", toCat:"", toBucket:""};
+    var reopen = function(){ openFinTransferModal(acc, ac, d); };
+    var pickBtn = function(id, value, disabled){
+      return '<button type="button" class="btn btn-secondary" id="'+id+'"'+(disabled?' disabled':'')+' style="width:100%;justify-content:space-between;gap:8px;min-height:40px;text-align:left;">'+
+        '<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">'+(value?esc(value):'<span class="cell-muted">Танланг…</span>')+'</span>'+ICONS.arrowRight+'</button>';
+    };
+    var have = (d.fromCat && d.fromBucket) ? finMoveHave(ac, d.fromCat, d.fromBucket) : null;
+    var body = '<div class="field"><label>Сана</label><input id="ft-date" type="date" value="'+esc(d.date)+'"></div>'+
+      '<div class="field-row"><div class="field"><label>Категориядан</label>'+pickBtn("ft-from-cat", d.fromCat?finCatName(d.fromCat):"")+'</div>'+
+      '<div class="field"><label>Харажат туридан</label>'+pickBtn("ft-from-bucket", d.fromBucket?finBucketName(d.fromBucket):"", !d.fromCat)+'</div></div>'+
+      '<div class="field-row"><div class="field"><label>Категорияга</label>'+pickBtn("ft-to-cat", d.toCat?finCatName(d.toCat):"")+'</div>'+
+      '<div class="field"><label>Харажат турига</label>'+pickBtn("ft-to-bucket", d.toBucket?finBucketName(d.toBucket):"", !d.toCat)+'</div></div>'+
+      '<div class="field-hint" id="ft-hint">'+(have===null ? 'Аввал «Категориядан» ва «Харажат туридан»ни танланг.' : ('Танланган харажат турида мавжуд сумма: <b>'+fmtSum(have)+'</b>'))+'</div>'+
+      '<div class="field" style="margin-top:12px;"><label>Сумма (сўм)</label><input id="ft-amount" placeholder="0" value="'+(d.amount?esc(formatSumInputValue(d.amount)):"")+'"></div>'+
+      '<div class="field"><label>Изоҳ <span class="opt">(ихтиёрий)</span></label><input id="ft-note" value="'+esc(d.note)+'"></div>';
     var m = openModal("Ўтказма", body,
       '<button class="btn btn-secondary" data-cancel>Бекор қилиш</button><button class="btn btn-primary" data-save>Сақлаш</button>');
-    var dirEl = m.querySelector("#ft-dir"), hintEl = m.querySelector("#ft-hint");
-    dirEl.addEventListener("change", function(){
-      dir = dirEl.value;
-      hintEl.textContent = dir==="to_reserve"
-        ? "Харажат тури танланганда пул фақат «Фойда» бўлимидаги «Захира»га ўтказилади."
-        : "«Захира» танланганда пулни исталган харажат турига ўтказиш мумкин.";
-    });
     m.querySelector("[data-cancel]").addEventListener("click", closeModal);
+    m.querySelector("#ft-date").addEventListener("input", function(){ d.date = this.value; });
+    m.querySelector("#ft-note").addEventListener("input", function(){ d.note = this.value; });
+    wireSumInputFormatting(m.querySelector("#ft-amount"), function(v){ d.amount = v; });
+
+    var catOpts = function(keys, withHave){
+      return keys.map(function(k){
+        var tot = 0;
+        if(withHave) finMoveBucketList(k).forEach(function(b){ tot += Math.max(0, finMoveHave(ac, k, b.key)); });
+        return {key:k, label:finCatName(k), hint:withHave ? fmtSum(tot) : ""};
+      });
+    };
+    /* манба: фақат пули бор категориялар; мақсад: барча категориялар */
+    var fromKeys = Object.keys(ac.cats).filter(function(k){
+      return finMoveBucketList(k).some(function(b){ return finMoveHave(ac, k, b.key)>0.004; });
+    });
+    var toKeys = STATE.categories.map(function(c){ return c.id; }).concat([FIN_ADMIN_CAT, FIN_NO_CAT]);
+
+    m.querySelector("#ft-from-cat").addEventListener("click", function(){
+      closeModal();
+      finPickFromList("Категориядан", catOpts(fromKeys, true), function(k){
+        if(k!==d.fromCat){ d.fromCat = k; d.fromBucket = ""; }
+        reopen();
+      }, reopen);
+    });
+    m.querySelector("#ft-from-bucket").addEventListener("click", function(){
+      if(!d.fromCat) return;
+      closeModal();
+      var opts = finMoveBucketList(d.fromCat).map(function(b){ var v = finMoveHave(ac, d.fromCat, b.key); return {key:b.key, label:b.name, hint:fmtSum(v), v:v}; })
+        .filter(function(o){ return o.v>0.004; });
+      finPickFromList("Харажат туридан", opts, function(k){ d.fromBucket = k; reopen(); }, reopen);
+    });
+    m.querySelector("#ft-to-cat").addEventListener("click", function(){
+      closeModal();
+      finPickFromList("Категорияга", catOpts(toKeys, false), function(k){
+        if(k!==d.toCat){ d.toCat = k; d.toBucket = ""; }
+        reopen();
+      }, reopen);
+    });
+    m.querySelector("#ft-to-bucket").addEventListener("click", function(){
+      if(!d.toCat) return;
+      closeModal();
+      var opts = finMoveBucketList(d.toCat).map(function(b){ return {key:b.key, label:b.name, hint:""}; });
+      finPickFromList("Харажат турига", opts, function(k){ d.toBucket = k; reopen(); }, reopen);
+    });
+
     m.querySelector("[data-save]").addEventListener("click", function(){
-      var amount = Number(m.querySelector("#ft-amount").value)||0;
-      var bucket = m.querySelector("#ft-bucket").value;
-      var catKey = m.querySelector("#ft-cat").value;
-      var cat = ac.cats[catKey] || finBlankCat();
+      d.date = m.querySelector("#ft-date").value || todayISO();
+      d.note = m.querySelector("#ft-note").value.trim();
+      if(!d.fromCat || !d.fromBucket){ toast("«Категориядан» ва «Харажат туридан»ни танланг"); return; }
+      if(!d.toCat || !d.toBucket){ toast("«Категорияга» ва «Харажат турига»ни танланг"); return; }
+      if(d.fromCat===d.toCat && d.fromBucket===d.toBucket){ toast("Манба ва мақсад бир хил бўлмаслиги керак"); return; }
+      var amount = Number(d.amount)||0;
       if(amount<=0){ toast("Суммани киритинг"); return; }
-      var have = dir==="to_reserve" ? (cat.buckets[bucket]||0) : (cat.buckets.profit||0);
-      if(amount > have+0.004){ toast("Етарли маблағ йўқ: "+fmtSum(have)); return; }
+      var avail = finMoveHave(ac, d.fromCat, d.fromBucket);
+      if(amount > avail+0.004){ toast("Етарли маблағ йўқ: "+fmtSum(avail)); return; }
       dbAdd("financeTransfers", {
-        cashAccountId:kassaMainAccountId(), date:m.querySelector("#ft-date").value||todayISO(), direction:dir,
-        categoryId:catKey, bucket:bucket, amount:amount, note:m.querySelector("#ft-note").value.trim(),
-        cancelled:false, createdAt:new Date().toISOString()
+        cashAccountId:kassaMainAccountId(), date:d.date, direction:"move",
+        fromCategoryId:d.fromCat, fromBucket:d.fromBucket, categoryId:d.toCat, bucket:d.toBucket,
+        amount:amount, note:d.note, cancelled:false, createdAt:new Date().toISOString()
       }, STATE.financeTransfers);
       toast("Ўтказма сақланди");
       closeModal(); render();
