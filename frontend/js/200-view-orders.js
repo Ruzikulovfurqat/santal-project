@@ -815,6 +815,13 @@
          o.customerId деярли ҳар доим аллақачон маълум; қуйидаги номи
          бўйича қидириш/яратиш — фақат эски ёзувлар ёки чекка ҳолатлар
          учун хавфсизлик тўри сифатида сақланади. */
+      /* Эскирган харидор id'си (харидор ўчирилган ёки вақтинчалик «_pending_»
+         id қолиб кетган) — номи бўйича янги id топилади, шунда Савдода
+         буюртма шу харидор остида чиқади (2026-10-30). */
+      if(o.customerId && !customerById(o.customerId)){
+        var fixedCust = resolveCustomerByName(customer);
+        o.customerId = fixedCust ? fixedCust.id : "";
+      }
       if(o.customerId){ finishOrder(o.customerId); return; }
       var existingCustomer = resolveCustomerByName(customer);
       if(existingCustomer){ finishOrder(existingCustomer.id); }
