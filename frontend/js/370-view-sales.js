@@ -407,6 +407,54 @@
     };
   }
   function saleDraft(){ if(!STATE.saleDraft) STATE.saleDraft = freshSaleDraft(); return STATE.saleDraft; }
+  /* Буюртма қаторини (product/quantity/subtotalAmount/…) сотув қатори
+     схемасига (name/qty/lineSubtotal/…) ўгиради. «ҚҚСсиз сумма» ва «ҚҚС
+     суммаси» ҳисоботда айнан шу қиймат ишлатилиши учун сақлаб қўйилади
+     (2026-10-16); vatRate/vatSum эски ҳисоб-китоблар бузилмаслиги учун 0. */
+  function saleLineFromOrderLine(src){
+    var it = orderLineVat(src);
+    return {
+      itemId:src.itemId||"", name:src.product||src.name||"—", unit:src.unit||"",
+      qty:Number(src.quantity)||0, price:Number(src.price)||0, listPrice:Number(src.price)||0,
+      lineSubtotal:Number(src.subtotalAmount)||0, discountPct:Number(src.discountPct)||0,
+      discountAmount:Number(src.discountAmount)||0, lineTotal:Number(src.totalAmount)||0,
+      noVatAmount:Number(it.noVatAmount)||0, noVatRate:orderVatRateOf(it), noVatTax:Number(it.vatAmount)||0,
+      vatRate:0, vatSum:0, categoryKey:src.categoryKey||""
+    };
+  }
+  /* Буюртма таҳрирланганда унга боғланган фаол сотувлар ҳам янгиланади
+     (2026-10-30 сўрови: буюртма ўзгарса, Савдодаги сотув аввалги ҳолида
+     қолмасин). Икки босқич: аввал режа тузилади (омборда етарлилиги
+     текширилади), сўнг — буюртма сақлангандан кейин — қўлланади. */
+  function orderSaleSyncPlan(orderId, orderLike){
+    var order = orderById(orderId);
+    var src = orderItemsList(orderLike);
+    return STATE.sales.filter(function(s){ return s.orderId===orderId && !s.cancelled; }).map(function(s){
+      var prevCat = {};
+      (s.items||[]).forEach(function(x){ if(x.categoryKey && !prevCat[x.name]) prevCat[x.name] = x.categoryKey; });
+      var items = src.map(function(r){
+        var line = saleLineFromOrderLine(r);
+        if(!(line.categoryKey && dwOf(line.categoryKey))) line.categoryKey = prevCat[line.name] || dwDefaultKeyForOrderItem(r, order);
+        return line;
+      });
+      var oldQtyFor = function(id){ return (s.items||[]).filter(function(x){ return x.itemId===id; }).reduce(function(a,x){ return a+Number(x.qty||0); }, 0); };
+      return {sale:s, items:items, shortages:saleStockShortages(items, s.warehouseId, oldQtyFor)};
+    });
+  }
+  function applyOrderSaleSync(plans, orderLike){
+    plans.forEach(function(p){
+      var s = p.sale, items = p.items;
+      (s.items||[]).forEach(function(it){ if(it.itemId) adjustStockBy(it.itemId, s.warehouseId, it.qty); });
+      items.forEach(function(it){ if(it.itemId) adjustStockBy(it.itemId, s.warehouseId, -it.qty); });
+      var subtotal = items.reduce(function(a,it){ return a+it.lineSubtotal; }, 0);
+      var discount = items.reduce(function(a,it){ return a+it.discountAmount; }, 0);
+      var total = items.reduce(function(a,it){ return a+it.lineTotal; }, 0);
+      var paid = Math.min(Number(s.paidAmount)||0, total);
+      var upd = {items:items, subtotalNoVat:subtotal, discountAmount:discount, totalWithVat:total, paidAmount:paid, debtAmount:Math.max(0, total-paid)};
+      if(orderLike.customerId){ upd.customerId = orderLike.customerId; upd.customerName = orderLike.customer || s.customerName; }
+      dbUpdate("sales", s.id, upd, STATE.sales);
+    });
+  }
   /* "Таҳрирлаш" тугмаси орқали чақирилади. Агар сотув буюртмага боғланган
      бўлса (s.orderId — демак янги, 2026-10-03дан кейинги шаклда
      яратилган) — янги (буюртмага боғланган, ўқиш учун) шакл очилади
@@ -467,13 +515,24 @@
       customerId: s.customerId||"", customerName: s.customerName||"", contractNumber: s.contractNumber||"", contractDate: s.contractDate||"",
       warehouseId: s.warehouseId||"", workshopId: s.workshopId||"", orderId: s.orderId||"",
       items: (s.items||[]).map(function(it){
-        return {
+        var qty = Number(it.qty)||0, price = Number(it.price)||0, pct = Number(it.discountPct)||0;
+        var sub = Number(it.lineSubtotal)||0, disc = Number(it.discountAmount)||0;
+        var row = {
           itemId: it.itemId||"", product: it.name||"—", unit: it.unit||"",
-          quantity: Number(it.qty)||0, price: Number(it.price)||0,
-          subtotalAmount: Number(it.lineSubtotal)||0, discountPct: Number(it.discountPct)||0,
-          discountAmount: Number(it.discountAmount)||0, totalAmount: Number(it.lineTotal)||0,
+          quantity: qty, price: price,
+          subtotalAmount: sub, discountPct: pct,
+          discountAmount: disc, totalAmount: Number(it.lineTotal)||0,
+          /* қўлда ёзилган чегирма суммаси таҳрирда йўқолмасин */
+          discountManual: Math.abs(disc - r2(sub*pct/100)) > 0.01,
+          vatRate: (it.noVatRate!=null ? Number(it.noVatRate) : 12),
           categoryKey: it.categoryKey || dwDefaultKeyForOrderItem({itemId:it.itemId, product:it.name}, s.orderId?orderById(s.orderId):null)
         };
+        if(it.noVatAmount!=null){
+          row.noVatAmount = Number(it.noVatAmount)||0;
+          row.vatAmount = Number(it.noVatTax)||0;
+          row.unitNoVat = qty>0 ? r2(row.noVatAmount/qty) : 0;
+        }
+        return row;
       }),
       dueDate: s.dueDate||"", note: s.note||"",
       paidAmount: Number(s.paidAmount)||0, debtAmount: Number(s.debtAmount)||0
@@ -1063,6 +1122,38 @@
      → Омбор (+ агар "Тайёр маҳсулот омбори" бўлса — Цех) → Қарз муддати
      → Изоҳ → Якуний жамлар → Сақлаш/Бекор қилиш. Қаранг: openSaleEditForm
      (эски сотувлар учун эски шакл ўзгаришсиз қолди), freshSaleDraft. */
+  function saleTotalsInnerHtml(items){
+    var t = {subtotal:0, discount:0, vat:0, total:0};
+    items.forEach(function(it){
+      t.subtotal += Number(it.subtotalAmount)||0; t.discount += Number(it.discountAmount)||0;
+      t.total += Number(it.totalAmount)||0; t.vat += Number(orderLineVat(it).vatAmount)||0;
+    });
+    return '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px;"><span>Жами нархи</span><span class="num">'+fmtSum(t.subtotal)+'</span></div>'+
+      '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px;"><span>Чегирма суммаси</span><span class="num">'+fmtSum(t.discount)+'</span></div>'+
+      '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:10px;"><span>Шундан ҚҚС</span><span class="num">'+fmtSum(t.vat)+'</span></div>'+
+      '<div style="border-top:1px solid var(--border-strong);padding-top:10px;display:flex;justify-content:space-between;"><span style="font-weight:800;">ЯКУНИЙ ЖАМИ СУММА</span><span class="num" style="font-size:19px;font-weight:700;">'+fmtSum(t.total)+'</span></div>';
+  }
+  /* Сотувни таҳрирлашдаги маҳсулот қаторлари: миқдор / нарх / чегирма % /
+     ҚҚС % қўлда ўзгартирилади, қолган суммалар автомат қайта ҳисобланади
+     (recalcOrderLine — буюртма формасидаги ҳисоб билан бир хил). */
+  function saleEditLinesTable(items){
+    var f = function(x){ return fmtSum(x).replace(/\s*сўм$/,""); };
+    var rows = items.map(function(it0, i){
+      var it = orderLineVat(it0);
+      var catSel = '<select data-sale-cat="'+i+'" style="min-width:140px;padding:6px 8px;border-radius:8px;border:1px solid var(--border-strong);background:var(--bg);font-size:12.5px;'+(it0.categoryKey?'':'border-color:var(--critical);')+'"><option value="">— танланг —</option>'+DASH_WORKSHOPS.map(function(dw){ return '<option value="'+dw.key+'"'+(it0.categoryKey===dw.key?" selected":"")+'>'+esc(dw.name)+'</option>'; }).join("")+'</select>';
+      return '<tr data-srow="'+i+'"><td class="cell-muted" style="text-align:center;">'+(i+1)+'</td><td class="cell-strong">'+esc(it0.product||it0.name||"—")+'</td><td>'+catSel+'</td>'+
+        '<td class="cell-muted">'+esc(it0.unit||"—")+'</td>'+
+        '<td><input class="sr-input" type="number" min="0" step="any" data-sf="quantity" value="'+esc(it0.quantity)+'" style="width:78px;"></td>'+
+        '<td><input class="sr-input" type="text" inputmode="decimal" data-sf="price" value="'+formatSumInputValue(it0.price)+'" style="width:112px;"></td>'+
+        '<td><input class="sr-input" type="number" min="0" max="100" step="any" data-sf="discountPct" value="'+esc(Number(it0.discountPct)||0)+'" style="width:64px;"></td>'+
+        '<td class="num" data-c="noVatAmount">'+f(it.noVatAmount)+'</td>'+
+        '<td><input class="sr-input" type="number" min="0" max="100" step="any" data-sf="vatRate" value="'+esc(orderVatRateOf(it))+'" style="width:64px;"></td>'+
+        '<td class="num" data-c="vatAmount">'+f(it.vatAmount)+'</td>'+
+        '<td class="num cell-strong" data-c="totalAmount">'+f(it.totalAmount)+'</td>'+
+        '<td><button type="button" class="btn btn-ghost btn-icon" data-sale-row-del="'+i+'" title="Қаторни ўчириш">'+ICONS.x+'</button></td></tr>';
+    }).join("");
+    return '<div class="table-wrap"><table class="order-lines"><thead><tr><th>№</th><th>Маҳсулот номи</th><th>Категория</th><th>Ўлчов бирлиги</th><th>Миқдор</th><th>Нарх (сўм)</th><th>Чегирма %</th><th>ҚҚСсиз сумма (сўм)</th><th>ҚҚС %</th><th>ҚҚС суммаси (сўм)</th><th>Жами сумма (сўм)</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }
   function renderSalesNewStyleForm(){
     var d = saleDraft();
     setTopbar(d.editingId?"Сотувни таҳрирлаш":"Янги сотув", d.editingId?"Мавжуд сотувни ўзгартириш":"Буюртма асосида мижозга маҳсулот сотиш", "");
@@ -1075,8 +1166,6 @@
     if(!d.warehouseId) d.warehouseId = STATE.warehouses[0].id;
     var order = d.orderId ? orderById(d.orderId) : null;
 
-    var totals = {subtotal:0, discount:0, total:0};
-    d.items.forEach(function(it){ totals.subtotal+=Number(it.subtotalAmount)||0; totals.discount+=Number(it.discountAmount)||0; totals.total+=Number(it.totalAmount)||0; });
     /* Категория (цех) — ҳар бир қатор учун алоҳида: Бошқарув панелида
        даромад шу категорияга қараб цехларга ажратилади (2026-10-06).
        Буюртма танланганда (ва эски сотув таҳрирланганда) қаторларга
@@ -1094,16 +1183,12 @@
       (d.customerId ? ('<div class="field"><label>Буюртма рақами</label><button type="button" class="btn btn-secondary" id="sale-order-pick" style="width:100%;justify-content:flex-start;font-weight:600;">'+(order?esc(order.orderNumber):'<span class="cell-muted">— Буюртмани танланг —</span>')+'</button></div>') : '')+
       (d.orderId ? (
         '<div class="section-head" style="margin-top:10px;"><h2 style="font-size:13.5px;">Буюртмадаги маҳсулотлар</h2></div>'+
-        '<div style="margin-bottom:16px;">'+orderLinesViewTable(d.items, {catSelect:true})+'</div>'+
+        (d.editingId ? '<div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;"><span class="field-hint" style="margin:0;">Миқдор, нарх, чегирма ва ҚҚС %ни шу ерда ўзгартириш мумкин.</span><button type="button" class="btn btn-secondary btn-sm" id="sale-reload-order">Буюртмадан қайта олиш</button></div>' : '')+
+        '<div style="margin-bottom:16px;">'+(d.editingId ? saleEditLinesTable(d.items) : orderLinesViewTable(d.items, {catSelect:true}))+'</div>'+
         '<div class="field"><label>Омбор (қаердан сотилади)</label><button type="button" class="btn btn-secondary" id="sale-wh-pick" style="width:100%;justify-content:flex-start;font-weight:600;">'+whLabel+'</button></div>'+
         '<div class="field-row"><div class="field"><label>Қарз муддати <span class="opt">(ихтиёрий)</span></label><input id="sale-due" type="date" value="'+esc(d.dueDate||"")+'"></div></div>'+
         '<div class="field"><label>Изоҳ <span class="opt">(ихтиёрий)</span></label><textarea id="sale-note">'+esc(d.note||"")+'</textarea></div>'+
-        '<div class="card" style="padding:16px 18px;background:var(--surface-2);">'+
-          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px;"><span>Жами нархи</span><span class="num">'+fmtSum(totals.subtotal)+'</span></div>'+
-          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px;"><span>Чегирма суммаси</span><span class="num">'+fmtSum(totals.discount)+'</span></div>'+
-          '<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:10px;"><span>Шундан ҚҚС</span><span class="num">'+fmtSum(d.items.reduce(function(a,x){ return a+(Number(orderLineVat(x).vatAmount)||0); },0))+'</span></div>'+
-          '<div style="border-top:1px solid var(--border-strong);padding-top:10px;display:flex;justify-content:space-between;"><span style="font-weight:800;">ЯКУНИЙ ЖАМИ СУММА</span><span class="num" style="font-size:19px;font-weight:700;">'+fmtSum(totals.total)+'</span></div>'+
-        '</div>'+
+        '<div class="card" id="sale-totals-box" style="padding:16px 18px;background:var(--surface-2);">'+saleTotalsInnerHtml(d.items)+'</div>'+
         '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button class="btn btn-secondary" id="sale-cancel-btn">Бекор қилиш</button><button class="btn btn-primary" id="sale-submit">'+(d.editingId?"Ўзгаришни сақлаш":"Сотувни сақлаш")+'</button></div>'
       ) : '<div class="field-hint" style="margin-top:4px;">Аввал харидор ва буюртмани танланг — шунда маҳсулотлар, омбор ва якуний сумма шу ерда кўринади.</div>')+
       '</div>';
@@ -1165,6 +1250,40 @@
       });
     });
 
+    /* Таҳрирлаш режими: қатор катакларини ўзгартириш (миқдор/нарх/чегирма/ҚҚС) */
+    var fmtCell = function(x){ return fmtSum(x).replace(/\s*сўм$/,""); };
+    root.querySelectorAll("tr[data-srow]").forEach(function(tr){
+      var it = d.items[Number(tr.getAttribute("data-srow"))];
+      if(!it) return;
+      var refresh = function(){
+        recalcOrderLine(it);
+        var v = orderLineVat(it);
+        ["noVatAmount","vatAmount","totalAmount"].forEach(function(k){ tr.querySelector('[data-c="'+k+'"]').textContent = fmtCell(v[k]); });
+        document.getElementById("sale-totals-box").innerHTML = saleTotalsInnerHtml(d.items);
+      };
+      tr.querySelector('[data-sf="quantity"]').addEventListener("input", function(){ it.quantity = Number(this.value)||0; refresh(); });
+      wireSumInputFormatting(tr.querySelector('[data-sf="price"]'), function(v){ it.price = v; refresh(); });
+      tr.querySelector('[data-sf="discountPct"]').addEventListener("input", function(){ it.discountPct = Number(this.value)||0; it.discountManual = false; refresh(); });
+      tr.querySelector('[data-sf="vatRate"]').addEventListener("input", function(){ it.vatRate = this.value==="" ? 12 : (Number(this.value)||0); refresh(); });
+    });
+    root.querySelectorAll("[data-sale-row-del]").forEach(function(b){
+      b.addEventListener("click", function(){ d.items.splice(Number(b.getAttribute("data-sale-row-del")), 1); render(); });
+    });
+    var reloadBtn = document.getElementById("sale-reload-order");
+    if(reloadBtn) reloadBtn.addEventListener("click", function(){
+      var o = orderById(d.orderId);
+      if(!o){ toast("Буюртма топилмади"); return; }
+      var prevCat = {};
+      d.items.forEach(function(x){ if(x.categoryKey && !prevCat[x.product]) prevCat[x.product] = x.categoryKey; });
+      d.items = orderItemsList(o).map(function(it){
+        var c = Object.assign({}, it);
+        c.categoryKey = (c.categoryKey && dwOf(c.categoryKey)) ? c.categoryKey : (prevCat[c.product] || dwDefaultKeyForOrderItem(c, o));
+        return c;
+      });
+      render();
+      toast("Маҳсулотлар буюртмадан қайта олинди — «Ўзгаришни сақлаш»ни босинг");
+    });
+
     var submitBtn = document.getElementById("sale-submit");
     if(submitBtn) submitBtn.addEventListener("click", submitSaleNewStyle);
     var cancelBtn = document.getElementById("sale-cancel-btn");
@@ -1195,20 +1314,9 @@
     if(!d.items.length){ toast("Танланган буюртмада маҳсулот топилмади"); return; }
     if(d.items.some(function(it){ return !it.categoryKey; })){ toast("Ҳар бир маҳсулот учун категорияни (цехни) танланг"); return; }
 
-    var items = d.items.map(function(it){
-      return {
-        itemId:it.itemId||"", name:it.product||it.name||"—", unit:it.unit||"",
-        qty:Number(it.quantity)||0, price:Number(it.price)||0, listPrice:Number(it.price)||0,
-        lineSubtotal:Number(it.subtotalAmount)||0, discountPct:Number(it.discountPct)||0,
-        discountAmount:Number(it.discountAmount)||0, lineTotal:Number(it.totalAmount)||0,
-        /* Буюртма қаторидаги «ҚҚСсиз сумма (сўм)» ва «ҚҚС суммаси» —
-           ҳисоботда айнан шу қиймат ишлатилиши учун сақлаб қўйилади
-           (2026-10-16). Мавжуд vatRate/vatSum майдонлари ўзгаришсиз
-           қолдирилди, токи эски ҳисоб-китоблар бузилмасин. */
-        noVatAmount:Number(it.noVatAmount)||0, noVatRate:orderVatRateOf(it), noVatTax:Number(it.vatAmount)||0,
-        vatRate:0, vatSum:0, categoryKey:it.categoryKey||""
-      };
-    });
+    /* Таҳрирлашда қаторларда миқдор 0 бўлганлари олиб ташланади (2026-10-30). */
+    var items = d.items.filter(function(it){ return !d.editingId || Number(it.quantity)>0; }).map(saleLineFromOrderLine);
+    if(!items.length){ toast("Камида битта маҳсулот ва миқдорини киритинг"); return; }
     var subtotal = items.reduce(function(s,it){return s+it.lineSubtotal;},0);
     var discountTotal = items.reduce(function(s,it){return s+it.discountAmount;},0);
     var total = items.reduce(function(s,it){return s+it.lineTotal;},0);

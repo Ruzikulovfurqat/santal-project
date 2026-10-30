@@ -772,8 +772,18 @@
       var finishOrder = function(customerId){
         data.customerId = customerId||"";
         if(isEdit){
+          /* Шу буюртмага боғланган фаол сотувлар ҳам янгиланади (2026-10-30):
+             аввал омборда етарлилиги текширилади — етарли бўлмаса буюртма
+             ҳам сақланмайди, шакл очиқ қолади. */
+          var salePlans = orderSaleSyncPlan(o.id, data);
+          var shortPlan = salePlans.filter(function(p){ return p.shortages.length; })[0];
+          if(shortPlan){
+            toast("Сотув омборида етарли эмас: "+shortPlan.shortages.map(function(x){ return x.name+" (керак "+fmtNum(x.need)+", бор "+fmtNum(x.have)+")"; }).join(", "));
+            return;
+          }
           dbUpdate("orders", o.id, data, STATE.orders);
-          toast("Буюртма янгиланди");
+          if(salePlans.length) applyOrderSaleSync(salePlans, data);
+          toast(salePlans.length ? "Буюртма ва боғлиқ сотув ("+salePlans.length+" та) янгиланди" : "Буюртма янгиланди");
         } else {
           /* 2026-10-03: буюртмада энди бир нечта маҳсулот бўлиши мумкин —
              БАРЧА маҳсулотлар омборда етарли бўлгандагина "Тайёр омборда"
