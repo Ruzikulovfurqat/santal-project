@@ -1,6 +1,6 @@
   /* ================= view: sales ================= */
   function salesSubnav(active){
-    var tabs=[["list","Сотувлар"],["new","+ Янги сотув"],["pricelist","Прайс"],["customers","Мижозлар"]];
+    var tabs=[["list","Сотувлар"],["new","+ Янги сотув"],["pricelist","Прайс"],["customers","Мижозлар"],["dtkt","ДТ-КТ"]];
     return '<div class="filter-row" style="margin-bottom:18px;">'+tabs.map(function(t){return '<button class="pill-filter'+(active===t[0]?" active":"")+'" data-salesview="'+t[0]+'">'+t[1]+'</button>';}).join("")+'</div>';
   }
   function wireSalesSubnav(root){
@@ -10,6 +10,7 @@
     if(STATE.salesView==="new") return renderSalesNew();
     if(STATE.salesView==="pricelist") return renderPriceList();
     if(STATE.salesView==="customers") return renderCustomers();
+    if(STATE.salesView==="dtkt") return renderCustomersDtKt();
     return renderSalesList();
   }
   function isSellableItem(it){ return it && (it.itemType==="mahsulot" || it.itemType==="yarim_tayyor"); }

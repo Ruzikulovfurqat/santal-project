@@ -12,7 +12,7 @@
      қайтарилмайди, шунга кўра аввал Админ PIN, сўнг тасдиқлаш сўралади. */
   var DB_WIPE_GROUPS = [
     {key:"orders",     name:"Харидор буюртмалари",                 cols:[["orders","orders"]]},
-    {key:"sales",      name:"Сотувлар, прайслар, қарз тўловлари",  cols:[["sales","sales"],["priceLists","priceLists"],["debtPayments","debtPayments"]]},
+    {key:"sales",      name:"Сотувлар, прайслар, қарз тўловлари",  cols:[["sales","sales"],["priceLists","priceLists"],["debtPayments","debtPayments"],["dtkt","dtkt"]]},
     {key:"customers",  name:"Харидорлар (мижозлар)",               cols:[["customers","customers"]]},
     {key:"whmoves",    name:"Омбор ҳаракатлари (кирим, кўчириш, ҳисобдан чиқариш, инвентаризация, лом)",
                        cols:[["receipts","receipts"],["transfers","transfers"],["writeoffs","writeoffs"],["inventories","inventories"],

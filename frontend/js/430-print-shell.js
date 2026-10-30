@@ -605,6 +605,11 @@
         entries.push({date:s.date||(s.createdAt||"").slice(0,10), createdAt:s.createdAt||"", desc:"Сотув — "+itemsCount+" та маҳсулот", kirim:0, chiqim:Number(s.totalWithVat||0), _kind:"sale", _ref:s});
       });
     }
+    /* «Савдо → ДТ-КТ»да киритилган бошланғич қолдиқлар: ёзув санаси билан
+       тарихга тушади. Харидорда мусбат сумма — харидор қарздор (чиким),
+       манфий — ортиқча пули бор (кирим). Етказиб берувчида аксинча: мусбат —
+       биз қарздормиз (кирим), манфий — биз ортиқча тўлаганмиз (чиким). */
+    dtktLedgerEntries(type, who).forEach(function(e){ entries.push(e); });
     entries.sort(function(a,b){
       if(a.date!==b.date) return a.date.localeCompare(b.date);
       return (a.createdAt||"").localeCompare(b.createdAt||"");
@@ -619,6 +624,7 @@
     else if(entry._kind==="equipreceipt") openEquipmentReceiptDetail(entry._ref);
     else if(entry._kind==="lomreturn") openLomReturnDetail(entry._ref);
     else if(entry._kind==="sale") openSaleDetail(entry._ref);
+    else if(entry._kind==="dtkt") openDtKtForm(dtktDraftFromDoc(entry._ref));
   }
   function printActStatement(type, name, from, to, entries, opening, closing, periodKirim, periodChiqim){
     var rows = entries.map(function(e){
