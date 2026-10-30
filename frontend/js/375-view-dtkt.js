@@ -10,47 +10,128 @@
     return r.cur==="USD" ? r2((Number(r.usd)||0)*(Number(r.rate)||0)) : (Number(r.sum)||0);
   }
   function dtktTotal(rows){ return rows.reduce(function(s,r){ return s+dtktRowSom(r); }, 0); }
-  function dtktBlankRow(date){ return {name:"", cur:"UZS", sum:0, usd:0, rate:finRateOn(date)}; }
+  function dtktBlankRow(date){ return {name:"", type:"", refId:"", cur:"UZS", sum:0, usd:0, rate:finRateOn(date)}; }
+  /* Қатор кимга тегишли: "customer" (харидор) ёки "supplier" (етказиб
+     берувчи). Эски ёзувларда тур сақланмаган — у ҳолда Дебиторлар қатори
+     харидор, Кредиторлар қатори етказиб берувчи деб олинади. */
+  function dtktRowType(r, kind){
+    return r.type==="customer" || r.type==="supplier" ? r.type : (kind==="deb" ? "customer" : "supplier");
+  }
   function dtktNewDraft(){
     var d = {id:"", date:todayISO(), deb:false, cred:false, debtors:[], creditors:[]};
     d.debtors.push(dtktBlankRow(d.date)); d.creditors.push(dtktBlankRow(d.date));
     return d;
   }
   function dtktDraftFromDoc(doc){
-    var copyRows = function(rows){
+    var copyRows = function(rows, kind){
       return (rows||[]).map(function(x){
-        return {name:x.name||"", cur:x.cur==="USD"?"USD":"UZS", sum:x.cur==="USD"?0:(Number(x.amount)||0), usd:Number(x.usd)||0, rate:Number(x.rate)||0};
+        return {name:x.name||"", type:dtktRowType(x, kind), refId:x.refId||"", cur:x.cur==="USD"?"USD":"UZS", sum:x.cur==="USD"?0:(Number(x.amount)||0), usd:Number(x.usd)||0, rate:Number(x.rate)||0};
       });
     };
     var d = {id:doc.id, date:doc.date||todayISO(), deb:(doc.debtors||[]).length>0, cred:(doc.creditors||[]).length>0,
-      debtors:copyRows(doc.debtors), creditors:copyRows(doc.creditors)};
+      debtors:copyRows(doc.debtors, "deb"), creditors:copyRows(doc.creditors, "cred")};
     if(!d.debtors.length) d.debtors.push(dtktBlankRow(d.date));
     if(!d.creditors.length) d.creditors.push(dtktBlankRow(d.date));
     return d;
   }
 
   /* Солиштирма далолатнома тарихи учун: танланган харидор (type="customer")
-     ёки етказиб берувчи (type="supplier") бўйича ДТ-КТ қаторлари. Кимга
-     тегишлилиги id бўйича, id топилмаса (ёки исм ўзгармаган бўлса) исм
-     бўйича аниқланади. */
+     ёки етказиб берувчи (type="supplier") бўйича ДТ-КТ қаторлари. Дебиторлар
+     ҳам, Кредиторлар ҳам харидор ёки етказиб берувчи бўлиши мумкин, шунинг
+     учун иккала рўйхат текширилади. Кимга тегишлилиги турига қараб id
+     бўйича, id топилмаса (ёки исм ўзгармаган бўлса) исм бўйича аниқланади. */
   function dtktLedgerEntries(type, who){
-    var isCust = type==="customer";
-    var whoRec = isCust ? customerById(who) : supplierById(who);
+    var whoRec = type==="customer" ? customerById(who) : supplierById(who);
     var whoName = whoRec ? (whoRec.name||"").trim().toLowerCase() : "";
     var entries = [];
     STATE.dtkt.forEach(function(doc){
-      (isCust ? (doc.debtors||[]) : (doc.creditors||[])).forEach(function(r){
-        var mine = (r.refId && r.refId===who) || (!!whoName && (r.name||"").trim().toLowerCase()===whoName);
-        var amt = Number(r.amount)||0;
-        if(!mine || !amt) return;
-        var desc = "Бошланғич қолдиқ (ДТ-КТ)"+(r.cur==="USD" ? " — $"+fmtNum(r.usd)+" × "+fmtNum(r.rate) : "");
-        /* харидор: мусбат=чиким, манфий=кирим; етказиб берувчи: мусбат=кирим, манфий=чиким */
-        var asKirim = isCust ? amt<0 : amt>0;
-        entries.push({date:doc.date||(doc.createdAt||"").slice(0,10), createdAt:doc.createdAt||"", desc:desc,
-          kirim:asKirim?Math.abs(amt):0, chiqim:asKirim?0:Math.abs(amt), _kind:"dtkt", _ref:doc});
+      [["deb", doc.debtors], ["cred", doc.creditors]].forEach(function(grp){
+        var kind = grp[0];
+        (grp[1]||[]).forEach(function(r){
+          if(dtktRowType(r, kind)!==type) return;
+          var mine = (r.refId && r.refId===who) || (!!whoName && (r.name||"").trim().toLowerCase()===whoName);
+          var amt = Number(r.amount)||0;
+          if(!mine || !amt) return;
+          var desc = "Бошланғич қолдиқ (ДТ-КТ)"+(r.cur==="USD" ? " — $"+fmtNum(r.usd)+" × "+fmtNum(r.rate) : "");
+          /* Дебиторлар: мусбат — улар бизга қарздор (чиким), манфий — ортиқча
+             пули бор (кирим). Кредиторлар: мусбат — биз қарздормиз (кирим),
+             манфий — биз ортиқча тўлаганмиз (чиким). Бу ҳам харидорга, ҳам
+             етказиб берувчига бир хил қўлланади. */
+          var asKirim = kind==="deb" ? amt<0 : amt>0;
+          entries.push({date:doc.date||(doc.createdAt||"").slice(0,10), createdAt:doc.createdAt||"", desc:desc,
+            kirim:asKirim?Math.abs(amt):0, chiqim:asKirim?0:Math.abs(amt), _kind:"dtkt", _ref:doc});
+        });
       });
     });
     return entries;
+  }
+
+  /* Харидор ёки етказиб берувчини танлаш ойнаси: тепада икки тугма — босилган
+     гуруҳнинг рўйхати чиқади; қидирувга ёзилса иккала рўйхатдан қидирилади.
+     onPicked(type, id, name). Ойна ёпилса onClose чақирилади. */
+  function openDtktPartyPicker(onPicked, onClose){
+    var pickType = "";
+    var body = '<div class="seg" style="margin-bottom:12px;">'+
+        '<button type="button" class="dtp-type" data-type="customer">Харидор</button>'+
+        '<button type="button" class="dtp-type" data-type="supplier">Етказиб берувчи</button>'+
+      '</div>'+
+      personSelectSearchBoxHtml("dtp-search")+
+      '<div id="dtp-list" style="max-height:380px;overflow-y:auto;"></div>';
+    var m = openModal("Харидор ёки етказиб берувчини танлаш", body, '<button class="btn btn-secondary" data-close>Ёпиш</button>', true);
+    m.querySelector("[data-close]").addEventListener("click", function(){ closeModal(); if(onClose) onClose(); });
+    var listEl = m.querySelector("#dtp-list");
+    var label = {customer:"Харидор", supplier:"Етказиб берувчи"};
+    function renderList(){
+      var q = m.querySelector("#dtp-search").value.trim().toLowerCase();
+      var items = [];
+      ["customer","supplier"].forEach(function(t){
+        if(!q && pickType!==t) return;
+        (t==="customer" ? STATE.customers : STATE.suppliers).forEach(function(p){
+          if(q && (p.name||"").toLowerCase().indexOf(q)<0) return;
+          items.push({type:t, p:p});
+        });
+      });
+      if(!q && !pickType){
+        listEl.innerHTML = '<div class="field-hint">Юқоридаги «Харидор» ёки «Етказиб берувчи» тугмасини босинг ёки номини ёзиб қидиринг.</div>';
+        return;
+      }
+      items.sort(function(a,b){ return (a.p.name||"").localeCompare(b.p.name||""); });
+      if(!items.length){ listEl.innerHTML = emptyState("Топилмади", q ? "Бундай ном харидорлар ҳам, етказиб берувчилар орасида ҳам йўқ." : "Рўйхат бўш."); return; }
+      listEl.innerHTML = '<div class="table-wrap"><table><tbody>'+items.map(function(x){
+        return '<tr class="dtp-row" data-type="'+x.type+'" data-id="'+esc(x.p.id)+'" style="cursor:pointer;"><td class="cell-strong">'+esc(x.p.name)+'</td>'+
+          '<td><span class="chip chip-neutral">'+label[x.type]+'</span></td><td style="text-align:right;width:24px;">'+ICONS.arrowRight+'</td></tr>';
+      }).join("")+'</tbody></table></div>';
+      listEl.querySelectorAll(".dtp-row").forEach(function(rowEl){
+        rowEl.addEventListener("click", function(){
+          var t = rowEl.getAttribute("data-type"), id = rowEl.getAttribute("data-id");
+          var rec = t==="customer" ? customerById(id) : supplierById(id);
+          closeModal();
+          onPicked(t, id, rec ? rec.name : "");
+        });
+      });
+    }
+    m.querySelectorAll(".dtp-type").forEach(function(b){
+      b.addEventListener("click", function(){
+        pickType = b.getAttribute("data-type");
+        m.querySelectorAll(".dtp-type").forEach(function(b2){ b2.classList.toggle("active", b2===b); });
+        m.querySelector("#dtp-search").value = "";
+        renderList();
+      });
+    });
+    m.querySelector("#dtp-search").addEventListener("input", renderList);
+    renderList();
+  }
+
+  /* «+» тугмаси: янги ким қўшилади — аввал тур сўралади, сўнг тегишли шакл очилади. */
+  function openDtktNewPartyChoice(onType, onClose){
+    var body = '<div style="display:flex;gap:10px;flex-wrap:wrap;">'+
+      '<button type="button" class="btn btn-secondary" data-t="customer" style="flex:1;min-height:44px;">Янги харидор</button>'+
+      '<button type="button" class="btn btn-secondary" data-t="supplier" style="flex:1;min-height:44px;">Янги етказиб берувчи</button></div>';
+    var m = openModal("Ким қўшилади?", body, '<button class="btn btn-secondary" data-close>Ёпиш</button>');
+    m.querySelector("[data-close]").addEventListener("click", function(){ closeModal(); if(onClose) onClose(); });
+    m.querySelectorAll("[data-t]").forEach(function(b){
+      b.addEventListener("click", function(){ var t = b.getAttribute("data-t"); closeModal(); onType(t); });
+    });
   }
 
   /* Минус белгисини ҳам қабул қиладиган сумма майдони — wireSumInputFormatting
@@ -118,7 +199,7 @@
   function dtktSectionHtml(d, kind){
     var rows = kind==="deb" ? d.debtors : d.creditors;
     var title = kind==="deb" ? "Дебиторлар" : "Кредиторлар";
-    var newTitle = kind==="deb" ? "Янги харидор қўшиш" : "Янги етказиб берувчи қўшиш";
+    var newTitle = "Янги харидор ёки етказиб берувчи қўшиш";
     var body = rows.map(function(r, i){
       var amt;
       if(r.cur==="USD"){
@@ -133,7 +214,7 @@
       return '<tr data-i="'+i+'">'+
         '<td class="cell-muted" style="width:36px;">'+(i+1)+'</td>'+
         '<td><div style="display:flex;gap:6px;align-items:center;">'+
-          '<button type="button" class="btn btn-secondary" data-act="pick" style="flex:1;justify-content:flex-start;text-align:left;min-height:38px;">'+(r.name?esc(r.name):'<span class="cell-muted">Танланг…</span>')+'</button>'+
+          '<button type="button" class="btn btn-secondary" data-act="pick" style="flex:1;justify-content:flex-start;text-align:left;min-height:38px;">'+(r.name?(esc(r.name)+' <span class="chip chip-neutral" style="margin-left:6px;">'+(dtktRowType(r, kind)==="supplier"?"Етказиб берувчи":"Харидор")+'</span>'):'<span class="cell-muted">Танланг…</span>')+'</button>'+
           '<button type="button" class="btn btn-ghost btn-icon" data-act="new" title="'+newTitle+'">'+ICONS.plus+'</button>'+
         '</div></td>'+
         '<td style="width:120px;"><select data-f="cur" style="'+DTKT_INPUT_STYLE+'width:100%;"><option value="UZS"'+(r.cur==="UZS"?" selected":"")+'>Сўм</option><option value="USD"'+(r.cur==="USD"?" selected":"")+'>Доллар</option></select></td>'+
@@ -144,10 +225,10 @@
         '</div></td></tr>';
     }).join("");
     var hint = kind==="deb"
-      ? "Сумма олдига «−» қўйилса — харидорнинг ортиқча тўлаган пули (қолдиқ ҳақдор). Мусбат — харидор бизга қарздор."
-      : "Сумма олдига «−» қўйилса — биз етказиб берувчига ортиқча тўлаганмиз. Мусбат — биз етказиб берувчига қарздормиз.";
+      ? "Мусбат сумма — шу шахс бизга қарздор. «−» қўйилса — унинг ортиқча тўлаган пули (биз қарздормиз)."
+      : "Мусбат сумма — биз шу шахсга қарздормиз. «−» қўйилса — биз унга ортиқча тўлаганмиз.";
     return '<div class="section-head" style="margin-top:14px;"><h2 style="font-size:14.5px;">'+title+'</h2><div class="hint">'+hint+'</div></div>'+
-      '<div class="table-wrap"><table><thead><tr><th>№</th><th>'+(kind==="deb"?"Харидор":"Етказиб берувчи")+'</th><th>Пул бирлиги</th><th>Сумма</th><th></th></tr></thead>'+
+      '<div class="table-wrap"><table><thead><tr><th>№</th><th>Харидор ёки етказиб берувчи</th><th>Пул бирлиги</th><th>Сумма</th><th></th></tr></thead>'+
       '<tbody>'+body+
       '<tr><td></td><td class="cell-strong">Жами</td><td></td><td class="cell-strong" data-total style="text-align:right;">'+fmtSum(dtktTotal(rows))+'</td><td></td></tr>'+
       '</tbody></table></div>';
@@ -195,14 +276,15 @@
         });
         tr.querySelector('[data-act="pick"]').addEventListener("click", function(){
           closeModal();
-          if(kind==="deb") openNameListPickerModal("Харидорни танлаш", STATE.customers, function(name){ r.name = name||""; reopen(); }, reopen);
-          else openNameListPickerModal("Етказиб берувчини танлаш", STATE.suppliers, function(name){ r.name = name||""; reopen(); }, reopen);
+          openDtktPartyPicker(function(t, id, name){ r.type = t; r.refId = id; r.name = name||""; reopen(); }, reopen);
         });
         tr.querySelector('[data-act="new"]').addEventListener("click", function(){
           closeModal();
-          var saved = function(id, name){ r.name = name||""; reopen(); };
-          if(kind==="deb") openCustomerForm(null, saved, reopen);
-          else openSupplierForm(null, saved, reopen);
+          openDtktNewPartyChoice(function(t){
+            var saved = function(id, name){ r.type = t; r.refId = id||""; r.name = name||""; reopen(); };
+            if(t==="customer") openCustomerForm(null, saved, reopen);
+            else openSupplierForm(null, saved, reopen);
+          }, reopen);
         });
         tr.querySelector('[data-act="add"]').addEventListener("click", function(){
           rows.push(dtktBlankRow(d.date)); paintSection(kind);
@@ -223,7 +305,7 @@
       if(!d.date){ toast("Санани киритинг"); return; }
       if(!d.deb && !d.cred){ toast("Дебиторлар ёки Кредиторлар белгисини қўйинг"); return; }
       var failed = "";
-      var build = function(rows, pool, label){
+      var build = function(rows, kind, label){
         var out = [];
         rows.forEach(function(r, i){
           var som = dtktRowSom(r);
@@ -233,14 +315,17 @@
           if(r.cur==="USD"){
             if(!Number(r.usd) || !(Number(r.rate)>0)){ failed = failed || (label+": "+(i+1)+"-қатор — доллар ва курсни киритинг"); return; }
           } else if(!som){ failed = failed || (label+": "+(i+1)+"-қатор — суммани киритинг"); return; }
-          var found = pool.find(function(x){ return (x.name||"").trim().toLowerCase()===r.name.trim().toLowerCase(); });
-          out.push({name:r.name, refId:found?found.id:"", cur:r.cur, amount:som,
+          var type = dtktRowType(r, kind);
+          var pool = type==="supplier" ? STATE.suppliers : STATE.customers;
+          var found = pool.find(function(x){ return x.id===r.refId; }) ||
+            pool.find(function(x){ return (x.name||"").trim().toLowerCase()===r.name.trim().toLowerCase(); });
+          out.push({name:r.name, type:type, refId:found?found.id:"", cur:r.cur, amount:som,
             usd:r.cur==="USD"?Number(r.usd):0, rate:r.cur==="USD"?Number(r.rate):0});
         });
         return out;
       };
-      var debtors = d.deb ? build(d.debtors, STATE.customers, "Дебиторлар") : [];
-      var creditors = d.cred ? build(d.creditors, STATE.suppliers, "Кредиторлар") : [];
+      var debtors = d.deb ? build(d.debtors, "deb", "Дебиторлар") : [];
+      var creditors = d.cred ? build(d.creditors, "cred", "Кредиторлар") : [];
       if(failed){ toast(failed); return; }
       if(!debtors.length && !creditors.length){ toast("Камида битта қатор тўлдиринг"); return; }
       var sum = function(a){ return a.reduce(function(s,x){ return s+x.amount; }, 0); };

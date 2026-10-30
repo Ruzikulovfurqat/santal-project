@@ -1508,6 +1508,17 @@
     });
   }
 
+  /* «Давр бошига қолдиқ» тагидаги кичик изоҳ: қолдиқ «−» бўлса — ортиқча пули
+     бор (қизил), «+» бўлса — қарздорлиги бор (яшил). Харидорда қолдиқнинг
+     белгиси тескари (сотув чиким), шунинг учун изоҳ турига қараб қўйилади:
+     харидорда манфий қолдиқ — қарздор, мусбат — ортиқча тўлаган. */
+  function actOpeningNoteHtml(type, opening){
+    if(Math.abs(opening)<=0.004) return "";
+    var hasDebt = type==="customer" ? opening<0 : opening>0;
+    var txt = hasDebt ? "қарздорлиги бор" : "ортиқча пули бор";
+    return '<div style="font-size:12px;font-weight:600;margin-top:2px;color:'+(hasDebt?"var(--good)":"var(--critical)")+';">'+txt+'</div>';
+  }
+
   function viewReconciliation(){
     setTopbar("Солиштирма далолатнома", "Харидор ёки етказиб берувчи билан ҳисоб-китобни солиштириш", "");
     /* Фойдаланувчи сўровига кўра (2026-10-01): сана майдонлари очилганда
@@ -1586,7 +1597,7 @@
       var closing = opening + periodKirim - periodChiqim;
 
       var html2 = '<div class="kpi-grid" style="margin-bottom:16px;">'+
-        kpiTileFmt("Давр бошига қолдиқ", fmtSignedSum(opening), "", "critical")+
+        kpiTileFmt("Давр бошига қолдиқ", fmtSignedSum(opening)+actOpeningNoteHtml(type, opening), "", "critical")+
         kpiTileFmt("Давр охирига қолдиқ", fmtSignedSum(closing), "", "critical")+
         '</div>';
 
