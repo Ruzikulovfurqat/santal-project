@@ -34,6 +34,11 @@
   var FIN_WAGE_PARTS = [["wage_base","Иш ҳақи"],["wage_yiit","Иш ҳақидан ЯИТ"],["wage_tax","Иш ҳақидан даромад солиғи"]];
   var FIN_NEED_KEYS = ["raw","tovar","tovar_extra","extra","vat","elec","gas","amort","other","wage_base","wage_yiit","wage_tax","profit"];
   var FIN_NO_CAT = "__nocat__";
+  /* Ҳисоблашда ҳозир ишланаётган амал манбаси (касса ёзуви / Молия ўтказмаси) —
+     тарих қаторларига ёзилади, шунда қаторда «Таҳрирлаш / Бекор қилиш» тугмалари чиқади
+     (2026-10-30). FIN_SKIP_ID — шу id'ли амални ҳисобдан вақтинча чиқариб ҳисоблаш учун. */
+  var FIN_CUR_SRC = {};
+  var FIN_SKIP_ID = "";
   /* Фойдаланувчи сўровига кўра (2026-10-15): ҳар бир категориянинг
      «Бошқа харажатлар» турига тушган пулнинг 10% и автоматик
      «Бошқарув бўлими» категориясига ўтказилади. Ўтказма манба
@@ -302,13 +307,14 @@
   }
   function finUnallocIn(ac, amount, row){
     ac.unalloc += amount;
-    ac.unallocMoves.push(Object.assign({}, row, {in:amount, out:0}));
+    ac.unallocMoves.push(Object.assign({}, FIN_CUR_SRC, row, {in:amount, out:0}));
   }
   function finUnallocOut(ac, amount, row){
     ac.unalloc -= amount;
-    ac.unallocMoves.push(Object.assign({}, row, {in:0, out:amount}));
+    ac.unallocMoves.push(Object.assign({}, FIN_CUR_SRC, row, {in:0, out:amount}));
   }
   function finAddCat(ac, catKey, needKey, amount, row){
+    row = Object.assign({}, FIN_CUR_SRC, row);
     var cat = finCat(ac, catKey);
     var b = finBucketOfNeed(needKey);
     cat.buckets[b] = (cat.buckets[b]||0) + amount;
@@ -380,6 +386,7 @@
   /* Чиқим: кўрсатилган категория+харажат туридан, сўнг шу категориянинг
      бошқа турларидан, сўнг "Тақсимланмаган пул"дан, сўнг қолганларидан. */
   function finTakeFrom(ac, catKey, bucket, amount, row){
+    row = Object.assign({}, FIN_CUR_SRC, row);
     var rest = amount;
     var tryCat = function(ck, bk){
       if(rest<=0.004) return;
@@ -419,6 +426,7 @@
 
   function finCompute(){
     FIN_UNIT_CACHE = {};
+    FIN_CUR_SRC = {};
     /* Касса энди БИТТА умумий касса (2026-10-15) — шунга кўра тақсимот
        ҳам барча касса ёзувлари бўйича биргаликда ҳисобланади. */
     var catOrder = finCatOrder();
@@ -434,16 +442,17 @@
     var needs = finBuildNeeds();
 
     var events = [];
-    STATE.cashTransactions.forEach(function(t){ if(!t.cancelled) events.push({kind:"tx", date:finDateOf(t), seq:t.createdAt||"", t:t}); });
+    STATE.cashTransactions.forEach(function(t){ if(!t.cancelled && t.id!==FIN_SKIP_ID) events.push({kind:"tx", date:finDateOf(t), seq:t.createdAt||"", t:t}); });
     STATE.cashTransfers.forEach(function(x){ if(!x.cancelled) events.push({kind:"transfer", date:finDateOf(x), seq:x.createdAt||"", t:x}); });
     STATE.cashConversions.forEach(function(x){ if(!x.cancelled) events.push({kind:"conv", date:finDateOf(x), seq:x.createdAt||"", t:x}); });
-    STATE.financeTransfers.forEach(function(x){ if(!x.cancelled) events.push({kind:"fin", date:finDateOf(x), seq:x.createdAt||"", t:x}); });
+    STATE.financeTransfers.forEach(function(x){ if(!x.cancelled && x.id!==FIN_SKIP_ID) events.push({kind:"fin", date:finDateOf(x), seq:x.createdAt||"", t:x}); });
     events.sort(function(a,b){
       return String(a.date).localeCompare(String(b.date)) || String(a.seq).localeCompare(String(b.seq));
     });
 
     events.forEach(function(ev){
       var t = ev.t;
+      FIN_CUR_SRC = (ev.kind==="tx" || ev.kind==="fin") ? {srcKind:ev.kind, srcId:t.id} : {};
       if(ev.kind==="tx"){
         var ac = acAll;
         var som = finTxSom(t); if(som<=0) return;
@@ -510,7 +519,54 @@
         }
       }
     });
+    FIN_CUR_SRC = {};
+    if(!FIN_SKIP_ID) finAddCancelledRows(acAll);
     return res;
+  }
+  /* Бекор қилинган амаллар тарихда хира қатор бўлиб қолади (базада сақланади) ва
+     «Тиклаш» орқали орқага қайтарилади. Булар қолдиққа таъсир қилмайди — фақат
+     кўрсатиш учун (cancelled:true), тарих жадвали уларни жамига қўшмайди. */
+  function finAddCancelledRows(ac){
+    var put = function(ck, key, row){
+      var cat = ac.cats[ck]; if(!cat) return;
+      var b = finBucketOfNeed(key);
+      if(cat.moves[b]) cat.moves[b].push(row);
+      if(b==="wage" && cat.moves[key]) cat.moves[key].push(row);
+    };
+    STATE.financeTransfers.forEach(function(t){
+      if(!t.cancelled) return;
+      var amt = Number(t.amount)||0; if(amt<=0) return;
+      var ck = t.categoryId || FIN_NO_CAT, bk = t.bucket || "raw";
+      var base = {date:finDateOf(t), note:t.note||"", cancelled:true, srcKind:"fin", srcId:t.id};
+      var mk = function(who, i, o, extra){ return Object.assign({}, base, {who:who, in:i, out:o}, extra||{}); };
+      if(t.direction==="alloc"){
+        ac.unallocMoves.push(mk("Ўтказма", 0, amt, {target:finCatName(ck)+" / "+finBucketName(bk)}));
+        put(ck, bk, mk("Тақсимланмаган пулдан ўтказма", amt, 0));
+      } else if(t.direction==="move"){
+        var fck = t.fromCategoryId || FIN_NO_CAT, fbk = t.fromBucket || "raw";
+        put(fck, fbk, mk("Ўтказма → "+finCatName(ck)+" / "+finBucketName(bk), 0, amt));
+        put(ck, bk==="wage" ? "wage_base" : bk, mk("Ўтказма: "+finCatName(fck)+" / "+finBucketName(fbk), amt, 0));
+      } else if(t.direction==="to_reserve"){
+        put(ck, bk, mk("Ўтказма → Фойда / "+FIN_RESERVE_NAME, 0, amt));
+        put(ck, "profit", mk("Ўтказма: "+finBucketName(bk), amt, 0));
+      } else {
+        put(ck, "profit", mk("Ўтказма → "+finBucketName(bk), 0, amt));
+        put(ck, bk, mk("Ўтказма: Фойда / "+FIN_RESERVE_NAME, amt, 0));
+      }
+    });
+    STATE.cashTransactions.forEach(function(t){
+      if(!t.cancelled || t.archived) return;
+      var som = finTxSom(t); if(som<=0) return;
+      var who = t.counterpartyName || (t.counterpartyId ? customerName(t.counterpartyId) : "") || kassaPayTypeLabel(t.payType||t.category);
+      var row = {date:finDateOf(t), who:who, note:t.description||"", cancelled:true, srcKind:"tx", srcId:t.id};
+      if(t.direction==="kirim"){
+        ac.unallocMoves.push(Object.assign({}, row, {in:som, out:0}));
+      } else {
+        var bkey = t.bucket || FIN_CHIQIM_CAT_MAP[t.payType||t.category] || "";
+        if(t.categoryId && bkey && ac.cats[t.categoryId]) put(t.categoryId, bkey, Object.assign({}, row, {in:0, out:som}));
+        else ac.unallocMoves.push(Object.assign({}, row, {in:0, out:som}));
+      }
+    });
   }
   function cashAccountName(id){ var a=cashAccountById(id); return a?a.name:""; }
 

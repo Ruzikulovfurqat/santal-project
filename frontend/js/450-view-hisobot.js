@@ -833,30 +833,98 @@
     }); });
   }
 
+  /* Тарих қаторлари: ҳар бир қатор ёнида «Таҳрирлаш» ва «Бекор қилиш»; бекор
+     қилинган қатор хира кўринади ва «Тиклаш» тугмаси чиқади (2026-10-30 сўрови).
+     Бекор қилинган ёзув базада сақланади, қолдиққа қўшилмайди. */
+  var finReopen = null;
+  function finAcWithout(id){
+    FIN_SKIP_ID = id;
+    var res;
+    try{ res = finCompute(); } finally { FIN_SKIP_ID = ""; }
+    return res.accs[FIN_ALL_ACC] || finBlankAcc();
+  }
+  function finMoveActionsHtml(r){
+    if(!r.srcKind || r.adminShare || r.tovarSplit || r.adminMkt) return "";
+    var btn = function(act, title, icon){
+      return '<button class="btn btn-ghost btn-icon" data-mv-act="'+act+'" data-mv-kind="'+esc(r.srcKind)+'" data-mv-id="'+esc(r.srcId)+'" title="'+title+'">'+icon+'</button>';
+    };
+    if(r.cancelled) return btn("restore", "Тиклаш — бекор қилишни орқага қайтариш", ICONS.restore);
+    var canEdit = true;
+    if(r.srcKind==="fin"){
+      var ft = STATE.financeTransfers.find(function(x){ return x.id===r.srcId; });
+      canEdit = !!ft && (ft.direction==="alloc" || ft.direction==="move");
+    }
+    return (canEdit ? btn("edit", "Таҳрирлаш", ICONS.pencil) : "")+btn("cancel", "Бекор қилиш", ICONS.ban);
+  }
   function finMovesTableHtml(moves, showAcc, showTarget){
     if(!moves || !moves.length) return '<div class="field-hint">Ҳали ҳаракат йўқ.</div>';
     var sorted = moves.slice().sort(function(a,b){ return String(b.date||"").localeCompare(String(a.date||"")); });
     var inSum = 0, outSum = 0;
+    var hasActions = sorted.some(function(r){ return !!finMoveActionsHtml(r); });
     var rows = sorted.map(function(r){
-      inSum += Number(r.in)||0; outSum += Number(r.out)||0;
-      return '<tr>'+
+      if(!r.cancelled){ inSum += Number(r.in)||0; outSum += Number(r.out)||0; }
+      return '<tr'+(r.cancelled?' style="opacity:.5;"':'')+'>'+
         '<td>'+(r.date?esc(fmtDate(r.date)):'<span class="cell-muted">—</span>')+'</td>'+
         (showAcc?'<td>'+esc(r.acc||"—")+'</td>':'')+
-        '<td>'+esc(r.who||"—")+'</td>'+
+        '<td>'+esc(r.who||"—")+(r.cancelled?' <span class="chip chip-neutral">Бекор қилинган</span>':'')+'</td>'+
         (showTarget?'<td>'+(r.target?esc(r.target):'<span class="cell-muted">—</span>')+'</td>':'')+
         '<td class="num" style="color:var(--good);">'+(r.in>0?fmtSum(r.in):"—")+'</td>'+
         '<td class="num" style="color:var(--critical);">'+(r.out>0?fmtSum(r.out):"—")+'</td>'+
         '<td>'+(r.note?esc(r.note):'<span class="cell-muted">—</span>')+'</td>'+
+        (hasActions?'<td><div class="row-actions">'+finMoveActionsHtml(r)+'</div></td>':'')+
       '</tr>';
     }).join("");
     var lead = 2+(showAcc?1:0)+(showTarget?1:0);
-    return '<div class="table-wrap"><table><thead><tr><th>Сана</th>'+(showAcc?'<th>Касса</th>':'')+'<th>Кимдан / кимга</th>'+(showTarget?'<th>Қайси харажат турига</th>':'')+'<th class="num">Кирим</th><th class="num">Чиқим</th><th>Изоҳ</th></tr></thead><tbody>'+rows+
-      '<tr><td colspan="'+lead+'" class="cell-strong">ЖАМИ</td><td class="num cell-strong">'+fmtSum(inSum)+'</td><td class="num cell-strong">'+fmtSum(outSum)+'</td><td class="cell-strong">Қолдиқ: '+fmtSum(inSum-outSum)+'</td></tr>'+
+    return '<div class="table-wrap"><table><thead><tr><th>Сана</th>'+(showAcc?'<th>Касса</th>':'')+'<th>Кимдан / кимга</th>'+(showTarget?'<th>Қайси харажат турига</th>':'')+'<th class="num">Кирим</th><th class="num">Чиқим</th><th>Изоҳ</th>'+(hasActions?'<th></th>':'')+'</tr></thead><tbody>'+rows+
+      '<tr><td colspan="'+lead+'" class="cell-strong">ЖАМИ</td><td class="num cell-strong">'+fmtSum(inSum)+'</td><td class="num cell-strong">'+fmtSum(outSum)+'</td><td class="cell-strong">Қолдиқ: '+fmtSum(inSum-outSum)+'</td>'+(hasActions?'<td></td>':'')+'</tr>'+
       '</tbody></table></div>';
+  }
+  /* Тарих қатори тугмалари — битта умумий тингловчи (барча Молия ойналари учун) */
+  document.addEventListener("click", function(e){
+    var b = e.target && e.target.closest ? e.target.closest("[data-mv-act]") : null;
+    if(!b) return;
+    e.stopPropagation();
+    finMoveAction(b.getAttribute("data-mv-act"), b.getAttribute("data-mv-kind"), b.getAttribute("data-mv-id"));
+  });
+  function finMoveAction(act, kind, id){
+    var reopen = finReopen;
+    var after = function(){ closeModal(); render(); if(reopen) reopen(); };
+    var coll = kind==="fin" ? STATE.financeTransfers : STATE.cashTransactions;
+    var collName = kind==="fin" ? "financeTransfers" : "cashTransactions";
+    var t = coll.find(function(x){ return x.id===id; });
+    if(!t){ toast("Ёзув топилмади"); return; }
+    if(act==="edit"){
+      closeModal();
+      if(kind==="tx"){ openKassaSimpleForm(t.cashAccountId||kassaEnsureAccountId(), t.direction, t); return; }
+      var acx = finAcWithout(id);
+      if(t.direction==="move"){
+        openFinTransferModal(null, acx, {date:t.date||todayISO(), amount:Number(t.amount)||0, note:t.note||"",
+          fromCat:t.fromCategoryId||FIN_NO_CAT, fromBucket:t.fromBucket||"raw", toCat:t.categoryId||FIN_NO_CAT, toBucket:t.bucket||"raw",
+          editId:t.id, reopen:reopen});
+      } else {
+        finReopen = reopen;
+        openFinAllocTransferModal(null, acx, t);
+      }
+    } else if(act==="cancel"){
+      var before = finFreshAc().deficit, afterDef = finAcWithout(id).deficit;
+      var warn = afterDef > before+0.004 ? ("<br><br><b>Диққат:</b> бекор қилинса, кейинги чиқимларнинг "+fmtSum(afterDef-before)+" қисмига пул етмай қолади.") : "";
+      openConfirm("Амални бекор қилиш",
+        "Бу амал бекор қилинсинми? Ёзув базадан ўчмайди — тарихда хира кўринишда қолади ва кейин «Тиклаш» орқали қайтарилиши мумкин. Қолдиқ қайта ҳисобланади."+warn,
+        "Ҳа, бекор қилиш", function(){
+          dbUpdate(collName, id, {cancelled:true}, coll);
+          toast("Бекор қилинди");
+          after();
+        }, true);
+    } else if(act==="restore"){
+      dbUpdate(collName, id, {cancelled:false}, coll);
+      toast("Тикланди");
+      after();
+    }
   }
 
   /* ---------- Тақсимланмаган пул ойнаси ---------- */
   function openFinUnallocModal(acc, ac){
+    finReopen = function(){ openFinUnallocModal(acc, finFreshAc()); };
     var body = '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">'+
         '<div style="font-weight:800;font-size:15px;">Қолдиқ: '+fmtSum(ac.unalloc)+'</div>'+
         '<button class="btn btn-secondary btn-sm" data-unalloc-transfer>'+ICONS.swap+'Ўтказма</button>'+
@@ -870,7 +938,9 @@
   }
 
   /* Тақсимланмаган пулдан категория + харажат турига ўтказиш */
-  function openFinAllocTransferModal(acc, ac){
+  function openFinAllocTransferModal(acc, ac, existing){
+    var ex = existing || null;
+    var exReopen = ex ? finReopen : null;
     var catOptions = STATE.categories.map(function(c){ return '<option value="'+c.id+'">'+esc(c.name)+'</option>'; }).join("")+
       '<option value="'+FIN_ADMIN_CAT+'">'+esc(FIN_ADMIN_NAME)+'</option>'+
       '<option value="'+FIN_NO_CAT+'">Категориясиз</option>';
@@ -884,11 +954,19 @@
         '<div class="field"><label>Харажат тури</label><select id="fa-bucket">'+bucketOptions+'</select></div></div>'+
       '<div class="field"><label>Изоҳ <span class="opt">(ихтиёрий)</span></label><input id="fa-note"></div>'+
       '<div class="field-hint">Тақсимланмаган пулдаги мавжуд сумма: '+fmtSum(ac.unalloc)+'</div>';
-    var m = openModal("Тақсимланмаган пулдан ўтказма", body,
+    var m = openModal(ex ? "Ўтказмани таҳрирлаш" : "Тақсимланмаган пулдан ўтказма", body,
       '<button class="btn btn-secondary" data-cancel>Бекор қилиш</button><button class="btn btn-primary" data-save>Сақлаш</button>');
-    m.querySelector("[data-cancel]").addEventListener("click", function(){ closeModal(); openFinUnallocModal(acc, ac); });
+    m.querySelector("[data-cancel]").addEventListener("click", function(){ closeModal(); if(ex){ if(exReopen) exReopen(); } else openFinUnallocModal(acc, ac); });
     /* «Бошқарув бўлими» танланса — харажат турлари Администрация /
        Маркетинг ва рекламага алмашади. */
+    if(ex){
+      m.querySelector("#fa-date").value = ex.date || todayISO();
+      m.querySelector("#fa-amount").value = Number(ex.amount)||0;
+      m.querySelector("#fa-cat").value = ex.categoryId || FIN_NO_CAT;
+      m.querySelector("#fa-bucket").innerHTML = bucketOptsFor(m.querySelector("#fa-cat").value);
+      m.querySelector("#fa-bucket").value = ex.bucket || "raw";
+      m.querySelector("#fa-note").value = ex.note || "";
+    }
     m.querySelector("#fa-cat").addEventListener("change", function(){
       m.querySelector("#fa-bucket").innerHTML = bucketOptsFor(this.value);
     });
@@ -896,13 +974,20 @@
       var amount = Number(m.querySelector("#fa-amount").value)||0;
       if(amount<=0){ toast("Суммани киритинг"); return; }
       if(amount > ac.unalloc+0.004){ toast("Тақсимланмаган пул етарли эмас: "+fmtSum(ac.unalloc)); return; }
-      dbAdd("financeTransfers", {
+      var allocData = {
         cashAccountId:kassaMainAccountId(), date:m.querySelector("#fa-date").value||todayISO(), direction:"alloc",
         categoryId:m.querySelector("#fa-cat").value, bucket:m.querySelector("#fa-bucket").value,
-        amount:amount, note:m.querySelector("#fa-note").value.trim(), cancelled:false, createdAt:new Date().toISOString()
-      }, STATE.financeTransfers);
-      toast("Ўтказма сақланди");
+        amount:amount, note:m.querySelector("#fa-note").value.trim()
+      };
+      if(ex){
+        dbUpdate("financeTransfers", ex.id, allocData, STATE.financeTransfers);
+      } else {
+        allocData.cancelled = false; allocData.createdAt = new Date().toISOString();
+        dbAdd("financeTransfers", allocData, STATE.financeTransfers);
+      }
+      toast(ex ? "Ўтказма янгиланди" : "Ўтказма сақланди");
       closeModal(); render();
+      if(ex && exReopen) exReopen();
     });
   }
 
@@ -915,6 +1000,7 @@
     if(bucket==="admin_main") return openFinAdminMainModal(acc, catKey, ac);
     if(bucket==="tovar_extra") return openFinTovarExtraModal(acc, catKey, ac);
     if(bucket==="other" || bucket==="profit") return openFinSplitModal(acc, catKey, bucket, ac);
+    finReopen = function(){ openFinBucketModal(acc, catKey, bucket, finFreshAc()); };
     var body = '<div style="font-weight:800;font-size:15px;margin-bottom:10px;">Қолдиқ: '+fmtSum(cat.buckets[bucket]||0)+'</div>'+
       finMovesTableHtml(cat.moves[bucket], showAcc, false);
     var m = openModal(title, body, '<button class="btn btn-secondary" data-cancel>Ёпиш</button>', "xxwide");
@@ -939,6 +1025,7 @@
     m.querySelectorAll("[data-wage-part]").forEach(function(tr){ tr.addEventListener("click", function(){
       var part = tr.getAttribute("data-wage-part");
       closeModal();
+      finReopen = function(){ openFinWageModal(acc, catKey, finFreshAc()); };
       var body2 = '<div style="font-weight:800;font-size:15px;margin-bottom:10px;">Қолдиқ: '+fmtSum(cat.wage[part]||0)+'</div>'+
         finMovesTableHtml(cat.moves[part], showAcc, false);
       var m2 = openModal(finCatName(catKey)+" / "+finBucketName(part), body2,
@@ -952,6 +1039,7 @@
      бошқа харажат турини танлаб, фоиз киритилади — шу фоиз бу турга
      тушган ҳар бир суммадан автомат ўтказилади (2026-10-19 сўрови). */
   function openFinTovarExtraModal(acc, catKey, ac, tab){
+    finReopen = function(){ openFinTovarExtraModal(acc, catKey, finFreshAc(), tab); };
     tab = tab || "report";
     var cat = ac.cats[catKey] || finBlankCat();
     var splits = finTovarSplits();
@@ -1040,6 +1128,7 @@
      киритилади, ундан кейин Администрацияга тушган ҳар бир сумманинг
      шунча фоизи автомат «Маркетинг ва реклама» турига ўтади. */
   function openFinAdminMainModal(acc, catKey, ac, tab){
+    finReopen = function(){ openFinAdminMainModal(acc, catKey, finFreshAc(), tab); };
     finEnsureAdminMktSplit();
     tab = tab || "report";
     var cat = ac.cats[catKey] || finBlankCat();
@@ -1103,6 +1192,7 @@
   }
 
   function openFinSplitModal(acc, catKey, bucket, ac, tab){
+    finReopen = function(){ openFinSplitModal(acc, catKey, bucket, finFreshAc(), tab); };
     if(bucket==="profit") finEnsureProfitSplits();
     if(bucket==="other") finEnsureAdminShareSplit();
     tab = tab || "report";
@@ -1266,9 +1356,9 @@
       '<div class="field-hint" id="ft-hint">'+(have===null ? 'Аввал «Категориядан» ва «Харажат туридан»ни танланг.' : ('Танланган харажат турида мавжуд сумма: <b>'+fmtSum(have)+'</b>'))+'</div>'+
       '<div class="field" style="margin-top:12px;"><label>Сумма (сўм)</label><input id="ft-amount" placeholder="0" value="'+(d.amount?esc(formatSumInputValue(d.amount)):"")+'"></div>'+
       '<div class="field"><label>Изоҳ <span class="opt">(ихтиёрий)</span></label><input id="ft-note" value="'+esc(d.note)+'"></div>';
-    var m = openModal("Ўтказма", body,
+    var m = openModal(d.editId ? "Ўтказмани таҳрирлаш" : "Ўтказма", body,
       '<button class="btn btn-secondary" data-cancel>Бекор қилиш</button><button class="btn btn-primary" data-save>Сақлаш</button>');
-    m.querySelector("[data-cancel]").addEventListener("click", closeModal);
+    m.querySelector("[data-cancel]").addEventListener("click", function(){ closeModal(); if(d.editId && d.reopen) d.reopen(); });
     m.querySelector("#ft-date").addEventListener("input", function(){ d.date = this.value; });
     m.querySelector("#ft-note").addEventListener("input", function(){ d.note = this.value; });
     wireSumInputFormatting(m.querySelector("#ft-amount"), function(v){ d.amount = v; });
@@ -1324,13 +1414,20 @@
       if(amount<=0){ toast("Суммани киритинг"); return; }
       var avail = finMoveHave(ac, d.fromCat, d.fromBucket);
       if(amount > avail+0.004){ toast("Етарли маблағ йўқ: "+fmtSum(avail)); return; }
-      dbAdd("financeTransfers", {
+      var moveData = {
         cashAccountId:kassaMainAccountId(), date:d.date, direction:"move",
         fromCategoryId:d.fromCat, fromBucket:d.fromBucket, categoryId:d.toCat, bucket:d.toBucket,
-        amount:amount, note:d.note, cancelled:false, createdAt:new Date().toISOString()
-      }, STATE.financeTransfers);
-      toast("Ўтказма сақланди");
+        amount:amount, note:d.note
+      };
+      if(d.editId){
+        dbUpdate("financeTransfers", d.editId, moveData, STATE.financeTransfers);
+      } else {
+        moveData.cancelled = false; moveData.createdAt = new Date().toISOString();
+        dbAdd("financeTransfers", moveData, STATE.financeTransfers);
+      }
+      toast(d.editId ? "Ўтказма янгиланди" : "Ўтказма сақланди");
       closeModal(); render();
+      if(d.editId && d.reopen) d.reopen();
     });
   }
 
