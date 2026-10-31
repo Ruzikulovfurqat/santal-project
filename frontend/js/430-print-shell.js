@@ -627,17 +627,27 @@
     else if(entry._kind==="dtkt") openDtKtForm(dtktDraftFromDoc(entry._ref));
   }
   function printActStatement(type, name, from, to, entries, opening, closing, periodKirim, periodChiqim){
+    /* Харидор: Дебитор (сотув, «+») / Кредитор (тушган пул, «−»); қолдиқ — қарз «+»,
+       ортиқча пул «−». Етказиб берувчида аввалгидек Кирим/Чиким. */
+    var isCust = type==="customer";
     var rows = entries.map(function(e){
+      var a = isCust ? e.chiqim : e.kirim, b = isCust ? e.kirim : e.chiqim;
       return '<tr><td>'+fmtDateShort(e.date)+'</td><td>'+esc(e.desc)+'</td>'+
-        '<td style="text-align:right;">'+(e.kirim?('+'+fmtNum(e.kirim)):"")+'</td>'+
-        '<td style="text-align:right;">'+(e.chiqim?('−'+fmtNum(e.chiqim)):"")+'</td></tr>';
+        '<td style="text-align:right;">'+(a?('+'+fmtNum(a)):"")+'</td>'+
+        '<td style="text-align:right;">'+(b?('−'+fmtNum(b)):"")+'</td></tr>';
     }).join("");
-    var totalsRow = '<tr style="font-weight:700;"><td></td><td>Жами</td><td style="text-align:right;">+'+fmtNum(periodKirim)+'</td><td style="text-align:right;">−'+fmtNum(periodChiqim)+'</td></tr>';
+    var totalsRow = '<tr style="font-weight:700;"><td></td><td>Жами</td><td style="text-align:right;">+'+fmtNum(isCust?periodChiqim:periodKirim)+'</td><td style="text-align:right;">−'+fmtNum(isCust?periodKirim:periodChiqim)+'</td></tr>';
+    var balTxt = function(v){
+      if(!isCust) return fmtSignedSum(v);
+      var debt = -(Number(v)||0);
+      if(Math.abs(debt)<=0.004) return fmtSum(0);
+      return (debt>0 ? "+"+fmtSum(debt)+" (харидорнинг қарзи бор)" : "−"+fmtSum(-debt)+" (харидорнинг ортиқча пули бор)");
+    };
     var body = '<div style="display:flex;gap:24px;margin-bottom:14px;font-size:13px;">'+
-        '<div><strong>Давр бошига қолдиқ:</strong> '+fmtSignedSum(opening)+'</div>'+
-        '<div><strong>Давр охирига қолдиқ:</strong> '+fmtSignedSum(closing)+'</div>'+
+        '<div><strong>Давр бошига қолдиқ:</strong> '+balTxt(opening)+'</div>'+
+        '<div><strong>Давр охирига қолдиқ:</strong> '+balTxt(closing)+'</div>'+
       '</div>'+
-      '<table><tr><th>Сана</th><th>Изоҳ</th><th style="text-align:right;">Кирим</th><th style="text-align:right;">Чиким</th></tr>'+(rows||'<tr><td colspan="4" style="text-align:center;">Ёзувлар топилмади</td></tr>')+totalsRow+'</table>';
+      '<table><tr><th>Сана</th><th>Изоҳ</th><th style="text-align:right;">'+(isCust?"Дебитор":"Кирим")+'</th><th style="text-align:right;">'+(isCust?"Кредитор":"Чиким")+'</th></tr>'+(rows||'<tr><td colspan="4" style="text-align:center;">Ёзувлар топилмади</td></tr>')+totalsRow+'</table>';
     var sub = (from?fmtDateShort(from):"бошидан")+" — "+(to?fmtDateShort(to):"ҳозиргача");
     var html = voucherShell((type==="customer"?"Харидор":"Етказиб берувчи")+" — "+esc(name), sub, body, true);
     document.getElementById("printArea").innerHTML = html;
