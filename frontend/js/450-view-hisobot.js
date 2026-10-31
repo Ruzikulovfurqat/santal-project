@@ -1510,26 +1510,19 @@
     });
   }
 
-  /* «Давр бошига қолдиқ» тагидаги кичик изоҳ: қолдиқ «−» бўлса — ортиқча пули
-     бор (қизил), «+» бўлса — қарздорлиги бор (яшил). Харидорда қолдиқнинг
-     белгиси тескари (сотув чиким), шунинг учун изоҳ турига қараб қўйилади:
-     харидорда манфий қолдиқ — қарздор, мусбат — ортиқча тўлаган. */
-  function actOpeningNoteHtml(type, opening){
-    if(Math.abs(opening)<=0.004) return "";
-    var hasDebt = type==="customer" ? opening<0 : opening>0;
-    var txt = hasDebt ? "қарздорлиги бор" : "ортиқча пули бор";
-    return '<div style="font-size:12px;font-weight:600;margin-top:2px;color:'+(hasDebt?"var(--good)":"var(--critical)")+';">'+txt+'</div>';
-  }
-
-  /* Харидор учун қолдиқ: далолатномадаги қолдиқ (кирим − чиким) тескари
-     белги билан — харидор қарзи мусбат (+, яшил, «харидорнинг қарзи бор»),
-     ортиқча тўлаган пули манфий (−, қизил, «харидорнинг ортиқча пули бор»). */
-  function actCustBalanceHtml(bal){
+  /* Қолдиқ кўриниши (харидор ҳам, етказиб берувчи ҳам): далолатномадаги
+     қолдиқ (кирим − чиким) тескари белги билан — «+» яшил: улар бизга қарздор
+     (харидорнинг қарзи / етказиб берувчига ортиқча тўлаганмиз), «−» қизил:
+     биз қарздормиз (харидор ортиқча тўлаган / етказиб берувчидан қарзимиз). */
+  function actBalanceHtml(type, bal){
     var debt = -(Number(bal)||0);
     if(Math.abs(debt)<=0.004) return fmtSum(0);
     var good = debt>0, col = good ? "var(--good)" : "var(--critical)";
+    var txt = type==="customer"
+      ? (good ? "харидорнинг қарзи бор" : "харидорнинг ортиқча пули бор")
+      : (good ? "етказиб берувчининг қарзи бор" : "етказиб берувчидан қарзимиз бор");
     return '<span style="color:'+col+';">'+(good?"+":"−")+fmtSum(Math.abs(debt))+'</span>'+
-      '<div style="font-size:12px;font-weight:600;margin-top:2px;color:'+col+';">'+(good?"харидорнинг қарзи бор":"харидорнинг ортиқча пули бор")+'</div>';
+      '<div style="font-size:12px;font-weight:600;margin-top:2px;color:'+col+';">'+txt+'</div>';
   }
 
   function viewReconciliation(){
@@ -1610,18 +1603,18 @@
       var closing = opening + periodKirim - periodChiqim;
 
       var html2 = '<div class="kpi-grid" style="margin-bottom:16px;">'+
-        kpiTileFmt("Давр бошига қолдиқ", type==="customer" ? actCustBalanceHtml(opening) : fmtSignedSum(opening)+actOpeningNoteHtml(type, opening), "", "critical")+
-        kpiTileFmt("Давр охирига қолдиқ", type==="customer" ? actCustBalanceHtml(closing) : fmtSignedSum(closing), "", "critical")+
+        kpiTileFmt("Давр бошига қолдиқ", actBalanceHtml(type, opening), "", "critical")+
+        kpiTileFmt("Давр охирига қолдиқ", actBalanceHtml(type, closing), "", "critical")+
         '</div>';
 
       if(!periodEntries.length){
         html2 += emptyState("Бу даврда ёзув йўқ","Танланган давр ичида ҳаракат топилмади.");
       } else {
-        /* Харидор: сотув (товар берилди) — Дебитор, яшил, «+»; харидордан пул
-           тушиши — Кредитор, қизил, «−». Етказиб берувчида аввалгидек Кирим/Чиким. */
-        var isCust = type==="customer";
-        var cellDeb = function(v){ return isCust ? (v.chiqim?('+'+fmtNum(v.chiqim)):"") : (v.kirim?('+'+fmtNum(v.kirim)):""); };
-        var cellCred = function(v){ return isCust ? (v.kirim?('−'+fmtNum(v.kirim)):"") : (v.chiqim?('−'+fmtNum(v.chiqim)):""); };
+        /* Дебитор (яшил, «+»): харидорга товар берилди / етказиб берувчига пул
+           берилди. Кредитор (қизил, «−»): харидордан пул тушди / етказиб берувчидан
+           товар келди. */
+        var cellDeb = function(v){ return v.chiqim?('+'+fmtNum(v.chiqim)):""; };
+        var cellCred = function(v){ return v.kirim?('−'+fmtNum(v.kirim)):""; };
         var rows = periodEntries.map(function(e, idx){
           return '<tr><td class="cell-muted">'+fmtDateShort(e.date)+'</td>'+
             '<td>'+esc(e.desc)+'</td>'+
@@ -1630,9 +1623,9 @@
             '<td><button class="btn btn-ghost btn-icon" data-act-view="'+idx+'" title="Кўриш">'+ICONS.eye+'</button></td></tr>';
         }).join("");
         var totalsRow = '<tr style="font-weight:800;background:var(--surface-2);"><td></td><td>Жами</td>'+
-          '<td class="num" style="color:var(--good);">+'+fmtNum(isCust?periodChiqim:periodKirim)+'</td>'+
-          '<td class="num" style="color:var(--critical);">−'+fmtNum(isCust?periodKirim:periodChiqim)+'</td><td></td></tr>';
-        html2 += '<div class="table-wrap"><table><thead><tr><th>Сана</th><th>Изоҳ</th><th>'+(isCust?"Дебитор":"Кирим")+'</th><th>'+(isCust?"Кредитор":"Чиким")+'</th><th></th></tr></thead><tbody>'+rows+totalsRow+'</tbody></table></div>';
+          '<td class="num" style="color:var(--good);">+'+fmtNum(periodChiqim)+'</td>'+
+          '<td class="num" style="color:var(--critical);">−'+fmtNum(periodKirim)+'</td><td></td></tr>';
+        html2 += '<div class="table-wrap"><table><thead><tr><th>Сана</th><th>Изоҳ</th><th>Дебитор</th><th>Кредитор</th><th></th></tr></thead><tbody>'+rows+totalsRow+'</tbody></table></div>';
       }
 
       resultsEl.innerHTML = html2;
