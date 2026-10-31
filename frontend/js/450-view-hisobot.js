@@ -303,6 +303,8 @@
     var otherRows = [], otherTotal = 0;
     STATE.cashTransactions.forEach(function(t){
       if(t.cancelled || t.direction!=="chiqim") return;
+      /* Дивидент — фойдани тақсимлаш, харажат эмас. */
+      if(t.isDividend) return;
       var tc = String(t.categoryId||"");
       var catOk = isAdminCat ? (tc===String(catId) || tc===FIN_ADMIN_CAT) : (tc===String(catId));
       if(!catOk) return;

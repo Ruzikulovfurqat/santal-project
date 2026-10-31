@@ -419,6 +419,31 @@
     }
     if(rest>0.004) ac.deficit += rest;
   }
+  /* Дивидент (2026-10-31): Касса → Чиқим → Бошқарув бўлими → Администрация →
+     «Дивидент» галочкаси. Пул барча категориялардаги «Фойда»дан (Захира
+     қисмисиз) олинади — ходимнинг иш ҳақига ва акт сверкага кирмайди. */
+  function finProfitFree(cat){
+    return Math.max(0, (Number(cat.buckets.profit)||0) - (Number(cat.reserve)||0));
+  }
+  function finTakeProfit(ac, amount, row){
+    row = Object.assign({}, FIN_CUR_SRC, row);
+    var rest = amount;
+    Object.keys(ac.cats).forEach(function(ck){
+      if(rest<=0.004) return;
+      var cat = ac.cats[ck];
+      var free = finProfitFree(cat); if(free<=0.004) return;
+      var take = Math.min(rest, free);
+      cat.buckets.profit = (Number(cat.buckets.profit)||0) - take; rest -= take;
+      cat.moves.profit.push(Object.assign({}, row, {in:0, out:take}));
+    });
+    if(rest>0.004) ac.deficit += rest;
+  }
+  function finDividendAvail(){
+    var ac = finCompute().accs[FIN_ALL_ACC];
+    var s = 0;
+    if(ac) Object.keys(ac.cats).forEach(function(ck){ s += finProfitFree(ac.cats[ck]); });
+    return s;
+  }
   var FIN_CHIQIM_CAT_MAP = {
     xomashyo_xarid:"raw", taminotchi_tolovi:"raw", ish_haqi:"wage",
     qolga_chiqim:"other", boshqa:"other"
@@ -470,6 +495,8 @@
               finAddCat(ac, a.cat, a.need, a.amount, Object.assign({}, row, {note:(row.note?row.note+" · ":"")+note}));
             });
           }
+        } else if(t.isDividend){
+          finTakeProfit(ac, som, Object.assign({}, row, {who:"Дивидент — "+(t.counterpartyName||"")}));
         } else {
           finTakeFrom(ac, t.categoryId||"", t.bucket||FIN_CHIQIM_CAT_MAP[t.payType||t.category]||"", som, row);
         }
@@ -561,6 +588,10 @@
       var row = {date:finDateOf(t), who:who, note:t.description||"", cancelled:true, srcKind:"tx", srcId:t.id};
       if(t.direction==="kirim"){
         ac.unallocMoves.push(Object.assign({}, row, {in:som, out:0}));
+      } else if(t.isDividend){
+        var dck = Object.keys(ac.cats)[0];
+        var drow = Object.assign({}, row, {who:"Дивидент — "+(t.counterpartyName||""), in:0, out:som});
+        if(dck) put(dck, "profit", drow); else ac.unallocMoves.push(drow);
       } else {
         var bkey = t.bucket || FIN_CHIQIM_CAT_MAP[t.payType||t.category] || "";
         if(t.categoryId && bkey && ac.cats[t.categoryId]) put(t.categoryId, bkey, Object.assign({}, row, {in:0, out:som}));
