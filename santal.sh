@@ -48,6 +48,7 @@ ensure_prereqs() {
     command -v git >/dev/null || pkgs+=(git)
     command -v curl >/dev/null || pkgs+=(curl)
     command -v flock >/dev/null || pkgs+=(util-linux)
+    command -v cron >/dev/null || pkgs+=(cron)  # R2 заҳираси (/etc/cron.d/santal-backup)
     if [ ${#pkgs[@]} -gt 0 ]; then
         say "ўрнатилмоқда: ${pkgs[*]}"
         apt-get update -qq </dev/null
@@ -101,6 +102,24 @@ ensure_env() { # бўш серверда .env'ни .env.example'дан ярат�
     install -m 600 "$ROOT/.env.example" "$ROOT/.env"
     sed -i "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$pg/; s/^APP_PASSWORD=.*/APP_PASSWORD=$pw/" "$ROOT/.env"
     say ".env яратилди. Кириш: admin / $pw (ўзгартириш ва BOT_TOKEN — $ROOT/.env, кейин яна шу буйруқ)"
+}
+
+ensure_backup_cron() { # ҳар куни 03:00 (сервер вақти) — scripts/backup-r2.sh; .env'да R2 бўлмаса ўчирилади
+    local cron=/etc/cron.d/santal-backup
+    if [ -z "$(env_get S3_BUCKET_BACKUP "$ROOT/.env")" ]; then
+        rm -f "$cron"
+        warn ".env'да S3_BUCKET_BACKUP бўш — R2'га кунлик заҳира ўчиқ"
+        return 0
+    fi
+    printf '%s\n' \
+        'SHELL=/bin/bash' \
+        'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+        "0 3 * * * root bash $ROOT/scripts/backup-r2.sh >> /var/log/santal-backup.log 2>&1" \
+        > "$cron.tmp"
+    chmod 644 "$cron.tmp"
+    mv -f "$cron.tmp" "$cron"
+    printf '%s\n' '/var/log/santal-backup.log {' '    monthly' '    rotate 6' '    compress' \
+        '    missingok' '    notifempty' '}' > /etc/logrotate.d/santal-backup
 }
 
 register_runner() { # register_runner <name> <tag> <access_level> <gitlab-runner register args...>
@@ -183,6 +202,7 @@ main() {
 
     if is_root; then
         ensure_env
+        ensure_backup_cron
         setup_runner
         trap chown_tree EXIT
         chown_tree

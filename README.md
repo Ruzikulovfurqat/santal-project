@@ -25,6 +25,7 @@ make up                # PostgreSQL 18 + дастур + бот
 | `make psql` | PostgreSQL консоли |
 | `make migration name=...` | янги миграция файли (`migrations/NNN_name.sql`) |
 | `make backup` | база дампи + акт файллари → `backups/` |
+| `make backup-r2` | база дампи + акт файллари → Cloudflare R2 (серверда ҳар куни 03:00 ўзи) |
 | `make deploy` | серверда: заҳира + янги версия + соғлиқ текшируви |
 | `make test` / `make lint` | тестлар / ruff |
 | `make html` | `frontend/` дан ягона `dist/app.html` йиғиш |
@@ -58,6 +59,7 @@ sudo bash -c 'set -eo pipefail; read -rsp "GitLab token: " t </dev/tty; echo; in
 - кодни `main`'дан `/opt/santal`'га олади. Токен фақат `.env.deploy`'да (600) туради, `.git/config`'га ёзилмайди;
 - `.env` бўлмаса `.env.example`'дан яратади (тасодифий `POSTGRES_PASSWORD` ва `APP_PASSWORD`, логин экранга чиқади);
 - шу токен билан иккита runner яратиб, рўйхатдан ўтказади: `santal` (lint/test, Docker'да, production'га кириш ҳуқуқисиз) ва `santal-deploy` (shell, фақат protected branch'лар);
+- `.env`'да `S3_BUCKET_BACKUP` бўлса, R2'га кунлик заҳирани ёқади (пастда «R2 заҳира»);
 - `scripts/deploy.sh`.
 
 `.env`, `baza/` (юкланган файллар, `data.json`), `certs/`, `backups/` га **тегилмайди**. `baza/` git'да бор бўлса ҳам серверда checkout қилинмайди, фақат йўқ файллар бир марта қўшилади.
@@ -103,3 +105,19 @@ cp .env.mcp.example .env.mcp   # GITLAB_TOKEN (scope: api) ва POSTGRES_MCP_URL
 - Ботдаги маҳсулот категориялари дастурнинг «Категориялар» бўлимидан олинади.
 
 Батафсил: `O'QING.txt`.
+
+### R2 заҳира
+
+Ҳар куни **03:00** да (сервер вақти — `timedatectl`; керак бўлса `timedatectl set-timezone Asia/Tashkent`) `scripts/backup-r2.sh` база дампини (`db/db-*.sql.gz`) ва `baza/uploads`'ни (`uploads/uploads-*.tar.gz`) `.env`'даги `S3_BUCKET_BACKUP` bucket'ига юклайди, серверда вақтинчалик файл қолмайди. Калитлар — `.env`'даги `S3_*` (`.env.example`'га қаранг), aws CLI Docker image'да ишлайди, серверга ўрнатилмайди.
+
+- cron: `/etc/cron.d/santal-backup` (`santal.sh` ёзади), лог: `/var/log/santal-backup.log`;
+- қўлда: `cd /opt/santal && make backup-r2`;
+- эски нусхалар: Cloudflare → R2 → bucket → Settings → **Object lifecycle rules** → 30 кундан кейин ўчириш (бепул 10 GB тўлмаслиги учун, бир марта қўлда);
+- тиклаш (аввал синов базасида):
+
+```sh
+cd /opt/santal
+docker run --rm -e AWS_ACCESS_KEY_ID=... -e AWS_SECRET_ACCESS_KEY=... -e AWS_DEFAULT_REGION=auto \
+  amazon/aws-cli:2.38.6 s3 cp s3://<bucket>/db/db-YYYYmmdd-HHMMSS.sql.gz - --endpoint-url <S3_API_URL> \
+  | gunzip | docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"'
+```

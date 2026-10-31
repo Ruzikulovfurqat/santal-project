@@ -4,7 +4,7 @@ PY      := $(VENV)/bin/python
 COMPOSE := docker compose
 
 .DEFAULT_GOAL := help
-.PHONY: help up down restart build ps logs psql migrate migration backup deploy html lock db install dev test lint run clean
+.PHONY: help up down restart build ps logs psql migrate migration backup backup-r2 deploy html lock db install dev test lint run clean
 
 help: ## Буйруқлар рўйхати
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-9s %s\n", $$1, $$2}'
@@ -50,6 +50,9 @@ backup: ## База дампи + акт файллари -> backups/
 	$(COMPOSE) exec -T db sh -c 'pg_dump -U "$$POSTGRES_USER" -Fc "$$POSTGRES_DB"' > backups/db-$$(date +%Y%m%d-%H%M%S).dump
 	tar czf backups/uploads-$$(date +%Y%m%d-%H%M%S).tar.gz baza/uploads
 	@ls -1t backups | head -2
+
+backup-r2: ## База дампи + акт файллари -> Cloudflare R2 (.env: S3_*; серверда ҳар куни 03:00)
+	bash scripts/backup-r2.sh
 
 deploy: ## Серверда: заҳира + янги версия + соғлиқ текшируви (CI/CD ҳам шуни чақиради)
 	bash scripts/deploy.sh
