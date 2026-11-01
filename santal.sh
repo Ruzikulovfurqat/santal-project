@@ -48,7 +48,7 @@ ensure_prereqs() {
     command -v git >/dev/null || pkgs+=(git)
     command -v curl >/dev/null || pkgs+=(curl)
     command -v flock >/dev/null || pkgs+=(util-linux)
-    command -v cron >/dev/null || pkgs+=(cron)  # R2 заҳираси (/etc/cron.d/santal-backup)
+    command -v cron >/dev/null || pkgs+=(cron)  # R2 заҳираси (ensure_backup_cron)
     if [ ${#pkgs[@]} -gt 0 ]; then
         say "ўрнатилмоқда: ${pkgs[*]}"
         apt-get update -qq </dev/null
@@ -105,21 +105,24 @@ ensure_env() { # бўш серверда .env'ни .env.example'дан ярат�
 }
 
 ensure_backup_cron() { # ҳар куни 03:00 (сервер вақти) — scripts/backup-r2.sh; .env'да R2 бўлмаса ўчирилади
-    local cron=/etc/cron.d/santal-backup
-    if [ -z "$(env_get S3_BUCKET_BACKUP "$ROOT/.env")" ]; then
-        rm -f "$cron"
-        warn ".env'да S3_BUCKET_BACKUP бўш — R2'га кунлик заҳира ўчиқ"
+    # gitlab-runner'нинг crontab'и: CI deploy (root'сиз) ҳам ўрнатади, sudo santal.sh шарт эмас
+    local args=() cur line="0 3 * * * bash $ROOT/scripts/backup-r2.sh >> $ROOT/backups/r2-backup.log 2>&1 # santal-backup"
+    if ! command -v crontab >/dev/null; then
+        warn "cron йўқ — R2'га кунлик заҳира ўрнатилмади (sudo $ROOT/santal.sh)"
         return 0
     fi
-    printf '%s\n' \
-        'SHELL=/bin/bash' \
-        'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
-        "0 3 * * * root bash $ROOT/scripts/backup-r2.sh >> /var/log/santal-backup.log 2>&1" \
-        > "$cron.tmp"
-    chmod 644 "$cron.tmp"
-    mv -f "$cron.tmp" "$cron"
-    printf '%s\n' '/var/log/santal-backup.log {' '    monthly' '    rotate 6' '    compress' \
-        '    missingok' '    notifempty' '}' > /etc/logrotate.d/santal-backup
+    if is_root; then
+        id gitlab-runner >/dev/null 2>&1 && args=(-u gitlab-runner)
+    fi
+    if [ -z "$(env_get S3_BUCKET_BACKUP "$ROOT/.env")" ]; then
+        line=
+        warn ".env'да S3_BUCKET_BACKUP бўш — R2'га кунлик заҳира ўчиқ"
+    fi
+    cur=$(crontab "${args[@]}" -l 2>/dev/null | grep -v '# santal-backup$' || true)
+    {
+        if [ -n "$cur" ]; then printf '%s\n' "$cur"; fi
+        if [ -n "$line" ]; then printf '%s\n' "$line"; fi
+    } | crontab "${args[@]}" - || warn "crontab ёзилмади — R2'га кунлик заҳира ўрнатилмади"
 }
 
 register_runner() { # register_runner <name> <tag> <access_level> <gitlab-runner register args...>
@@ -202,11 +205,11 @@ main() {
 
     if is_root; then
         ensure_env
-        ensure_backup_cron
         setup_runner
         trap chown_tree EXIT
         chown_tree
     fi
+    ensure_backup_cron
     bash scripts/deploy.sh
 }
 

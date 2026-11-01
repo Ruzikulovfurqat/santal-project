@@ -110,7 +110,7 @@ cp .env.mcp.example .env.mcp   # GITLAB_TOKEN (scope: api) ва POSTGRES_MCP_URL
 
 Ҳар куни **03:00** да (сервер вақти — `timedatectl`; керак бўлса `timedatectl set-timezone Asia/Tashkent`) `scripts/backup-r2.sh` база дампини (`db/db-*.sql.gz`) ва `baza/uploads`'ни (`uploads/uploads-*.tar.gz`) `.env`'даги `S3_BUCKET_BACKUP` bucket'ига юклайди, серверда вақтинчалик файл қолмайди. Калитлар — `.env`'даги `S3_*` (`.env.example`'га қаранг), aws CLI Docker image'да ишлайди, серверга ўрнатилмайди.
 
-- cron: `/etc/cron.d/santal-backup` (`santal.sh` ёзади), лог: `/var/log/santal-backup.log`;
+- cron: `gitlab-runner`'нинг crontab'и (`santal.sh` ҳар deploy'да ёзади, `sudo` шарт эмас), лог: `/opt/santal/backups/r2-backup.log`;
 - қўлда: `cd /opt/santal && make backup-r2`;
 - эски нусхалар: Cloudflare → R2 → bucket → Settings → **Object lifecycle rules** → 30 кундан кейин ўчириш (бепул 10 GB тўлмаслиги учун, бир марта қўлда);
 - тиклаш (аввал синов базасида):

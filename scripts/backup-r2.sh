@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # База дампи (.sql.gz) + акт файллари (baza/uploads) -> Cloudflare R2 (S3_BUCKET_BACKUP).
-# Серверда ҳар куни 03:00 да cron ишга туширади (santal.sh -> /etc/cron.d/santal-backup);
+# Серверда ҳар куни 03:00 да cron ишга туширади (santal.sh -> gitlab-runner crontab'и);
 # қўлда: make backup-r2. Калитлар .env'дан олинади, aws CLI — Docker image'да.
 # Эски нусхаларни R2'нинг lifecycle rule'и ўчиради (README → «R2 заҳира»).
 set -Eeuo pipefail
