@@ -393,6 +393,11 @@
        танлови чиқади; белгиланмаса — Ташкилот катаги умуман бўлмайди ва
        тўлов «Бошқа харажатлар»га олинади. */
     var admWage = !!t.admWage;
+    /* «Дивидент» галочкаси (2026-10-31): пул корхона фойдасидан олинади,
+       олувчи ходимнинг иш ҳақи / акт сверкасига тушмайди — у «Ходимлар →
+       Дивидентлар» бўлимида кўринади. «Иш ҳақи» билан бир вақтда белгиланмайди. */
+    var admDiv = !!t.isDividend;
+    var divPick = (t.isDividend && t.counterpartyId) ? {id:t.counterpartyId, name:t.counterpartyName||""} : null;
     var cpWrap = m.querySelector("#ks-cp-wrap");
     /* Иш ҳақи харажат турида «Ташкилот» ўрнига «Ведомост бўйича ёки ходим
        бўйича» танлови чиқади (2026-10-15 сўрови). */
@@ -413,11 +418,20 @@
           admWrap.style.display = "";
           admWrap.innerHTML = '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:700;padding-top:20px;">'+
               '<input type="checkbox" id="ks-adm-wage" style="width:auto;flex-shrink:0;"'+(admWage?" checked":"")+'>Иш ҳақи тўлови (ведомост ёки ходим бўйича)</label>'+
+            '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:700;padding-top:8px;">'+
+              '<input type="checkbox" id="ks-adm-div" style="width:auto;flex-shrink:0;"'+(admDiv?" checked":"")+'>Дивидент (корхона фойдасидан)</label>'+
             '<div class="field-hint">Белгиланмаса — тўлов «'+esc(finBucketName("other"))+'»га олинади.</div>';
           admWrap.querySelector("#ks-adm-wage").addEventListener("change", function(){
             admWage = this.checked;
-            if(!admWage) wagePick = null;
-            paintCpField();
+            if(admWage){ admDiv = false; divPick = null; }
+            else wagePick = null;
+            paintBucketBal(); paintCpField();
+          });
+          admWrap.querySelector("#ks-adm-div").addEventListener("change", function(){
+            admDiv = this.checked;
+            if(admDiv){ admWage = false; wagePick = null; }
+            else divPick = null;
+            paintBucketBal(); paintCpField();
           });
         } else {
           admWrap.style.display = "none";
@@ -427,6 +441,17 @@
       /* Оддий категорияларда «Иш ҳақи» алоҳида харажат тури; «Бошқарув
          бўлими»да эса Администрация + галочка орқали. */
       var isWage = !!(bk && (bk==="wage" || (isAdminCatSel && bk==="admin_main" && admWage)));
+      var isDiv = !!(isAdminCatSel && bk==="admin_main" && admDiv);
+      /* Дивидент: «Дивидент олувчи» катаги — босилса ходимлар рўйхати очилади. */
+      if(isDiv){
+        cpWrap.style.display = "";
+        cpWrap.innerHTML = '<label>Дивидент олувчи</label>'+
+          '<button type="button" class="btn btn-secondary" id="ks-div-pick" style="width:100%;justify-content:flex-start;">'+
+            (divPick ? esc(divPick.name||"Ходим") : '— танланг —')+'</button>'+
+          '<div class="field-hint">Устига босиб ходимни танланг. Бу сумма унинг иш ҳақи ва акт сверкасига кирмайди.</div>';
+        cpWrap.querySelector("#ks-div-pick").addEventListener("click", openDividendEmployeePicker);
+        return;
+      }
       /* «Бошқарув бўлими → Администрация» галочкасиз бўлса — Ташкилот
          катаги умуман кўринмайди. */
       if(isAdminCatSel && bk==="admin_main" && !isWage){
@@ -462,16 +487,57 @@
         categoryId: catEl ? catEl.value : (t.categoryId||""),
         bucket: bucketEl ? bucketEl.value : "",
         admWage: admWage,
+        isDividend: admDiv,
         description: m.querySelector("#ks-note").value,
-        counterpartyType: wagePick ? "employee" : (isKirim?"customer":"supplier"),
-        counterpartyId: wagePick ? wagePick.id : ((m.querySelector("#ks-cp")||{}).value||""),
-        counterpartyName: wagePick ? wagePick.name : "",
+        counterpartyType: (admDiv && divPick) ? "dividend" : (wagePick ? "employee" : (isKirim?"customer":"supplier")),
+        counterpartyId: (admDiv && divPick) ? divPick.id : (wagePick ? wagePick.id : ((m.querySelector("#ks-cp")||{}).value||"")),
+        counterpartyName: (admDiv && divPick) ? divPick.name : (wagePick ? wagePick.name : ""),
         cashier: t.cashier || ""
       };
       if(isEdit) d2.id = t.id;
       return d2;
     }
     function reopenWith(draft){ openKassaSimpleForm(accountId, direction, draft); }
+    /* «Дивидент олувчи» — ходимлар рўйхати, тепада қидирув. Ойна очилганда
+       Чиқим шакли ёпилади ва танловдан кейин ўша қийматлар билан қайта очилади. */
+    function openDividendEmployeePicker(){
+      var draft = snapshotSimpleDraft();
+      closeModal();
+      var pool = STATE.employees.filter(function(e2){ return e2.status!=="bo'shagan"; })
+        .slice().sort(function(a,b){ return (a.fullName||"").localeCompare(b.fullName||""); });
+      var avail = finDividendAvail();
+      var head = '<div class="card" style="padding:12px 14px;margin-bottom:12px;background:var(--surface-2);font-size:13px;">'+
+          'Фойдада дивидент учун мавжуд: <b style="color:'+(avail>0?"var(--good)":"var(--critical)")+';">'+fmtSum(avail)+'</b>'+
+          '<div class="field-hint" style="margin-top:4px;">Захира (фойдадаги «Захира» қисми) ҳисобга олинмайди.</div></div>'+
+        '<div class="search-box" style="max-width:none;margin-bottom:12px;">'+ICONS.search+'<input type="text" id="dvp-search" placeholder="Ходимни исми ёки лавозими бўйича қидириш…"></div>'+
+        '<div id="dvp-list"></div>';
+      var mm = openModal("Дивидент олувчини танлаш", head,
+        '<button class="btn btn-secondary" data-cancel>'+ICONS.arrowLeft+'Орқага</button>', true, function(){ reopenWith(draft); });
+      mm.querySelector("[data-cancel]").addEventListener("click", function(){ closeModal(); reopenWith(draft); });
+      var listEl = mm.querySelector("#dvp-list"), searchEl = mm.querySelector("#dvp-search");
+      function paint(){
+        var q = String(searchEl.value||"").trim().toLowerCase();
+        var rows = pool.filter(function(e2){
+          return !q || ((e2.fullName||"")+" "+(e2.position||"")+" "+(e2.category||"")).toLowerCase().indexOf(q)>-1;
+        });
+        if(!rows.length){ listEl.innerHTML = '<div style="text-align:center;color:var(--ink-3);font-size:13px;padding:16px 0;">Ходим топилмади</div>'; return; }
+        listEl.innerHTML = rows.map(function(e2){
+          return '<div class="alert-row" data-div-emp="'+e2.id+'" style="cursor:pointer;">'+
+            '<div class="grow"><div class="t">'+esc(e2.fullName)+'</div>'+
+            '<div class="s">'+esc(e2.category||"категория йўқ")+(e2.position?(" · "+esc(e2.position)):"")+'</div></div></div>';
+        }).join("");
+        listEl.querySelectorAll("[data-div-emp]").forEach(function(row){ row.addEventListener("click", function(){
+          var emp = employeeById(row.getAttribute("data-div-emp"));
+          if(!emp) return;
+          var d3 = Object.assign({}, draft, {isDividend:true, counterpartyType:"dividend", counterpartyId:emp.id, counterpartyName:emp.fullName});
+          closeModal();
+          reopenWith(d3);
+        }); });
+      }
+      searchEl.addEventListener("input", paint);
+      paint();
+      searchEl.focus();
+    }
     function openWagePayPicker(){
       var draft = snapshotSimpleDraft();
       closeModal();
@@ -705,7 +771,9 @@
       var txt = bucketEl.value
         ? "Молия бўлимида ажратилган: "+fmtSum(bucketAvail())
         : "Молия бўлимида ажратилган суммани кўриш учун харажат турини танланг.";
-      if(catEl && catEl.value===FIN_ADMIN_CAT && bucketEl.value==="admin_main" && !admWage){
+      if(catEl && catEl.value===FIN_ADMIN_CAT && bucketEl.value==="admin_main" && admDiv){
+        txt = "Дивидент учун фойдада мавжуд: "+fmtSum(finDividendAvail());
+      } else if(catEl && catEl.value===FIN_ADMIN_CAT && bucketEl.value==="admin_main" && !admWage){
         txt += " · Иш ҳақи тўлови учун пастдаги галочкани белгиланг.";
       }
       bucketBalEl.textContent = txt;
@@ -745,7 +813,16 @@
             return;
           }
         }
-        if(bucketEl && bucketEl.value){
+        var divOn = !!(catEl && catEl.value===FIN_ADMIN_CAT && bucketEl && bucketEl.value==="admin_main" && admDiv);
+        if(divOn){
+          if(!divPick){ toast("Дивидент олувчи ходимни танланг"); return; }
+          var divAvail = finDividendAvail();
+          var divOld = (isEdit && t.isDividend && !t.cancelled) ? (Number(t.amount)||0) : 0;
+          if(totalSom() > divAvail+divOld+0.004){
+            toast("Фойдада дивидент учун сумма етарли эмас. Мавжуд: "+fmtSum(divAvail));
+            return;
+          }
+        } else if(bucketEl && bucketEl.value){
           var avail = bucketAvail();
           var oldSom = isEdit ? (Number(t.amount)||0) : 0;
           if(totalSom() > avail+oldSom+0.004){
@@ -760,14 +837,19 @@
       var cpType = isKirim ? "customer" : "supplier";
       var selBucket = bucketEl ? bucketEl.value : "";
       var isAdminWage = !isKirim && catEl && catEl.value===FIN_ADMIN_CAT && selBucket==="admin_main" && admWage;
+      var isAdminDiv = !isKirim && catEl && catEl.value===FIN_ADMIN_CAT && selBucket==="admin_main" && admDiv;
       if(!isKirim && (selBucket==="wage" || isAdminWage)){
         if(!wagePick){ toast("«Ведомост бўйича» ёки «Ходим бўйича» танланг"); return; }
         cpType = "employee"; cpId = wagePick.id; cpName = wagePick.name;
       }
+      if(isAdminDiv){
+        if(!divPick){ toast("Дивидент олувчи ходимни танланг"); return; }
+        cpType = "dividend"; cpId = divPick.id; cpName = divPick.name;
+      }
       /* «Бошқарув бўлими → Администрация» галочкасиз бўлса — тўлов
          «Бошқа харажатлар» харажат турига олинади (2026-10-17). */
       var saveBucket = selBucket;
-      if(!isKirim && catEl && catEl.value===FIN_ADMIN_CAT && selBucket==="admin_main" && !admWage) saveBucket = "other";
+      if(!isKirim && catEl && catEl.value===FIN_ADMIN_CAT && selBucket==="admin_main" && !admWage && !admDiv) saveBucket = "other";
       var methodsOut = codes.map(function(c){
         return {method:c, amount:Number(ms[c].amount)||0, usdAmount:isUsdMethod(c)?(Number(ms[c].usdAmount)||0):0, usdRate:isUsdMethod(c)?(Number(ms[c].usdRate)||0):0};
       });
@@ -783,6 +865,7 @@
         categoryId: catEl ? catEl.value : (t.categoryId||""),
         bucket: saveBucket,
         admWage: !isKirim ? admWage : undefined,
+        isDividend: isAdminDiv ? true : undefined,
         counterpartyType: cpType,
         counterpartyId: cpId, counterpartyName: cpName,
         description: m.querySelector("#ks-note").value.trim(),

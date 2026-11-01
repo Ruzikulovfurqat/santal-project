@@ -2,9 +2,11 @@ PYTHON  ?= python3
 VENV    := .venv
 PY      := $(VENV)/bin/python
 COMPOSE := docker compose
+SSH     ?= santal
+TUNNEL_PORT ?= 15432
 
 .DEFAULT_GOAL := help
-.PHONY: help up down restart build ps logs psql migrate migration backup backup-r2 deploy html lock db install dev test lint run clean
+.PHONY: help up down restart build ps logs psql migrate migration backup backup-r2 tunnel deploy html lock db install dev test lint run clean
 
 help: ## Буйруқлар рўйхати
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-9s %s\n", $$1, $$2}'
@@ -53,6 +55,11 @@ backup: ## База дампи + акт файллари -> backups/
 
 backup-r2: ## База дампи + акт файллари -> Cloudflare R2 (.env: S3_*; серверда ҳар куни 03:00)
 	bash scripts/backup-r2.sh
+
+tunnel: ## Сервердаги базага SSH туннел: 127.0.0.1:15432 (MCP postgres учун; Ctrl+C — ёпиш)
+	@echo "Туннел: 127.0.0.1:$(TUNNEL_PORT) -> $(SSH):5432 (ёпиш: Ctrl+C)"
+	ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
+		-L 127.0.0.1:$(TUNNEL_PORT):127.0.0.1:5432 $(SSH)
 
 deploy: ## Серверда: заҳира + янги версия + соғлиқ текшируви (CI/CD ҳам шуни чақиради)
 	bash scripts/deploy.sh

@@ -198,42 +198,51 @@
     m.querySelector("[data-cancel]").addEventListener("click", closeModal);
   }
 
-  /* ---------- Дебиторлар / Кредиторлар (Солиштирма далолатнома асосида) ---------- */
-  function dwActBalances(type){
-    var list = type==="customer" ? STATE.customers : STATE.suppliers;
-    return list.map(function(c){
-      var ent = buildActLedgerEntries(type, c.id);
-      var bal = ent.reduce(function(sm,e){ return sm + (Number(e.kirim)||0) - (Number(e.chiqim)||0); }, 0);
-      return {id:c.id, name:c.name, count:ent.length, bal:bal,
-        debt: type==="customer" ? -bal : bal};
-    }).filter(function(x){ return x.count>0; })
-      .sort(function(a,b){ return b.debt-a.debt; });
+  /* ---------- Дебиторлар / Кредиторлар (Солиштирма далолатнома асосида) ----------
+     Дебиторлар — БИЗГА кимлар қарздор, Кредиторлар — БИЗ кимларга қарздормиз.
+     Иккала рўйхатга ҳам харидор, ҳам етказиб берувчи тушиши мумкин.
+     Далолатномадаги қолдиқ (кирим − чиким) манфий бўлса — улар бизга қарздор
+     (харидор: сотув чиким; етказиб берувчи: биз ортиқча тўлаганмиз), мусбат
+     бўлса — биз уларга қарздормиз. */
+  function dwActBalances(kind){
+    var out = [];
+    [["customer", STATE.customers], ["supplier", STATE.suppliers]].forEach(function(g){
+      g[1].forEach(function(c){
+        var ent = buildActLedgerEntries(g[0], c.id);
+        if(!ent.length) return;
+        var bal = ent.reduce(function(sm,e){ return sm + (Number(e.kirim)||0) - (Number(e.chiqim)||0); }, 0);
+        var amount = kind==="debtors" ? -bal : bal;
+        if(amount>0.004) out.push({id:c.id, type:g[0], name:c.name, count:ent.length, amount:amount});
+      });
+    });
+    return out.sort(function(a,b){ return b.amount-a.amount; });
   }
-  function dwActDebtTotal(type){
-    return dwActBalances(type).reduce(function(sm,x){ return sm + (x.debt>0.004 ? x.debt : 0); }, 0);
+  function dwActDebtTotal(kind){
+    return dwActBalances(kind).reduce(function(sm,x){ return sm + x.amount; }, 0);
   }
-  function openDwActListModal(type){
-    var rows = dwActBalances(type);
-    var isCust = type==="customer";
-    var title = isCust ? "Дебиторлар — харидорлар" : "Кредиторлар — етказиб берувчилар";
-    var sumDebt = rows.reduce(function(sm,x){ return sm + (x.debt>0?x.debt:0); }, 0);
+  function openDwActListModal(kind){
+    var rows = dwActBalances(kind);
+    var isDeb = kind==="debtors";
+    var title = isDeb ? "Дебиторлар — бизга қарздорлар" : "Кредиторлар — биз қарздорлар";
+    var sumDebt = rows.reduce(function(sm,x){ return sm + x.amount; }, 0);
+    var typeLbl = {customer:"Харидор", supplier:"Етказиб берувчи"};
     var body = rows.length
       ? '<div class="field-hint" style="margin-bottom:8px;">«Солиштирма далолатнома» бўйича жорий қолдиқ. '+
-          (isCust?'Мусбат сумма — харидор бизга қарздор.':'Мусбат сумма — биз етказиб берувчига қарздормиз.')+'</div>'+
-        '<div class="table-wrap"><table><thead><tr><th>№</th><th>'+(isCust?'Харидор':'Етказиб берувчи')+'</th>'+
+          (isDeb?'Бу рўйхатдагилар (харидор ёки етказиб берувчи) бизга қарздор.':'Биз бу рўйхатдагиларга (харидор ёки етказиб берувчи) қарздормиз.')+'</div>'+
+        '<div class="table-wrap"><table><thead><tr><th>№</th><th>Ном</th><th>Тури</th>'+
           '<th class="num">Ёзувлар</th><th class="num">Қарз</th></tr></thead><tbody>'+
         rows.map(function(x,i){
           return '<tr>'+
             '<td class="num">'+(i+1)+'</td>'+
             '<td class="cell-strong">'+esc(x.name)+'</td>'+
+            '<td><span class="chip chip-neutral">'+typeLbl[x.type]+'</span></td>'+
             '<td class="num cell-muted">'+x.count+'</td>'+
-            '<td class="num cell-strong" style="color:'+(x.debt>0.004?"var(--critical)":(x.debt<-0.004?"var(--good)":"var(--ink-3)"))+';">'+
-              (Math.abs(x.debt)<=0.004 ? '0' : (x.debt>0 ? fmtSum(x.debt) : ("олдиндан "+fmtSum(-x.debt))))+'</td></tr>';
+            '<td class="num cell-strong" style="color:var(--critical);">'+fmtSum(x.amount)+'</td></tr>';
         }).join("")+
-        '<tr><td></td><td class="cell-strong">ЖАМИ ҚАРЗ</td><td></td>'+
+        '<tr><td></td><td class="cell-strong">ЖАМИ ҚАРЗ</td><td></td><td></td>'+
           '<td class="num cell-strong" style="color:var(--critical);font-size:15px;">'+fmtSum(sumDebt)+'</td></tr>'+
         '</tbody></table></div>'
-      : '<div class="field-hint">Ҳали ёзув йўқ.</div>';
+      : '<div class="field-hint">Ҳозирча '+(isDeb?'бизга қарздор':'биз қарздор')+' ҳеч ким йўқ.</div>';
     var m = openModal(title, body, '<button class="btn btn-secondary" data-cancel>Ёпиш</button>', "xwide");
     m.querySelector("[data-cancel]").addEventListener("click", closeModal);
   }
@@ -312,8 +321,8 @@
           '<td class="num">'+fmtNum(kRate)+'</td>'+
         '</tr></tbody></table></div>'+
         '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">'+
-          '<button type="button" class="btn btn-secondary" id="dwDebtorsBtn">'+ICONS.users+'Дебиторлар: '+fmtSum(dwActDebtTotal("customer"))+'</button>'+
-          '<button type="button" class="btn btn-secondary" id="dwCreditorsBtn">'+ICONS.users+'Кредиторлар: '+fmtSum(dwActDebtTotal("supplier"))+'</button>'+
+          '<button type="button" class="btn btn-secondary" id="dwDebtorsBtn">'+ICONS.users+'Дебиторлар: '+fmtSum(dwActDebtTotal("debtors"))+'</button>'+
+          '<button type="button" class="btn btn-secondary" id="dwCreditorsBtn">'+ICONS.users+'Кредиторлар: '+fmtSum(dwActDebtTotal("creditors"))+'</button>'+
         '</div>'+
       '</div></div>';
 
@@ -332,9 +341,9 @@
     var unallocBtn = document.getElementById("dwUnallocBtn");
     if(unallocBtn) unallocBtn.addEventListener("click", function(){ openFinUnallocModal(null, finAc); });
     var debBtn = root.querySelector("#dwDebtorsBtn");
-    if(debBtn) debBtn.addEventListener("click", function(){ openDwActListModal("customer"); });
+    if(debBtn) debBtn.addEventListener("click", function(){ openDwActListModal("debtors"); });
     var creBtn = root.querySelector("#dwCreditorsBtn");
-    if(creBtn) creBtn.addEventListener("click", function(){ openDwActListModal("supplier"); });
+    if(creBtn) creBtn.addEventListener("click", function(){ openDwActListModal("creditors"); });
     var gk2 = root.querySelector('[data-goto="kassa"]');
     if(gk2) gk2.addEventListener("click", function(){ STATE.view="kassa"; render(); window.scrollTo(0,0); });
   }

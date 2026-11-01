@@ -605,6 +605,11 @@
         entries.push({date:s.date||(s.createdAt||"").slice(0,10), createdAt:s.createdAt||"", desc:"Сотув — "+itemsCount+" та маҳсулот", kirim:0, chiqim:Number(s.totalWithVat||0), _kind:"sale", _ref:s});
       });
     }
+    /* «Савдо → ДТ-КТ»да киритилган бошланғич қолдиқлар: ёзув санаси билан
+       тарихга тушади. Харидорда мусбат сумма — харидор қарздор (чиким),
+       манфий — ортиқча пули бор (кирим). Етказиб берувчида аксинча: мусбат —
+       биз қарздормиз (кирим), манфий — биз ортиқча тўлаганмиз (чиким). */
+    dtktLedgerEntries(type, who).forEach(function(e){ entries.push(e); });
     entries.sort(function(a,b){
       if(a.date!==b.date) return a.date.localeCompare(b.date);
       return (a.createdAt||"").localeCompare(b.createdAt||"");
@@ -619,19 +624,30 @@
     else if(entry._kind==="equipreceipt") openEquipmentReceiptDetail(entry._ref);
     else if(entry._kind==="lomreturn") openLomReturnDetail(entry._ref);
     else if(entry._kind==="sale") openSaleDetail(entry._ref);
+    else if(entry._kind==="dtkt") openDtKtForm(dtktDraftFromDoc(entry._ref));
   }
   function printActStatement(type, name, from, to, entries, opening, closing, periodKirim, periodChiqim){
+    /* Дебитор («+»): харидорга товар берилди / етказиб берувчига пул берилди.
+       Кредитор («−»): харидордан пул тушди / етказиб берувчидан товар келди.
+       Қолдиқ: «+» — улар бизга қарздор, «−» — биз қарздормиз. */
+    var isCust = type==="customer";
     var rows = entries.map(function(e){
       return '<tr><td>'+fmtDateShort(e.date)+'</td><td>'+esc(e.desc)+'</td>'+
-        '<td style="text-align:right;">'+(e.kirim?('+'+fmtNum(e.kirim)):"")+'</td>'+
-        '<td style="text-align:right;">'+(e.chiqim?('−'+fmtNum(e.chiqim)):"")+'</td></tr>';
+        '<td style="text-align:right;">'+(e.chiqim?('+'+fmtNum(e.chiqim)):"")+'</td>'+
+        '<td style="text-align:right;">'+(e.kirim?('−'+fmtNum(e.kirim)):"")+'</td></tr>';
     }).join("");
-    var totalsRow = '<tr style="font-weight:700;"><td></td><td>Жами</td><td style="text-align:right;">+'+fmtNum(periodKirim)+'</td><td style="text-align:right;">−'+fmtNum(periodChiqim)+'</td></tr>';
+    var totalsRow = '<tr style="font-weight:700;"><td></td><td>Жами</td><td style="text-align:right;">+'+fmtNum(periodChiqim)+'</td><td style="text-align:right;">−'+fmtNum(periodKirim)+'</td></tr>';
+    var balTxt = function(v){
+      var debt = -(Number(v)||0);
+      if(Math.abs(debt)<=0.004) return fmtSum(0);
+      if(isCust) return debt>0 ? "+"+fmtSum(debt)+" (харидорнинг қарзи бор)" : "−"+fmtSum(-debt)+" (харидорнинг ортиқча пули бор)";
+      return debt>0 ? "+"+fmtSum(debt)+" (етказиб берувчининг қарзи бор)" : "−"+fmtSum(-debt)+" (етказиб берувчидан қарзимиз бор)";
+    };
     var body = '<div style="display:flex;gap:24px;margin-bottom:14px;font-size:13px;">'+
-        '<div><strong>Давр бошига қолдиқ:</strong> '+fmtSignedSum(opening)+'</div>'+
-        '<div><strong>Давр охирига қолдиқ:</strong> '+fmtSignedSum(closing)+'</div>'+
+        '<div><strong>Давр бошига қолдиқ:</strong> '+balTxt(opening)+'</div>'+
+        '<div><strong>Давр охирига қолдиқ:</strong> '+balTxt(closing)+'</div>'+
       '</div>'+
-      '<table><tr><th>Сана</th><th>Изоҳ</th><th style="text-align:right;">Кирим</th><th style="text-align:right;">Чиким</th></tr>'+(rows||'<tr><td colspan="4" style="text-align:center;">Ёзувлар топилмади</td></tr>')+totalsRow+'</table>';
+      '<table><tr><th>Сана</th><th>Изоҳ</th><th style="text-align:right;">Дебитор</th><th style="text-align:right;">Кредитор</th></tr>'+(rows||'<tr><td colspan="4" style="text-align:center;">Ёзувлар топилмади</td></tr>')+totalsRow+'</table>';
     var sub = (from?fmtDateShort(from):"бошидан")+" — "+(to?fmtDateShort(to):"ҳозиргача");
     var html = voucherShell((type==="customer"?"Харидор":"Етказиб берувчи")+" — "+esc(name), sub, body, true);
     document.getElementById("printArea").innerHTML = html;

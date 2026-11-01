@@ -163,7 +163,17 @@
     var m = openModal("Буюртмани танлаш", body, '<button class="btn btn-secondary" data-cancel>Ёпиш</button>', true, onCancel);
     m.querySelector("[data-cancel]").addEventListener("click", function(){ closeModal(); if(onCancel) onCancel(); });
     function renderList(){
-      var pool = STATE.orders.filter(function(o){ return o.customerId===customerId && !o.cancelled && !o.completed; })
+      /* Буюртма харидорга id бўйича, id эскирган/бўш бўлса (масалан харидор
+         буюртма формасидаги «+» орқали янги қўшилганда буюртмага вақтинчалик
+         id ёзилиб қолган) — харидор номи бўйича боғланади (2026-10-30). */
+      var pickedCust = customerById(customerId);
+      var pickedName = pickedCust ? (pickedCust.name||"").trim().toLowerCase() : "";
+      var belongs = function(o){
+        if(o.customerId===customerId) return true;
+        if(!pickedName || (o.customerId && customerById(o.customerId))) return false;
+        return (o.customer||"").trim().toLowerCase()===pickedName;
+      };
+      var pool = STATE.orders.filter(function(o){ return belongs(o) && !o.cancelled && !o.completed; })
         .slice().sort(function(a,b){ return (b.createdAt||"").localeCompare(a.createdAt||""); });
       var listEl = m.querySelector("#sop-list");
       if(!pool.length){ listEl.innerHTML = emptyState("Буюртма топилмади","Бу харидорнинг ҳали якунланмаган буюртмаси йўқ — аввал «Харидор буюртмаси» бўлимида буюртма яратинг."); return; }
@@ -182,6 +192,8 @@
       listEl.querySelectorAll(".ocp-row").forEach(function(rowEl){
         rowEl.addEventListener("click", function(){
           var o = orderById(rowEl.getAttribute("data-order"));
+          /* номи бўйича топилган буюртманинг эскирган харидор id'си тузатилади */
+          if(o && o.customerId!==customerId) dbUpdate("orders", o.id, {customerId:customerId}, STATE.orders);
           if(!o) return;
           closeModal();
           onPicked(o);

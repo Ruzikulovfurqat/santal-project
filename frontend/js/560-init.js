@@ -82,6 +82,7 @@
           attachSnapshot("financeSplits","financeSplits","createdAt");
           attachSnapshot("financeTransfers","financeTransfers","createdAt");
           attachSnapshot("monthlyReports","monthlyReports","createdAt");
+          attachSnapshot("dtkt","dtkt","createdAt");
           setTimeout(maybeMigrate, 1200);
           setTimeout(maybeRenameLomKulItem, 1300);
           flushOfflineQueue();
